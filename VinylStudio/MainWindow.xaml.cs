@@ -19,7 +19,6 @@ using VinylStudio.model.legacy;
 
 namespace VinylStudio
 {   
-    // TODO: toolbar in top of the thumbnail grid. 
     // TODO: thumbnail toolbar button: Add -> Adds a new album and opens an editor dialog
     // TODO: thumbnail toolbar button: Remove (active, when album selected): Removes album after security warning. When no more albums for the artist, asks if artist should also be deleted
     // TODO: thumbnail toolbar button: Sorting combo box: {none, Name, Artist, Random}

@@ -142,23 +142,34 @@
 
             <GridSplitter Grid.Column="0" Grid.Row="1" ShowsPreview="True" HorizontalAlignment="Stretch" Height="3" Background="AliceBlue" />
 
-            <!--#region Thumbnail Grid-->
-            <ScrollViewer Grid.Column="0" Grid.Row="0">
-                <ItemsControl Name="thumbnailsContainer">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Viewbox Name="thumbnailViewbox" Width="150" Height="150">
-                                <Image Source="{Binding ImageSource}" Stretch="Uniform" Margin="5" MouseLeftButtonDown="OnThumbnailClicked" />
-                            </Viewbox>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+            <!--#region Thumbnail Grid and action bar for thumbnail grid-->
+            <DockPanel Grid.Column="0" Grid.Row="0">
+                <!-- Panel with the toolbar actions -->
+                
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 5">
+                        <Button ToolTip="Add new Album">
+                            <materialDesign:PackIcon Kind="ImagePlus" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Button>                        
+                    </StackPanel>
+                
+                <!-- the thumbnail panel -->
+                <ScrollViewer>
+                    <ItemsControl Name="thumbnailsContainer">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Viewbox Name="thumbnailViewbox" Width="150" Height="150">
+                                    <Image Source="{Binding ImageSource}" Stretch="Uniform" Margin="5" MouseLeftButtonDown="OnThumbnailClicked" />
+                                </Viewbox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
             <!--#endregion-->
             
             <!--#region  Song table -->
