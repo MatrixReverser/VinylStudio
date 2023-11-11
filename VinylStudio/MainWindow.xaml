@@ -28,13 +28,13 @@
         </Menu>
         <!--#endregion-->
         
-        <!--#region Toolbar-->
+        <!--#region Status bar-->
         <StackPanel DockPanel.Dock="Bottom">
-            <Button Content="&#xE106;" FontFamily="Segoe MDL2 Assets" Click="OnDebugButtonClicked" />
+            <Label>StatusLine</Label>
         </StackPanel>
         <!--#endregion-->
         
-        <!--#region  Detail Panel-->
+        <!--#region  Detail Panel-->        
         <ScrollViewer DockPanel.Dock="Left">
             <Grid Name="detailPanel" Width="Auto">
                 <Grid.RowDefinitions>
@@ -108,7 +108,7 @@
                 <Label Grid.Column="0" Grid.Row="10" FontWeight="Bold" Content="Location: " />
                 <Label Grid.Column="1" Grid.Row="10" Content="{Binding Location}"  />
             </Grid>
-        </ScrollViewer>
+        </ScrollViewer>        
         <!--#endregion-->
 
         <!--#region List with interprets and interpret filter -->
@@ -181,8 +181,8 @@
             <!-- </ScrollViewer> -->
             <!--#endregion-->
         </Grid>
-
     </DockPanel>
+    
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>

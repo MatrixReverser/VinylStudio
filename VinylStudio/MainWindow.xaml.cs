@@ -259,12 +259,6 @@ namespace VinylStudio
             }
         }
 
-        private void OnDebugButtonClicked(object sender, EventArgs e)
-        {
-            InterpretModel interpret = new() { Name = "West Hollywood Rapture", Country = "Deutschland" };
-            _dataModel.InterpretList.Add(interpret);
-        }
-
         /**
          * Filters all thumbnails by an interpret
          */
