@@ -1,0 +1,190 @@
+﻿<Window x:Class="VinylStudio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VinylStudio"
+        xmlns:models="clr-namespace:VinylStudio.model"
+        mc:Ignorable="d"
+        Title="Vinyl Studio" Height="800" Width="1280"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}">
+    
+    <DockPanel>
+        
+        <!--#region Main Menu-->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Migration">
+                    <MenuItem Header="Migrate from VinylShelf 0.2" Click="OnMenuFileMigrateFromShelf" />
+                </MenuItem>
+                <MenuItem Header="E_xit" Click="OnMenuFileExit" />
+            </MenuItem>
+        </Menu>
+        <!--#endregion-->
+        
+        <!--#region Toolbar-->
+        <StackPanel DockPanel.Dock="Bottom">
+            <Button Content="&#xE106;" FontFamily="Segoe MDL2 Assets" Click="OnDebugButtonClicked" />
+        </StackPanel>
+        <!--#endregion-->
+        
+        <!--#region  Detail Panel-->
+        <ScrollViewer DockPanel.Dock="Left">
+            <Grid Name="detailPanel" Width="Auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="200" Source="{Binding ImageSource}" Stretch="Uniform" Margin="5" />
+                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" FontWeight="ExtraBold" FontSize="16" Content="{Binding Name}" />
+                <Label Grid.Column="0" Grid.Row="2" FontWeight="Bold" Content="Interpret: " />
+                <Label Grid.Column="1" Grid.Row="2" Content="{Binding Interpret.Name}"  />
+                <Label Grid.Column="0" Grid.Row="3" FontWeight="Bold" Content="Genre: " />
+                <Label Grid.Column="1" Grid.Row="3" Content="{Binding Genre.Name}"  />
+                <Label Grid.Column="0" Grid.Row="4" FontWeight="Bold" Content="Type: " />
+                <Label Grid.Column="1" Grid.Row="4" Content="{Binding AlbumTypeTranslation}"  />
+                <Label Grid.Column="0" Grid.Row="5" FontWeight="Bold" Content="Length: " />
+                <Label Grid.Column="1" Grid.Row="5" Content="{Binding CummulatedLength}" />
+                <Label Grid.Column="0" Grid.Row="6" FontWeight="Bold" Content="Rating: " />
+                <Label Grid.Column="1" Grid.Row="6">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Style.Triggers>
+                                <!-- Trigger für den ersten Stern -->
+                                <DataTrigger Binding="{Binding AlbumRating}" Value="5">
+                                    <Setter Property="Content" Value="☆☆☆☆☆"/>
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                </DataTrigger>
+                                <!-- Trigger für den zweiten Stern -->
+                                <DataTrigger Binding="{Binding AlbumRating}" Value="4">
+                                    <Setter Property="Content" Value="★☆☆☆☆"/>
+                                    <Setter Property="Foreground" Value="Gold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding AlbumRating}" Value="3">
+                                    <Setter Property="Content" Value="★★☆☆☆"/>
+                                    <Setter Property="Foreground" Value="Gold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding AlbumRating}" Value="2">
+                                    <Setter Property="Content" Value="★★★☆☆"/>
+                                    <Setter Property="Foreground" Value="Gold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding AlbumRating}" Value="1">
+                                    <Setter Property="Content" Value="★★★★☆"/>
+                                    <Setter Property="Foreground" Value="Gold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding AlbumRating}" Value="0">
+                                    <Setter Property="Content" Value="★★★★★"/>
+                                    <Setter Property="Foreground" Value="Gold"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <Label Grid.Column="0" Grid.Row="7" FontWeight="Bold" Content="Released: " />
+                <Label Grid.Column="1" Grid.Row="7" Content="{Binding ReleaseYear}"  />
+                <Label Grid.Column="0" Grid.Row="8" FontWeight="Bold" Content="Purchased: " />
+                <Label Grid.Column="1" Grid.Row="8" Content="{Binding PurchaseYear}"  />
+                <Label Grid.Column="0" Grid.Row="9" FontWeight="Bold" Content="Price: " />
+                <Label Grid.Column="1" Grid.Row="9" Content="{Binding Price}"  />
+                <Label Grid.Column="0" Grid.Row="10" FontWeight="Bold" Content="Location: " />
+                <Label Grid.Column="1" Grid.Row="10" Content="{Binding Location}"  />
+            </Grid>
+        </ScrollViewer>
+        <!--#endregion-->
+
+        <!--#region List with interprets and interpret filter -->
+        <DockPanel DockPanel.Dock="Right">
+            <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                <StackPanel Orientation="Horizontal">
+                    <Label DockPanel.Dock="Top" Content="Interpret:" />
+                    <TextBox Name="interpretFilter" Width="200" LostFocus="OnFilterInterprets" KeyUp="OnKeyUpInFilterInterprets" />
+                </StackPanel>
+            </Border>
+            <ListBox Name="interpretList" 
+                    ItemsSource="{Binding InterpretModel}" 
+                    DisplayMemberPath="Name" 
+                    ScrollViewer.CanContentScroll="True" 
+                    ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                    Width="200"
+                    SelectionChanged="OnInterpretSelected" />
+        </DockPanel>
+        <!--#endregion-->
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <GridSplitter Grid.Column="0" Grid.Row="1" ShowsPreview="True" HorizontalAlignment="Stretch" Height="3" Background="AliceBlue" />
+
+            <!--#region Thumbnail Grid-->
+            <ScrollViewer Grid.Column="0" Grid.Row="0">
+                <ItemsControl Name="thumbnailsContainer">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Viewbox Name="thumbnailViewbox" Width="150" Height="150">
+                                <Image Source="{Binding ImageSource}" Stretch="Uniform" Margin="5" MouseLeftButtonDown="OnThumbnailClicked" />
+                            </Viewbox>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <!--#endregion-->
+            
+            <!--#region  Song table -->
+            <DataGrid Name="songTable"
+                              Grid.Row="2" 
+                              Grid.Column="0" 
+                              Height="Auto" 
+                              AutoGenerateColumns="False" 
+                              ScrollViewer.CanContentScroll="True" 
+                              ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                              IsReadOnly="True">                
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Side" Binding="{Binding Side}" />
+                    <DataGridTextColumn Header="Track" Binding="{Binding Index}" />
+                    <DataGridTextColumn Header="Title" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Length" Binding="{Binding LengthInMinutes}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <!-- </ScrollViewer> -->
+            <!--#endregion-->
+        </Grid>
+
+    </DockPanel>
+    <Window.Style>
+        <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
+    </Window.Style>
+</Window>
+    
