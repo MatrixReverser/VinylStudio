@@ -57,9 +57,9 @@
             <Label Grid.Column="0" Grid.Row="1">Album Title: </Label>
             <TextBox Name="textboxTitle" Grid.Column="1" Grid.Row="1" Text="album title" Margin="10 0 0 10" BorderThickness="1" />
             <Label Grid.Column="0" Grid.Row="2">Interpret: </Label>
-            <ComboBox Name="comboboxInterpret" Grid.Column="1" Grid.Row="2" Margin="10 0 0 10" BorderThickness="1" />
+            <ComboBox Name="comboboxInterpret" Grid.Column="1" Grid.Row="2" Margin="10 0 0 10" BorderThickness="1" DisplayMemberPath="Name" IsTextSearchEnabled="True" IsEditable="False" />
             <Label Grid.Column="0" Grid.Row="3">Genre: </Label>
-            <ComboBox Name="comboboxGenre" Grid.Column="1" Grid.Row="3" Margin="10 0 0 10" BorderThickness="1" />
+            <ComboBox Name="comboboxGenre" DisplayMemberPath="Name" Grid.Column="1" Grid.Row="3" Margin="10 0 0 10" BorderThickness="1" IsTextSearchEnabled="True" IsEditable="False" />
             <Label Grid.Column="0" Grid.Row="4">Album Type: </Label>
             <ComboBox Name="comboboxType" Grid.Column="1" Grid.Row="4" Margin="10 0 0 10" BorderThickness="1" />
             <Label Grid.Column="0" Grid.Row="5">Rating:</Label>

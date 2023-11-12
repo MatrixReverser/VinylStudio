@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,13 @@ namespace VinylStudio
                     .Select(e => AlbumRatingTranslator.GetEnumDescription(e))
                     .ToList();
             comboboxRating.SelectedIndex = 0;
+
+            // Initialize Combo boxes with dynamic data objects (genre, interpret)
+            comboboxGenre.ItemsSource = _dataModel.GenreList;
+            comboboxGenre.SelectedIndex = (_dataModel.GenreList.Count > 0 ? 0 : -1);
+
+            comboboxInterpret.ItemsSource = _dataModel.InterpretList;
+            comboboxInterpret.SelectedIndex = (_dataModel.InterpretList.Count > 0 ? 0 : -1);
         }
 
         /**
