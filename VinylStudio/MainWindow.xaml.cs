@@ -105,7 +105,7 @@ namespace VinylStudio
          * Closing the application
          */
         private void OnMenuFileExit(object sender, EventArgs e)
-        {
+        {            
             if (_dataModel.IsModified)
             {
                 MessageBoxResult result = AskForSavingChanges();
@@ -122,7 +122,7 @@ namespace VinylStudio
 
             // we don't want to ask the user again, when the window is closing
             // therefore we remove the event handler
-            this.Closing -= OnWindowClosing;
+            this.Closing -= OnWindowClosing; 
             Close();
         }
 
@@ -132,7 +132,7 @@ namespace VinylStudio
         private MessageBoxResult AskForSavingChanges()
         {
             MessageBoxResult result = MessageBox.Show(
-                    Window.GetWindow(this),
+                    this,
                     "There are unsaved changes. Do you want to save it to the database?",
                     "Unsaved Changes",
                     MessageBoxButton.YesNoCancel,
@@ -336,6 +336,18 @@ namespace VinylStudio
                 _interpretView.Filter = null;
                 _thumbnailView.Filter = null;
             }
+        }
+
+        /**
+         * Is called if the user clicks on the AddAlbum button
+         */
+        private void OnAddAlbum(object sender, EventArgs e)
+        {
+            AlbumEditDialog dlg = new AlbumEditDialog();
+            dlg.Owner = this;
+            dlg.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            dlg.ShowDialog();
+            
         }
     }
 }

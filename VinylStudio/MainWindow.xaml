@@ -119,13 +119,13 @@
                     <TextBox Name="interpretFilter" Width="200" LostFocus="OnFilterInterprets" KeyUp="OnKeyUpInFilterInterprets" />
                 </StackPanel>
             </Border>
-            <ListBox Name="interpretList" 
+            <ListBox Name="interpretList" HorizontalAlignment="Stretch" 
                     ItemsSource="{Binding InterpretModel}" 
                     DisplayMemberPath="Name" 
                     ScrollViewer.CanContentScroll="True" 
                     ScrollViewer.VerticalScrollBarVisibility="Auto" 
                     ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                    Width="200"
+                    Margin="5"
                     SelectionChanged="OnInterpretSelected" />
         </DockPanel>
         <!--#endregion-->
@@ -147,7 +147,7 @@
                 <!-- Panel with the toolbar actions -->
                 
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 5">
-                        <Button ToolTip="Add new Album">
+                        <Button ToolTip="Add new Album" Click="OnAddAlbum">
                             <materialDesign:PackIcon Kind="ImagePlus" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Button>                        
                     </StackPanel>

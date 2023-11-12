@@ -34,6 +34,40 @@ namespace VinylStudio.model
         INSUFFICIENT
     }
 
+    public static class AlbumTypeTranslator
+    {
+        public static string GetEnumDescription(AlbumTypeEnum albumType)
+        {
+            switch (albumType)
+            {
+                case AlbumTypeEnum.LP: return "LP";
+                case AlbumTypeEnum.EP: return "EP";
+                case AlbumTypeEnum.MAXI: return "Maxi Single";
+                case AlbumTypeEnum.SINGLE: return "Single";
+                case AlbumTypeEnum.DOUBLE_LP: return "Double LP";
+                case AlbumTypeEnum.LIVE_ALBUM: return "Live Album";
+                default: return "<unknown>";
+            }
+        }
+    }
+
+    public static class AlbumRatingTranslator
+    {
+        public static string GetEnumDescription(AlbumRatingEnum albumRating)
+        {
+            switch (albumRating)
+            {
+                case AlbumRatingEnum.VERY_GOOD: return "Very Good";
+                case AlbumRatingEnum.GOOD: return "Good";
+                case AlbumRatingEnum.SATISFYING: return "Satisfying";
+                case AlbumRatingEnum.SUFFICIENT: return "Sufficient";
+                case AlbumRatingEnum.POOR: return "Poor";
+                case AlbumRatingEnum.INSUFFICIENT: return "Insufficient";
+                default: return "<unknown>";
+            }
+        }
+    }
+
     /**
      * Represents an album
      */
@@ -110,17 +144,8 @@ namespace VinylStudio.model
         public string AlbumTypeTranslation
         {
             get
-            {
-                switch(AlbumType)
-                {
-                    case AlbumTypeEnum.LP: return "LP";
-                    case AlbumTypeEnum.EP: return "EP";
-                    case AlbumTypeEnum.MAXI: return "Maxi Single";
-                    case AlbumTypeEnum.SINGLE: return "Single";
-                    case AlbumTypeEnum.DOUBLE_LP: return "Double LP";
-                    case AlbumTypeEnum.LIVE_ALBUM: return "Live Album";
-                    default: return "unknown";
-                }
+            {                
+                return AlbumTypeTranslator.GetEnumDescription(AlbumType);
             }
         }
 
