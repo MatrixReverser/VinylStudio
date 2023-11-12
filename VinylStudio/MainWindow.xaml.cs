@@ -18,8 +18,8 @@ using VinylStudio.model;
 using VinylStudio.model.legacy;
 
 namespace VinylStudio
-{   
-    // TODO: Double click on album should open this album in a EditDialog
+{       
+    // TODO: when album is edited, we need a refresh of the gui afterwards. AbstractObjectModel should implement INotifyPropertyChanged and needs to get the attriibute that has changed
     // TODO: thumbnail toolbar button: Remove (active, when album selected): Removes album after security warning. When no more albums for the artist, asks if artist should also be deleted. This also applies for genre.
     // TODO: thumbnail toolbar button: Sorting combo box: {none, Name, Artist, Random}
     // TODO: thumbnail toolbar button: filtering textbox advanced. Interprets expressions like name=xxx or interpret=xxx and genre=rock
@@ -191,7 +191,7 @@ namespace VinylStudio
         /**
          * Is called when the user clicked on a thumbnail to show details in the AlbumContainer
          */ 
-        private void OnThumbnailClicked(object sender, EventArgs e)
+        private void OnThumbnailClicked(object sender, MouseButtonEventArgs e)
         {   
             if (sender is Image clickedThumbnail)
             {
@@ -199,8 +199,27 @@ namespace VinylStudio
                 {
                     detailPanel.DataContext = album;
                     songTable.ItemsSource = album.Songs;
+
+                    // when double clicked, open the album in the editor
+                    if (e.ClickCount == 2)
+                    {
+                        EditAlbum(album);                        
+                    }
                 }
             }
+        }
+
+        /**
+         * Starts editing the album in the AlbumEditDialog
+         */
+        private void EditAlbum(AlbumModel album)
+        {
+            AlbumEditDialog dlg = new(_dataModel, album)
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            dlg.OpenDialog();
         }
 
         /**

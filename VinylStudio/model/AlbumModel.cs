@@ -255,6 +255,15 @@ namespace VinylStudio.model
             }
         }
 
+        [JsonIgnore]
+        public string PriceString
+        {
+            get
+            {
+                return Price.ToString();
+            }
+        }
+
         public string Location
         {
             get
@@ -281,13 +290,24 @@ namespace VinylStudio.model
         }
 
         [JsonIgnore]
+        public string ImagePath
+        {
+            get
+            {
+                Assembly? currentAssembly = Assembly.GetEntryAssembly();
+                string? appPath = currentAssembly == null ? "" : System.IO.Path.GetDirectoryName(currentAssembly.Location);
+                string filename = appPath + "/" + DataModel.DIR_THUMBNAIL + "/" + Id + ".jpg";
+
+                return filename;
+            }
+        }
+
+        [JsonIgnore]
         public BitmapImage? ImageSource
         {
             get
             {
-                Assembly? currentAssembly = Assembly.GetEntryAssembly();                
-                string? appPath = currentAssembly == null ? "" : System.IO.Path.GetDirectoryName(currentAssembly.Location);
-                string filename = appPath + "/" + DataModel.DIR_THUMBNAIL + "/" + Id + ".jpg";
+                string filename = ImagePath;
 
                 // This method of loading the image blocks the file on the file system. Not good if we want to 
                 // to a new migration while the current database is loaded
@@ -392,7 +412,5 @@ namespace VinylStudio.model
                 song.ModelModified += OnSongModified;
             }
         }
-
-        
     }
 }

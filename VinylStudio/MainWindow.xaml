@@ -104,7 +104,7 @@
                 <Label Grid.Column="0" Grid.Row="8" FontWeight="Bold" Content="Purchased: " />
                 <Label Grid.Column="1" Grid.Row="8" Content="{Binding PurchaseYear}"  />
                 <Label Grid.Column="0" Grid.Row="9" FontWeight="Bold" Content="Price: " />
-                <Label Grid.Column="1" Grid.Row="9" Content="{Binding Price}"  />
+                <Label Grid.Column="1" Grid.Row="9" Content="{Binding PriceString}"  />
                 <Label Grid.Column="0" Grid.Row="10" FontWeight="Bold" Content="Location: " />
                 <Label Grid.Column="1" Grid.Row="10" Content="{Binding Location}"  />
             </Grid>
@@ -163,7 +163,10 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Viewbox Name="thumbnailViewbox" Width="150" Height="150">
-                                    <Image Source="{Binding ImageSource}" Stretch="Uniform" Margin="5" MouseLeftButtonDown="OnThumbnailClicked" />
+                                    <Image Source="{Binding ImageSource}" 
+                                           Stretch="Uniform" 
+                                           Margin="5" 
+                                           MouseLeftButtonDown="OnThumbnailClicked" />
                                 </Viewbox>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

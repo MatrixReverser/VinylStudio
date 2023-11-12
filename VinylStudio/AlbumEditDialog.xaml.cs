@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VinylStudio.model;
 using VinylStudio.model.legacy;
+using System.IO;
 
 namespace VinylStudio
 {
@@ -31,6 +32,30 @@ namespace VinylStudio
         private string? _imagePath = null;
         private AlbumModel? _albumModel = null;
 
+        /**
+         * Constructor of this class. Used when an album should be edited instead of being created
+         */
+        internal AlbumEditDialog(DataModel dataModel, AlbumModel album) : this(dataModel)
+        {
+            _albumModel = album;
+
+            // set data into the form
+            _imagePath = album.ImagePath;
+            coverImage.Source = album.ImageSource;
+            textboxTitle.Text = album.Name;
+            comboboxInterpret.SelectedItem = album.Interpret;
+            comboboxGenre.SelectedItem = album.Genre;
+            comboboxType.SelectedItem = AlbumTypeTranslator.GetEnumDescription(album.AlbumType);
+            comboboxRating.SelectedItem = AlbumRatingTranslator.GetEnumDescription(album.AlbumRating);
+            textReleased.Text = album.ReleaseYear.ToString();
+            textPurchased.Text = album.PurchaseYear.ToString();
+            textPrice.Text = album.Price.ToString();
+            textLocation.Text = album.Location;
+        }
+
+        /**
+         * Constructor of this class
+         */
         internal AlbumEditDialog(DataModel dataModel)
         {
             InitializeComponent();
@@ -175,6 +200,8 @@ namespace VinylStudio
          */
         private void OnSaveClicked(object sender, EventArgs e)
         {
+            bool isInEditMode = (_albumModel != null);
+
             // validate some important data
             string errorMessage = string.Empty;
 
@@ -207,7 +234,7 @@ namespace VinylStudio
                 {
                     errorMessage += "Release year '" + releaseYear + "' does not seem valid\n";
                 }
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 errorMessage += "Release year has not been set\n";
             }
@@ -220,7 +247,7 @@ namespace VinylStudio
                 {
                     errorMessage += "Purchase year '" + purchaseYear + "' does not seem valid\n";
                 }
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 errorMessage += "Purchase year has not been set\n";
             }
@@ -243,45 +270,56 @@ namespace VinylStudio
             try
             {
                 price = double.Parse(strPrice, NumberStyles.Any, userCulture);
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 price = 0.0;
             }
 
             string location = textLocation.Text.Trim();
-            
-            // create a new album and fill it with the values
-            AlbumModel album = new()
-            {
-                Name = title,
-                Interpret = interpret,
-                Genre = genre,
-                AlbumType = albumType,
-                AlbumRating = albumRating,
-                ReleaseYear = releaseYear,
-                PurchaseYear = purchaseYear,
-                Price = price,
-                Location = location
-            };
 
-            // copy _imagePath to the local database - delete old image before, if it exists
             if (_imagePath == null)
             {
                 ShowInvalidAlbumDataMsgBox("Cover image has not been set");
                 return;
             }
 
+            // create a new album if we are not in edit mode, otherwise use the
+            // existing album. Fill in the data
+            if (!isInEditMode)
+            {
+                _albumModel = new();
+            }
+
+            if (_albumModel != null)
+            {
+                _albumModel.Name = title;
+                _albumModel.Interpret = interpret;
+                _albumModel.Genre = genre;
+                _albumModel.AlbumType = albumType;
+                _albumModel.AlbumRating = albumRating;
+                _albumModel.ReleaseYear = releaseYear;
+                _albumModel.PurchaseYear = purchaseYear;
+                _albumModel.Price = price;
+                _albumModel.Location = location;
+            }
+
+            // copy _imagePath to the local database - delete old image before, if it exists
             Assembly? currentAssembly = Assembly.GetEntryAssembly();
             string? appPath = currentAssembly == null ? "" : System.IO.Path.GetDirectoryName(currentAssembly.Location);
-            string targetPath = appPath + "/" + DataModel.DIR_THUMBNAIL + "/" + album.Id + ".jpg";
+            string targetPath = appPath + "/" + DataModel.DIR_THUMBNAIL + "/" + _albumModel?.Id + ".jpg";
 
-            CopyCover(_imagePath, targetPath);
+            if (_imagePath != targetPath)
+            {
+                CopyCover(_imagePath, targetPath);
+            }
 
-            // append album to the database
-            _dataModel.AlbumList.Add(album);
+            // append album to the database if not in edit mode
+            if (!isInEditMode && _albumModel != null)
+            {
+                _dataModel.AlbumList.Add(_albumModel);
+            }
 
             // close windows
-            _albumModel = album;
             Close();
         }
 
@@ -290,7 +328,6 @@ namespace VinylStudio
          */
         internal AlbumModel? OpenDialog()
         {
-            _albumModel = null;
             ShowDialog();
 
             return _albumModel;
@@ -309,6 +346,11 @@ namespace VinylStudio
          */
         private void CopyCover(string oldName, string newName)
         {           
+            if (File.Exists(newName))
+            {
+                File.Delete(newName);
+            }
+
             using (var originalImage = System.Drawing.Image.FromFile(oldName))
             {
                 using (var scaledImage = new Bitmap(400, 400))
