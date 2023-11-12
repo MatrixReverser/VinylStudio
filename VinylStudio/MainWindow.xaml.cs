@@ -19,10 +19,6 @@ using VinylStudio.model.legacy;
 
 namespace VinylStudio
 {   
-    // TODO: STORY thumbnail toolbar button: Add -> Adds a new album and opens an editor dialog
-    // TODO: Allow selecting an image in the AlbumEditDialog
-    // TODO: Implement Handling of the AlbumEditDialog: creating an object if save is clicked, append the album to the datamodel
-
     // TODO: Double click on album should open this album in a EditDialog
     // TODO: thumbnail toolbar button: Remove (active, when album selected): Removes album after security warning. When no more albums for the artist, asks if artist should also be deleted. This also applies for genre.
     // TODO: thumbnail toolbar button: Sorting combo box: {none, Name, Artist, Random}
@@ -38,6 +34,7 @@ namespace VinylStudio
         private DataModel _dataModel;
         private CollectionView? _thumbnailView;
         private CollectionView? _interpretView;
+        private CollectionView? _genreView;
 
         public MainWindow()
         {
@@ -67,6 +64,10 @@ namespace VinylStudio
             // We add a collection view in order to sort the interprets all the time
             _interpretView = (CollectionView)CollectionViewSource.GetDefaultView(_dataModel.InterpretList);
             _interpretView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+
+            // Although we don't display genres in this window, we sort them for later use (e.g. in AlbumEditDialog)
+            _genreView = (CollectionView)CollectionViewSource.GetDefaultView(_dataModel.GenreList);
+            _genreView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
 
             // We add a collection view for the thumbnails in order to sort and filter all Thumbnails (triggered by the user via the UI)
             _thumbnailView = (CollectionView)CollectionViewSource.GetDefaultView(_dataModel.AlbumList);
@@ -352,8 +353,13 @@ namespace VinylStudio
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
-            dlg.ShowDialog();
+            AlbumModel? album = dlg.OpenDialog();
             
+            if (album != null) 
+            {
+                detailPanel.DataContext = album;
+                songTable.ItemsSource = album.Songs;
+            }
         }
     }
 }

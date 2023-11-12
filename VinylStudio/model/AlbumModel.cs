@@ -49,6 +49,20 @@ namespace VinylStudio.model
                 default: return "<unknown>";
             }
         }
+
+        public static AlbumTypeEnum GetEnumValue(string translation)
+        {
+            switch (translation)
+            {
+                case "LP": return AlbumTypeEnum.LP;
+                case "EP": return AlbumTypeEnum.EP;
+                case "Maxi Single": return AlbumTypeEnum.MAXI;
+                case "Single": return AlbumTypeEnum.SINGLE;
+                case "Double LP": return AlbumTypeEnum.DOUBLE_LP;
+                case "Live Album": return AlbumTypeEnum.LIVE_ALBUM;
+                default: return AlbumTypeEnum.LP;
+            }
+        }
     }
 
     public static class AlbumRatingTranslator
@@ -64,6 +78,20 @@ namespace VinylStudio.model
                 case AlbumRatingEnum.POOR: return "Poor";
                 case AlbumRatingEnum.INSUFFICIENT: return "Insufficient";
                 default: return "<unknown>";
+            }
+        }
+
+        public static AlbumRatingEnum GetEnumValue(string translation)
+        {
+            switch (translation)
+            {
+                case "Very Good": return AlbumRatingEnum.VERY_GOOD;
+                case "Good": return AlbumRatingEnum.GOOD;
+                case "Satisfying": return AlbumRatingEnum.SATISFYING;
+                case "Sufficient": return AlbumRatingEnum.SUFFICIENT;
+                case "Poor": return AlbumRatingEnum.POOR;
+                case "Insufficient": return AlbumRatingEnum.INSUFFICIENT;
+                default: return AlbumRatingEnum.GOOD;
             }
         }
     }
@@ -257,9 +285,7 @@ namespace VinylStudio.model
         {
             get
             {
-                Assembly? currentAssembly = Assembly.GetEntryAssembly();
-
-                // Holen Sie sich den Pfad zur Anwendung.
+                Assembly? currentAssembly = Assembly.GetEntryAssembly();                
                 string? appPath = currentAssembly == null ? "" : System.IO.Path.GetDirectoryName(currentAssembly.Location);
                 string filename = appPath + "/" + DataModel.DIR_THUMBNAIL + "/" + Id + ".jpg";
 

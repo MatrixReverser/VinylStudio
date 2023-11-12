@@ -18,16 +18,16 @@
         
         <!--#region panel with button -->
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Margin="0 0 5 0">Save</Button>
-            <Button IsDefault="True">Cancel</Button>
+            <Button Margin="0 0 5 0" Click="OnSaveClicked">Save</Button>
+            <Button IsDefault="True" Click="OnCancelClicked">Cancel</Button>
         </StackPanel>
         <Border DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="Gray" Height="1"  />
         <!--#endregion-->
         
         <!--#region Panel with cover image and replace button -->
         <StackPanel DockPanel.Dock="Left" Margin="10">
-            <Image Width="300" Height="300" Margin="0 0 0 10" />
-            <Button Name="btnSetCover">Set Cover Image</Button>
+            <Image Name="coverImage" Width="300" Height="300" Margin="0 0 0 5" />
+            <Button Name="btnSetCover" Click="OnSetCoverImage">Set Cover Image</Button>
         </StackPanel>
         <!--#endregion-->
 
