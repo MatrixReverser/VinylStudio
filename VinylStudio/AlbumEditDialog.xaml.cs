@@ -114,5 +114,24 @@ namespace VinylStudio
                 comboboxGenre.SelectedItem = genre;
             }
         }
+
+        /**
+         * Is called if the user wants to add an interpret
+         */
+        private void OnAddInterpret(object sender, EventArgs e)
+        {
+            InterpretEditDialog dlg = new() 
+            { 
+                Owner = this, 
+                WindowStartupLocation = WindowStartupLocation.CenterOwner 
+            };
+
+            InterpretModel? interpret = dlg.OpenDialog();
+            if (interpret != null)
+            {
+                _dataModel.InterpretList.Add(interpret);
+                comboboxInterpret.SelectedItem = interpret;
+            }
+        }
     }
 }

@@ -20,7 +20,8 @@ using VinylStudio.model.legacy;
 namespace VinylStudio
 {   
     // TODO: STORY thumbnail toolbar button: Add -> Adds a new album and opens an editor dialog
-    // TODO: Button right of interpret in EditDialog to create a new interpret
+    // TODO: Allow selecting an image in the AlbumEditDialog
+    // TODO: Implement Handling of the AlbumEditDialog: creating an object if save is clicked, append the album to the datamodel
 
     // TODO: Double click on album should open this album in a EditDialog
     // TODO: thumbnail toolbar button: Remove (active, when album selected): Removes album after security warning. When no more albums for the artist, asks if artist should also be deleted. This also applies for genre.

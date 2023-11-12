@@ -57,7 +57,12 @@
             <Label Grid.Column="0" Grid.Row="1">Album Title: </Label>
             <TextBox Name="textboxTitle" Grid.Column="1" Grid.Row="1" Text="album title" Margin="10 0 0 10" BorderThickness="1" />
             <Label Grid.Column="0" Grid.Row="2">Interpret: </Label>
-            <ComboBox Name="comboboxInterpret" Grid.Column="1" Grid.Row="2" Margin="10 0 0 10" BorderThickness="1" DisplayMemberPath="Name" IsTextSearchEnabled="True" IsEditable="False" />
+            <DockPanel Grid.Column="1" Grid.Row="2" Margin="10 0 0 10">
+                <Button DockPanel.Dock="Right" Margin="10 0 0 0" Click="OnAddInterpret">
+                    <materialDesign:PackIcon Kind="PlusThick" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+                <ComboBox Name="comboboxInterpret" BorderThickness="1" DisplayMemberPath="Name" IsTextSearchEnabled="True" IsEditable="False" />
+            </DockPanel>
             <Label Grid.Column="0" Grid.Row="3">Genre: </Label>
             <DockPanel Grid.Column="1" Grid.Row="3" Margin="10 0 0 10">
                 <Button DockPanel.Dock="Right" Margin="10 0 0 0" Click="OnAddGenre">
