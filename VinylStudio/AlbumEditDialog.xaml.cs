@@ -96,5 +96,23 @@ namespace VinylStudio
             return true;
         }
 
+        /**
+         * Is called if the user wants to add an genre
+         */
+        private void OnAddGenre(object sender, EventArgs e)
+        {
+            GenreEditDialog dlg = new()
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            
+            GenreModel? genre = dlg.OpenDialog();
+            if (genre != null)
+            {
+                _dataModel.GenreList.Add(genre);
+                comboboxGenre.SelectedItem = genre;
+            }
+        }
     }
 }

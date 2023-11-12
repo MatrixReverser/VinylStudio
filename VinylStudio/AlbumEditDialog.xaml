@@ -59,7 +59,12 @@
             <Label Grid.Column="0" Grid.Row="2">Interpret: </Label>
             <ComboBox Name="comboboxInterpret" Grid.Column="1" Grid.Row="2" Margin="10 0 0 10" BorderThickness="1" DisplayMemberPath="Name" IsTextSearchEnabled="True" IsEditable="False" />
             <Label Grid.Column="0" Grid.Row="3">Genre: </Label>
-            <ComboBox Name="comboboxGenre" DisplayMemberPath="Name" Grid.Column="1" Grid.Row="3" Margin="10 0 0 10" BorderThickness="1" IsTextSearchEnabled="True" IsEditable="False" />
+            <DockPanel Grid.Column="1" Grid.Row="3" Margin="10 0 0 10">
+                <Button DockPanel.Dock="Right" Margin="10 0 0 0" Click="OnAddGenre">
+                    <materialDesign:PackIcon Kind="PlusThick" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+                <ComboBox Name="comboboxGenre" DisplayMemberPath="Name" BorderThickness="1" IsTextSearchEnabled="True" IsEditable="False" />
+            </DockPanel>
             <Label Grid.Column="0" Grid.Row="4">Album Type: </Label>
             <ComboBox Name="comboboxType" Grid.Column="1" Grid.Row="4" Margin="10 0 0 10" BorderThickness="1" />
             <Label Grid.Column="0" Grid.Row="5">Rating:</Label>

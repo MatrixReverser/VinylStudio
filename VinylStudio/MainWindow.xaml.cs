@@ -20,14 +20,14 @@ using VinylStudio.model.legacy;
 namespace VinylStudio
 {   
     // TODO: STORY thumbnail toolbar button: Add -> Adds a new album and opens an editor dialog
-    // TODO: Button right of genre in EditDialog to create a new genre
     // TODO: Button right of interpret in EditDialog to create a new interpret
 
-    // TODO: thumbnail toolbar button: Remove (active, when album selected): Removes album after security warning. When no more albums for the artist, asks if artist should also be deleted
+    // TODO: Double click on album should open this album in a EditDialog
+    // TODO: thumbnail toolbar button: Remove (active, when album selected): Removes album after security warning. When no more albums for the artist, asks if artist should also be deleted. This also applies for genre.
     // TODO: thumbnail toolbar button: Sorting combo box: {none, Name, Artist, Random}
     // TODO: thumbnail toolbar button: filtering textbox advanced. Interprets expressions like name=xxx or interpret=xxx and genre=rock
     // TODO: Add Buttons (Vertical) aside of the song table: Lock (Toggle), Add, Remove, Clear, DiscoGS    
-    // TODO: Add Buttons (Horizontal) over Details: Delete, Edit (should also be triggered by double click on a cover)
+    
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
