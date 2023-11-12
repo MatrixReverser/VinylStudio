@@ -250,8 +250,7 @@ namespace VinylStudio
         {
             if (e.Key == Key.Enter)
             {
-                var nextControl = Keyboard.FocusedElement as UIElement;
-                if (nextControl != null)
+                if (Keyboard.FocusedElement is UIElement nextControl)
                 {
                     nextControl.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
                 }
@@ -343,9 +342,11 @@ namespace VinylStudio
          */
         private void OnAddAlbum(object sender, EventArgs e)
         {
-            AlbumEditDialog dlg = new AlbumEditDialog();
-            dlg.Owner = this;
-            dlg.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            AlbumEditDialog dlg = new(_dataModel)
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
             dlg.ShowDialog();
             
         }

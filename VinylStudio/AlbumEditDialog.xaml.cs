@@ -20,9 +20,13 @@ namespace VinylStudio
     /// </summary>
     public partial class AlbumEditDialog : Window
     {
-        public AlbumEditDialog()
+        private DataModel _dataModel;
+
+        internal AlbumEditDialog(DataModel dataModel)
         {
             InitializeComponent();
+
+            _dataModel = dataModel;
 
             // initialize combo boxes with enums
             comboboxType.ItemsSource = Enum.GetValues(typeof(AlbumTypeEnum))
@@ -57,7 +61,7 @@ namespace VinylStudio
         /**
          * Checks if string is a number
          */
-        private bool AreAllValidNumericChars(string str)
+        private static bool AreAllValidNumericChars(string str)
         {
             foreach (char c in str)
             {
@@ -72,7 +76,7 @@ namespace VinylStudio
         /**
          * Checks if string is a currency
          */
-        private bool AreAllValidCurrencyChars(string str)
+        private static bool AreAllValidCurrencyChars(string str)
         {
             foreach (char c in str)
             {

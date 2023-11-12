@@ -276,7 +276,7 @@ namespace VinylStudio.model
             {
                 foreach (AlbumModel albumModel in _albumList)
                 {
-                    albumModel.initReferences(_interpretList, _genreList);
+                    albumModel.InitReferences(_interpretList, _genreList);
                 }
             }
         }

@@ -86,7 +86,7 @@ namespace VinylStudio.model
         private double _price = 0.0;
         private string _location = string.Empty;
         [JsonProperty("song_list")]
-        private ObservableCollection<SongModel> _songs = new ObservableCollection<SongModel>();
+        private ObservableCollection<SongModel> _songs = new();
         private BitmapImage? _image;
         
         [JsonIgnore]
@@ -101,7 +101,7 @@ namespace VinylStudio.model
                 if (value != _interpret)
                 {
                     _interpret = value;
-                    _interpretId = (_interpret == null ? null : _interpret.Id);
+                    _interpretId = (_interpret?.Id);
                     OnPropertyChanged();
                 }
             }
@@ -119,7 +119,7 @@ namespace VinylStudio.model
                 if (value != _genre)
                 {
                     _genre = value;
-                    _genreId = (_genre == null ? null : _genre.Id);
+                    _genreId = (_genre?.Id);
                     OnPropertyChanged();
                 }
             }
@@ -325,7 +325,7 @@ namespace VinylStudio.model
         /**
          * Updates the references for the IDs - set by Newtonsoft after loading
          */
-        public void initReferences(ObservableCollection<InterpretModel>? interpretRefs, ObservableCollection<GenreModel>? genreRefs)
+        public void InitReferences(ObservableCollection<InterpretModel>? interpretRefs, ObservableCollection<GenreModel>? genreRefs)
         {
             // update interpret
             _interpret = null;
