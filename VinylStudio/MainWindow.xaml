@@ -18,7 +18,7 @@
     <DockPanel>
         
         <!--#region Main Menu-->
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" Background="DimGray">
             <MenuItem Header="_File">
                 <MenuItem Header="_Migration">
                     <MenuItem Header="Migrate from VinylShelf 0.2" Click="OnMenuFileMigrateFromShelf" />
@@ -29,13 +29,13 @@
         <!--#endregion-->
         
         <!--#region Status bar-->
-        <StackPanel DockPanel.Dock="Bottom">
+        <StackPanel DockPanel.Dock="Bottom" Background="DimGray">
             <Label>StatusLine</Label>
         </StackPanel>
         <!--#endregion-->
         
         <!--#region  Detail Panel-->        
-        <ScrollViewer DockPanel.Dock="Left">
+        <ScrollViewer DockPanel.Dock="Left" Margin="5">
             <Grid Name="detailPanel" Width="Auto">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -113,12 +113,12 @@
 
         <!--#region List with interprets and interpret filter -->
         <DockPanel DockPanel.Dock="Right">
-            <Border DockPanel.Dock="Top" BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <StackPanel Orientation="Horizontal">
-                    <Label DockPanel.Dock="Top" Content="Interpret:" />
+            <!-- <Border DockPanel.Dock="Top" Margin="5"> -->
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+                    <Label Content="Interpret:" />
                     <TextBox Name="interpretFilter" Width="200" LostFocus="OnFilterInterprets" KeyUp="OnKeyUpInFilterInterprets" />
                 </StackPanel>
-            </Border>
+            <!-- </Border> -->
             <ListBox Name="interpretList" HorizontalAlignment="Stretch" 
                     ItemsSource="{Binding InterpretModel}" 
                     DisplayMemberPath="Name" 
@@ -130,7 +130,7 @@
         </DockPanel>
         <!--#endregion-->
 
-        <Grid>
+        <Grid Background="#202020">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -140,10 +140,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <GridSplitter Grid.Column="0" Grid.Row="1" ShowsPreview="True" HorizontalAlignment="Stretch" Height="3" Background="AliceBlue" />
+            <GridSplitter Grid.Column="0" Grid.Row="1" ShowsPreview="True" HorizontalAlignment="Stretch" Height="3" Background="DimGray" />
 
             <!--#region Thumbnail Grid and action bar for thumbnail grid-->
-            <DockPanel Grid.Column="0" Grid.Row="0">
+            <DockPanel Grid.Column="0" Grid.Row="0" Margin="5">
                 <!-- Panel with the toolbar actions -->
                 
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 5">
@@ -184,7 +184,7 @@
                               ScrollViewer.CanContentScroll="True" 
                               ScrollViewer.VerticalScrollBarVisibility="Auto" 
                               ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                              IsReadOnly="True">                
+                              IsReadOnly="True" Background="#202020">                
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Side" Binding="{Binding Side}" />
                     <DataGridTextColumn Header="Track" Binding="{Binding Index}" />

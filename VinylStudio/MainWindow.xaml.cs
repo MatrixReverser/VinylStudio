@@ -18,7 +18,7 @@ using VinylStudio.model;
 using VinylStudio.model.legacy;
 
 namespace VinylStudio
-{   
+{       
     // TODO: thumbnail toolbar button: Remove (active, when album selected): Removes album after security warning. When no more albums for the artist, asks if artist should also be deleted. This also applies for genre.
     // TODO: thumbnail toolbar button: Sorting combo box: {none, Name, Artist, Random}
     // TODO: thumbnail toolbar button: filtering textbox advanced. Interprets expressions like name=xxx or interpret=xxx and genre=rock
