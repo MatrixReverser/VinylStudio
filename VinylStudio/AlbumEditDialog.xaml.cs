@@ -311,6 +311,7 @@ namespace VinylStudio
             if (_imagePath != targetPath)
             {
                 CopyCover(_imagePath, targetPath);
+                _albumModel?.FireImageChangedEvents();
             }
 
             // append album to the database if not in edit mode

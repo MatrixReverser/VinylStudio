@@ -12,10 +12,11 @@ namespace VinylStudio.model
      * An abstract class which acts as a base class for all model classes (except DataModel.cs).
      * Provides a name and an ID for each object and a static counter to generate unique IDs.
      */
-    internal abstract class AbstractObjectModel
+    internal abstract class AbstractObjectModel : INotifyPropertyChanged
     {
         public delegate void ModelModifiedEventHandler();
         public event ModelModifiedEventHandler? ModelModified;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private static int idCounter = 0;
         protected int _id = -1;
@@ -45,7 +46,7 @@ namespace VinylStudio.model
                 if (value != _name)
                 {
                     _name = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Name));
                 }
             }
         }
@@ -61,9 +62,10 @@ namespace VinylStudio.model
         /**
          * Is called if any property of this object has changed (except of the ID)
          */
-        protected void OnPropertyChanged()
+        protected void OnPropertyChanged(string propertyName)
         {
             ModelModified?.Invoke();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

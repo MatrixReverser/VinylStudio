@@ -24,7 +24,7 @@ namespace VinylStudio.model
                 if (value != _description)
                 {
                     _description = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Description));
                 }
             }
         }

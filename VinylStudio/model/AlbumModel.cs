@@ -130,7 +130,7 @@ namespace VinylStudio.model
                 {
                     _interpret = value;
                     _interpretId = (_interpret?.Id);
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Interpret));
                 }
             }
         }
@@ -148,7 +148,7 @@ namespace VinylStudio.model
                 {
                     _genre = value;
                     _genreId = (_genre?.Id);
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Genre));
                 }
             }
         }
@@ -164,7 +164,8 @@ namespace VinylStudio.model
                 if (value != _albumType)
                 {
                     _albumType = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(AlbumType));
+                    OnPropertyChanged(nameof(AlbumTypeTranslation));
                 }
             }
         }
@@ -202,7 +203,8 @@ namespace VinylStudio.model
                 if (value != _albumRating)
                 {
                     _albumRating = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(AlbumRating));
+                    OnPropertyChanged(nameof(AlbumRatingTranslator));
                 }
             }
         }
@@ -218,7 +220,7 @@ namespace VinylStudio.model
                 if (value != _releaseYear)
                 {
                     _releaseYear = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(ReleaseYear));
                 }
             }
         }
@@ -234,7 +236,7 @@ namespace VinylStudio.model
                 if (value != _purchaseYear)
                 {
                     _purchaseYear = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(PurchaseYear));
                 }
             }
         }
@@ -250,7 +252,8 @@ namespace VinylStudio.model
                 if (value != _price)
                 {
                     _price = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Price));
+                    OnPropertyChanged(nameof(PriceString));
                 }
             }
         }
@@ -275,7 +278,7 @@ namespace VinylStudio.model
                 if (value != _location)
                 {
                     _location = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Location));
                 }
             }
         }
@@ -357,7 +360,7 @@ namespace VinylStudio.model
                 }
             }
 
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(Songs));
         }
 
         /**
@@ -365,7 +368,7 @@ namespace VinylStudio.model
          */
         private void OnSongModified()
         {
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(Songs));
         }
 
         /**
@@ -411,6 +414,18 @@ namespace VinylStudio.model
             {
                 song.ModelModified += OnSongModified;
             }
+        }
+
+        /**
+         * Bad hack for informing the UI that the underlying image has changed.
+         * Actually, only the image on the file system has changed, but not its
+         * path. But we have to tell the UI that the path has changed in order to
+         * force a reload of the new image
+         */
+        public void FireImageChangedEvents()
+        {
+            OnPropertyChanged(nameof(ImagePath));
+            OnPropertyChanged(nameof(ImageSource));
         }
     }
 }

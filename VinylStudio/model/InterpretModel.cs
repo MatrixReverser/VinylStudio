@@ -30,7 +30,7 @@ namespace VinylStudio.model
                 if (value != _country)
                 {
                     _country = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Country));
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace VinylStudio.model
                 }
             }
 
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(GenreModels));
         }
 
         /**

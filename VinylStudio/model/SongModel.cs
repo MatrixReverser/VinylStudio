@@ -31,7 +31,7 @@ namespace VinylStudio.model
                 if (value != _side)
                 {
                     _side = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Side));
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace VinylStudio.model
                 if (value != _length)
                 {
                     _length = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Length));
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace VinylStudio.model
                 if (value != _index)
                 {
                     _index = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Index));
                 }
             }
         }
