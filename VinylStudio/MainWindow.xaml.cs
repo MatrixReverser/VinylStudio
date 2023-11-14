@@ -12,19 +12,21 @@ using VinylStudio.model.legacy;
 
 namespace VinylStudio
 {    
-    // TODO: add sorting algorithms for released and purchased
+    // TODO: Fill Status Line
     // TODO: Add Buttons (Vertical) aside of the song table: Lock (Toggle), Add, Remove, Clear, DiscoGS    
     // Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
 
     public enum SortingEnum
     {
         NONE,
+        RANDOM,
         ALBUM,
         GENRE,
         RATING,
         LENGTH,
         PRICE,
-        RANDOM
+        RELEASED,
+        PURCHASED
     }
 
     public static class SortingEnumTranslator
@@ -40,6 +42,8 @@ namespace VinylStudio
                 case SortingEnum.LENGTH: return "by length";
                 case SortingEnum.PRICE: return "by price";
                 case SortingEnum.RANDOM: return "random";
+                case SortingEnum.RELEASED: return "by release date";
+                case SortingEnum.PURCHASED: return "by purchase date";
                 default: return "none";
             }
         }
@@ -442,6 +446,12 @@ namespace VinylStudio
                     break;
                 case SortingEnum.RANDOM:
                     description = new SortDescription("RandomId", ListSortDirection.Ascending);
+                    break;
+                case SortingEnum.RELEASED:
+                    description = new SortDescription("ReleaseYear", ListSortDirection.Ascending);
+                    break;
+                case SortingEnum.PURCHASED:
+                    description = new SortDescription("PurchaseYear", ListSortDirection.Ascending);
                     break;
                 default:                    
                     break;
