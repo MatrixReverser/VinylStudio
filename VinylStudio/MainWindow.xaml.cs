@@ -1,29 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using VinylStudio.model;
 using VinylStudio.model.legacy;
 
 namespace VinylStudio
-{      
-    // TODO: thumbnail toolbar button: filtering textbox advanced. Interprets expressions like name=xxx or interpret=xxx and genre=rock
+{    
+    // TODO: add sorting algorithms for released and purchased
     // TODO: Add Buttons (Vertical) aside of the song table: Lock (Toggle), Add, Remove, Clear, DiscoGS    
     // Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
-    
+
     public enum SortingEnum
     {
         NONE,
@@ -265,11 +257,8 @@ namespace VinylStudio
          * is called if the user has clicked on an interpret in the interpret list
          */
         private void OnInterpretSelected(object sender, SelectionChangedEventArgs e)
-        {
-            InterpretModel? interpret = (InterpretModel)interpretList.SelectedItem;
-            SetInterpretFilter(interpret);
-
-            SelectFirstAlbumInThumbnailList();
+        {            
+            FilterThumbnails();            
         }
 
         /**
@@ -320,54 +309,7 @@ namespace VinylStudio
                 }
             }
         }
-
-        /**
-         * Filters all thumbnails by an interpret
-         */
-        private void SetInterpretFilter(InterpretModel? interpret)
-        {
-            if (_thumbnailView == null)
-            {
-                return;
-            }
-
-            if (interpret != null)
-            {
-                _thumbnailView.Filter = obj => ((AlbumModel)obj).Interpret == interpret;
-            }
-            else
-            {
-                _thumbnailView.Filter = null;
-            }
-        }
-        /**
-         * Filters all thumbnails by a list of interprets
-         */
-        private void SetInterpretFiler(List<InterpretModel> interprets)
-        {
-            if (_thumbnailView == null)
-            {
-                return;
-            }
-
-            _thumbnailView.Filter = obj =>
-            {
-                bool showThumbnail = false;
-
-                foreach (InterpretModel interpret in interprets)
-                {
-                    AlbumModel album = (AlbumModel)obj;
-                    if (album.Interpret == interpret)
-                    {
-                        showThumbnail = true;
-                        break;
-                    }
-                }
-
-                return showThumbnail;
-            };
-        }
-
+        
         /**
          * Filters the interpret list by a user defined filter string
          */
@@ -392,7 +334,7 @@ namespace VinylStudio
                 {
                     interpretList.Add((InterpretModel)interpret);
                 }
-                SetInterpretFiler(interpretList);
+                FilterThumbnails();
             }
             else
             {
@@ -506,6 +448,67 @@ namespace VinylStudio
             }
 
             _thumbnailView?.SortDescriptions.Add(description);
+        }
+
+        /**
+         * Is called if the album filter has been set
+         */
+        private void OnAlbumFilterSet(object sender, EventArgs e)
+        {            
+            FilterThumbnails(); 
+        }
+
+        /**
+         * Filters the list of albums in the thumbnail panel
+         */
+        private void FilterThumbnails()
+        {
+            if (_thumbnailView != null)
+            {
+                _thumbnailView.Filter += obj =>
+                {
+                    bool acceptName = false;
+                    bool acceptInterpret = false;
+                    AlbumModel album = (AlbumModel)obj;
+                    string nameFilter = textboxAlbumFilter.Text.Trim().ToLower();
+
+                    // check if name is accepted
+                    if (nameFilter == string.Empty)
+                    {
+                        acceptName = true;
+                    } else
+                    {
+                        acceptName = album.Name.ToLower().Contains(nameFilter);
+                    }
+
+                    // check interpret(s) accepted
+                    if (interpretList.SelectedItem == null)
+                    {
+                        // In this case, no interpret is selected, so we filter for
+                        // all interprets currently in the interpretView
+                        for (int i=0; i<_interpretView?.Count; i++)
+                        {
+                            InterpretModel interpret = (InterpretModel)_interpretView.GetItemAt(i);
+                            if (album.Interpret == interpret)
+                            {
+                                acceptInterpret = true;
+                                break;
+                            }
+                        }
+                    } else
+                    {
+                        InterpretModel interpret = (InterpretModel)interpretList.SelectedItem;
+                        if (album.Interpret == interpret)
+                        {
+                            acceptInterpret = true;
+                        }
+                    }
+
+                    return (acceptInterpret && acceptName);
+                };
+            }
+
+            SelectFirstAlbumInThumbnailList();
         }
     }
 }
