@@ -287,7 +287,7 @@ namespace VinylStudio.model
             {
                 CultureInfo userCulture = CultureInfo.CurrentCulture;
                 string formattedString = Price.ToString("N2", userCulture);
-                return formattedString;
+                return "$" + formattedString;
             }
         }
 

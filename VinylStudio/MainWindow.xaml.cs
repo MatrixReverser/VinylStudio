@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -12,9 +14,11 @@ using VinylStudio.model.legacy;
 
 namespace VinylStudio
 {    
-    // TODO: Fill Status Line
     // TODO: Add Buttons (Vertical) aside of the song table: Lock (Toggle), Add, Remove, Clear, DiscoGS    
-    // Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
+    // TODO:   - Lock Button. Allow to set tabel into edit mode
+
+    // TODO: Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
+    // TODO: Export functions for excel
 
     public enum SortingEnum
     {
@@ -88,6 +92,8 @@ namespace VinylStudio
                     .Select(e => SortingEnumTranslator.GetEnumTranslation(e))
                     .ToList();
             comboSorting.SelectedIndex = 0;
+
+            UpdateStatusLine();
         }
 
         /**
@@ -344,6 +350,7 @@ namespace VinylStudio
             {
                 _interpretView.Filter = null;
                 _thumbnailView.Filter = null;
+                UpdateStatusLine();
             }
         }
 
@@ -519,6 +526,120 @@ namespace VinylStudio
             }
 
             SelectFirstAlbumInThumbnailList();
+            UpdateStatusLine();
+        }
+
+        /**
+         * Updates the status line with the album data currently visible in the thumbnail panel
+         */
+        private void UpdateStatusLine()
+        {
+            double collectionValue = 0.0;
+            int totalLength = 0;
+
+            statusInterprets.Content = _interpretView?.Count;
+
+            if (interpretFilter.Text.Trim() == string.Empty && interpretList.SelectedItem == null)
+            {
+                statusAlbums.Content = _dataModel.AlbumList.Count;
+                statusTracks.Content = CountTracks(false);
+                collectionValue = CalcValue(false);
+                totalLength = CalcLength(false);
+
+            } else
+            {
+                statusAlbums.Content = _thumbnailView?.Count;
+                statusTracks.Content = CountTracks(true);
+                collectionValue = CalcValue(true);
+                totalLength = CalcLength(true);
+            }
+
+            CultureInfo userCulture = CultureInfo.CurrentCulture;
+            string formattedValue = "$" + collectionValue.ToString("N2", userCulture);
+            statusValue.Content = formattedValue;
+
+            TimeSpan timeSpan = TimeSpan.FromSeconds(totalLength);
+            formattedValue = $"{timeSpan.Days}d {timeSpan.Hours:D2}h {timeSpan.Minutes:D2}m {timeSpan.Seconds:D2}s";
+            statusPlayTime.Content = formattedValue;
+        }
+
+        /**
+         * Returns the number of tracks of all albums in the datamodel or
+         * of the thumbnailview (if useViewInsteadOfModel == true)
+         */
+        private int CountTracks(bool useViewInsteadOfModel)
+        {
+            List<AlbumModel> albums = collectVisibleAlbums(useViewInsteadOfModel);
+            int trackCount = 0;
+
+            // count tracks
+            foreach (AlbumModel album in albums)
+            {
+                trackCount += album.Songs.Count;
+            }
+
+            return trackCount;
+        }
+
+        /**
+         * Calculates the value of the albums of the datamodel or from the thumbnail
+         * view (is useViewInsteadOfModel == true)
+         */
+        private double CalcValue(bool useViewInsteadOfModel)
+        {
+            List<AlbumModel> albums = collectVisibleAlbums(useViewInsteadOfModel);
+            double value = 0.0;
+
+            // add prices
+            foreach (AlbumModel album in albums)
+            {
+                value += album.Price;
+            }
+
+            return value;
+        }
+
+        /**
+         * Calculates the length of all albums of the datamodel or from the thumbnail
+         * view (if useViewInsteadOfModel == true)
+         */
+        private int CalcLength(bool useViewInsteadOfModel)
+        {
+            List<AlbumModel> albums = collectVisibleAlbums(useViewInsteadOfModel);
+            int length = 0;
+
+            // add lengths
+            foreach (AlbumModel album in albums)
+            {
+                length += album.CummulatedLength;
+            }
+
+            return length;
+        }
+
+        /**
+         * Returns a list with the albums of the datamodel or from the thumbnail
+         * view (if useViewInsteadOfModel == true)
+         */
+        private List<AlbumModel> collectVisibleAlbums(bool useViewInsteadOfModel)
+        {
+            List<AlbumModel> albums = new();
+
+            if (useViewInsteadOfModel)
+            {
+                for (int i = 0; i < _thumbnailView?.Count; i++)
+                {
+                    albums.Add((AlbumModel)_thumbnailView.GetItemAt(i));
+                }
+            }
+            else
+            {
+                foreach (AlbumModel album in _dataModel.AlbumList)
+                {
+                    albums.Add(album);
+                }
+            }
+            return albums;
         }
     }
 }
