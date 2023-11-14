@@ -34,81 +34,91 @@
         </StackPanel>
         <!--#endregion-->
         
-        <!--#region  Detail Panel-->        
-        <ScrollViewer DockPanel.Dock="Left" Margin="5">
-            <Grid Name="detailPanel" Width="Auto">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="200" Source="{Binding ImageSource}" Stretch="Uniform" Margin="5" />
-                <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" FontWeight="ExtraBold" FontSize="16" Content="{Binding Name}" />
-                <Label Grid.Column="0" Grid.Row="2" FontWeight="Bold" Content="Interpret: " />
-                <Label Grid.Column="1" Grid.Row="2" Content="{Binding Interpret.Name}"  />
-                <Label Grid.Column="0" Grid.Row="3" FontWeight="Bold" Content="Genre: " />
-                <Label Grid.Column="1" Grid.Row="3" Content="{Binding Genre.Name}"  />
-                <Label Grid.Column="0" Grid.Row="4" FontWeight="Bold" Content="Type: " />
-                <Label Grid.Column="1" Grid.Row="4" Content="{Binding AlbumTypeTranslation}"  />
-                <Label Grid.Column="0" Grid.Row="5" FontWeight="Bold" Content="Length: " />
-                <Label Grid.Column="1" Grid.Row="5" Content="{Binding CummulatedLength}" />
-                <Label Grid.Column="0" Grid.Row="6" FontWeight="Bold" Content="Rating: " />
-                <Label Grid.Column="1" Grid.Row="6">
-                    <Label.Style>
-                        <Style TargetType="Label">
-                            <Style.Triggers>
-                                <!-- Trigger für den ersten Stern -->
-                                <DataTrigger Binding="{Binding AlbumRating}" Value="5">
-                                    <Setter Property="Content" Value="☆☆☆☆☆"/>
-                                    <Setter Property="Foreground" Value="Gray"/>
-                                </DataTrigger>
-                                <!-- Trigger für den zweiten Stern -->
-                                <DataTrigger Binding="{Binding AlbumRating}" Value="4">
-                                    <Setter Property="Content" Value="★☆☆☆☆"/>
-                                    <Setter Property="Foreground" Value="Gold"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding AlbumRating}" Value="3">
-                                    <Setter Property="Content" Value="★★☆☆☆"/>
-                                    <Setter Property="Foreground" Value="Gold"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding AlbumRating}" Value="2">
-                                    <Setter Property="Content" Value="★★★☆☆"/>
-                                    <Setter Property="Foreground" Value="Gold"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding AlbumRating}" Value="1">
-                                    <Setter Property="Content" Value="★★★★☆"/>
-                                    <Setter Property="Foreground" Value="Gold"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding AlbumRating}" Value="0">
-                                    <Setter Property="Content" Value="★★★★★"/>
-                                    <Setter Property="Foreground" Value="Gold"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                </Label>
-                <Label Grid.Column="0" Grid.Row="7" FontWeight="Bold" Content="Released: " />
-                <Label Grid.Column="1" Grid.Row="7" Content="{Binding ReleaseYear}"  />
-                <Label Grid.Column="0" Grid.Row="8" FontWeight="Bold" Content="Purchased: " />
-                <Label Grid.Column="1" Grid.Row="8" Content="{Binding PurchaseYear}"  />
-                <Label Grid.Column="0" Grid.Row="9" FontWeight="Bold" Content="Price: " />
-                <Label Grid.Column="1" Grid.Row="9" Content="{Binding PriceString}"  />
-                <Label Grid.Column="0" Grid.Row="10" FontWeight="Bold" Content="Location: " />
-                <Label Grid.Column="1" Grid.Row="10" Content="{Binding Location}"  />
-            </Grid>
-        </ScrollViewer>        
+        <!--#region  Detail Panel-->
+        <DockPanel Grid.Column="0" Grid.Row="0" Margin="5">
+
+            <!-- Panel with the toolbar actions -->
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 5">
+                <Button Name="buttonDeleteAlbum" ToolTip="Delete selected Album" Click="OnDeleteAlbum">
+                    <materialDesign:PackIcon Kind="Delete" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Button>
+            </StackPanel>
+
+            <ScrollViewer DockPanel.Dock="Left">
+                <Grid Name="detailPanel" Width="Auto">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="200" Source="{Binding ImageSource}" Stretch="Uniform" Margin="5" />
+                    <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" FontWeight="ExtraBold" FontSize="16" Content="{Binding Name}" />
+                    <Label Grid.Column="0" Grid.Row="2" FontWeight="Bold" Content="Interpret: " />
+                    <Label Grid.Column="1" Grid.Row="2" Content="{Binding Interpret.Name}"  />
+                    <Label Grid.Column="0" Grid.Row="3" FontWeight="Bold" Content="Genre: " />
+                    <Label Grid.Column="1" Grid.Row="3" Content="{Binding Genre.Name}"  />
+                    <Label Grid.Column="0" Grid.Row="4" FontWeight="Bold" Content="Type: " />
+                    <Label Grid.Column="1" Grid.Row="4" Content="{Binding AlbumTypeTranslation}"  />
+                    <Label Grid.Column="0" Grid.Row="5" FontWeight="Bold" Content="Length: " />
+                    <Label Grid.Column="1" Grid.Row="5" Content="{Binding CummulatedLengthString}" />
+                    <Label Grid.Column="0" Grid.Row="6" FontWeight="Bold" Content="Rating: " />
+                    <Label Grid.Column="1" Grid.Row="6">
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Style.Triggers>
+                                    <!-- Trigger für den ersten Stern -->
+                                    <DataTrigger Binding="{Binding AlbumRating}" Value="5">
+                                        <Setter Property="Content" Value="☆☆☆☆☆"/>
+                                        <Setter Property="Foreground" Value="Gray"/>
+                                    </DataTrigger>
+                                    <!-- Trigger für den zweiten Stern -->
+                                    <DataTrigger Binding="{Binding AlbumRating}" Value="4">
+                                        <Setter Property="Content" Value="★☆☆☆☆"/>
+                                        <Setter Property="Foreground" Value="Gold"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding AlbumRating}" Value="3">
+                                        <Setter Property="Content" Value="★★☆☆☆"/>
+                                        <Setter Property="Foreground" Value="Gold"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding AlbumRating}" Value="2">
+                                        <Setter Property="Content" Value="★★★☆☆"/>
+                                        <Setter Property="Foreground" Value="Gold"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding AlbumRating}" Value="1">
+                                        <Setter Property="Content" Value="★★★★☆"/>
+                                        <Setter Property="Foreground" Value="Gold"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding AlbumRating}" Value="0">
+                                        <Setter Property="Content" Value="★★★★★"/>
+                                        <Setter Property="Foreground" Value="Gold"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Label Grid.Column="0" Grid.Row="7" FontWeight="Bold" Content="Released: " />
+                    <Label Grid.Column="1" Grid.Row="7" Content="{Binding ReleaseYear}"  />
+                    <Label Grid.Column="0" Grid.Row="8" FontWeight="Bold" Content="Purchased: " />
+                    <Label Grid.Column="1" Grid.Row="8" Content="{Binding PurchaseYear}"  />
+                    <Label Grid.Column="0" Grid.Row="9" FontWeight="Bold" Content="Price: " />
+                    <Label Grid.Column="1" Grid.Row="9" Content="{Binding PriceString}"  />
+                    <Label Grid.Column="0" Grid.Row="10" FontWeight="Bold" Content="Location: " />
+                    <Label Grid.Column="1" Grid.Row="10" Content="{Binding Location}"  />
+                </Grid>
+            </ScrollViewer>
+        </DockPanel>
         <!--#endregion-->
 
         <!--#region List with interprets and interpret filter -->
@@ -144,13 +154,15 @@
 
             <!--#region Thumbnail Grid and action bar for thumbnail grid-->
             <DockPanel Grid.Column="0" Grid.Row="0" Margin="5">
-                <!-- Panel with the toolbar actions -->
                 
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 5">
-                        <Button ToolTip="Add new Album" Click="OnAddAlbum">
-                            <materialDesign:PackIcon Kind="ImagePlus" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Button>                        
-                    </StackPanel>
+                <!-- Panel with the toolbar actions -->                
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 5">
+                    <Button ToolTip="Add new Album" Click="OnAddAlbum">
+                        <materialDesign:PackIcon Kind="ImagePlus" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Button>
+                    <Label VerticalAlignment="Center" Margin="20 0 0 0">Sorting:</Label>
+                    <ComboBox Name="comboSorting" SelectedIndex="0" Width="130" SelectionChanged="OnSortingChanged" />
+                </StackPanel>
                 
                 <!-- the thumbnail panel -->
                 <ScrollViewer>

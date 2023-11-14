@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,39 @@ using VinylStudio.model;
 using VinylStudio.model.legacy;
 
 namespace VinylStudio
-{       
-    // TODO: thumbnail toolbar button: Remove (active, when album selected): Removes album after security warning. When no more albums for the artist, asks if artist should also be deleted. This also applies for genre.
-    // TODO: thumbnail toolbar button: Sorting combo box: {none, Name, Artist, Random}
+{      
     // TODO: thumbnail toolbar button: filtering textbox advanced. Interprets expressions like name=xxx or interpret=xxx and genre=rock
     // TODO: Add Buttons (Vertical) aside of the song table: Lock (Toggle), Add, Remove, Clear, DiscoGS    
+    // Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
     
+    public enum SortingEnum
+    {
+        NONE,
+        ALBUM,
+        GENRE,
+        RATING,
+        LENGTH,
+        PRICE,
+        RANDOM
+    }
+
+    public static class SortingEnumTranslator
+    {
+        public static string GetEnumTranslation(SortingEnum sortingEnum)
+        {
+            switch(sortingEnum)
+            {
+                case SortingEnum.NONE: return "none";
+                case SortingEnum.ALBUM: return "by album";
+                case SortingEnum.GENRE: return "by genre";
+                case SortingEnum.RATING: return "by rating";
+                case SortingEnum.LENGTH: return "by length";
+                case SortingEnum.PRICE: return "by price";
+                case SortingEnum.RANDOM: return "random";
+                default: return "none";
+            }
+        }
+    }
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -53,6 +81,17 @@ namespace VinylStudio
             }
 
             this.Closing += OnWindowClosing;
+            detailPanel.DataContextChanged += (sender, e) =>
+            {
+                buttonDeleteAlbum.IsEnabled = (detailPanel.DataContext != null);
+            };
+
+            // set values for the sorting enum
+            comboSorting.ItemsSource = Enum.GetValues(typeof(SortingEnum))
+                    .Cast<SortingEnum>()
+                    .Select(e => SortingEnumTranslator.GetEnumTranslation(e))
+                    .ToList();
+            comboSorting.SelectedIndex = 0;
         }
 
         /**
@@ -219,6 +258,7 @@ namespace VinylStudio
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             dlg.OpenDialog();
+            _dataModel.Save();
         }
 
         /**
@@ -378,6 +418,94 @@ namespace VinylStudio
                 detailPanel.DataContext = album;
                 songTable.ItemsSource = album.Songs;
             }
+            _dataModel.Save();
+        }
+
+        /**
+         * Is called if the user wants to delete the current album
+         */
+        private void OnDeleteAlbum(object sender, EventArgs e)
+        {
+            AlbumModel? album = detailPanel.DataContext as AlbumModel;
+
+            if (album != null)
+            {
+                string message = "Do you really want to delete the album\n\"" + album.Name + "\" from \"" + album.Interpret?.Name + "?";
+                MessageBoxResult result = MessageBox.Show(this, message, "Delete album", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    // delete album and thumbnail image
+                    _dataModel.AlbumList.Remove(album);
+                    string thumbnailPath = album.ImagePath;
+                    if (File.Exists(thumbnailPath))
+                    {
+                        File.Delete(thumbnailPath);
+                    }
+
+                    // we really have to save the data. Because if the user does not save, the next start will cause
+                    // an exception because the album references an image that already has been deleted.
+                    _dataModel.Save();
+
+                    // Select next album from the thumbnail panel to display in the detail panel
+                    AlbumModel? nextAlbum = null;                    
+                    if (_thumbnailView?.Count > 0)
+                    {
+                        nextAlbum = (AlbumModel)_thumbnailView.GetItemAt(0);
+                    }
+                    detailPanel.DataContext = nextAlbum;
+                    songTable.ItemsSource = nextAlbum?.Songs;
+
+                    // Delete orphan interprets?
+                    InterpretModel? interpret = album.Interpret;
+                    if (_dataModel.IsOrphan(interpret))
+                    {
+                        message = "There are no more albums by interpret \"" + interpret + "\".\nDelete interpret?";
+                        result = MessageBox.Show(this, message, "Delete album", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                        if (result == MessageBoxResult.Yes && interpret != null)
+                        {
+                            _dataModel.InterpretList.Remove(interpret);
+                            _dataModel.Save();
+                        }
+                    }                    
+                }
+            }            
+        }
+
+        /**
+         * Is called if the user chose another sorting
+         */
+        private void OnSortingChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _thumbnailView?.SortDescriptions.Clear();
+            SortDescription description = new SortDescription("Id", ListSortDirection.Ascending);
+
+            switch ((SortingEnum)comboSorting.SelectedIndex)
+            {
+                case SortingEnum.ALBUM:
+                    description = new SortDescription("Name", ListSortDirection.Ascending);
+                    break;
+                case SortingEnum.GENRE:
+                    description = new SortDescription("Genre.Name", ListSortDirection.Ascending);
+                    break;
+                case SortingEnum.RATING:
+                    description = new SortDescription("AlbumRating", ListSortDirection.Ascending);
+                    break;
+                case SortingEnum.LENGTH:
+                    description = new SortDescription("CummulatedLength", ListSortDirection.Ascending);
+                    break;
+                case SortingEnum.PRICE:
+                    description = new SortDescription("Price", ListSortDirection.Ascending);
+                    break;
+                case SortingEnum.RANDOM:
+                    description = new SortDescription("RandomId", ListSortDirection.Ascending);
+                    break;
+                default:                    
+                    break;
+            }
+
+            _thumbnailView?.SortDescriptions.Add(description);
         }
     }
 }

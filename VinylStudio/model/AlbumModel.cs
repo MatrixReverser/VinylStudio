@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -170,6 +171,7 @@ namespace VinylStudio.model
             }
         }
 
+        [JsonIgnore]
         public string AlbumTypeTranslation
         {
             get
@@ -178,7 +180,19 @@ namespace VinylStudio.model
             }
         }
 
-        public string CummulatedLength
+        [JsonIgnore]
+        public string CummulatedLengthString
+        {
+            get
+            {
+                int length = CummulatedLength;
+                TimeSpan timeSpan = TimeSpan.FromSeconds(length);
+                return timeSpan.ToString();
+            }
+        }
+
+        [JsonIgnore]
+        public int CummulatedLength
         {
             get
             {
@@ -187,8 +201,7 @@ namespace VinylStudio.model
                 {
                     length += song.Length;
                 }
-                TimeSpan timeSpan = TimeSpan.FromSeconds(length);
-                return timeSpan.ToString();
+                return length;
             }
         }
 
@@ -241,6 +254,15 @@ namespace VinylStudio.model
             }
         }
 
+        [JsonIgnore]
+        public long RandomId
+        {
+            get
+            {
+                return new Random().Next();
+            }
+        }
+
         public double Price
         {
             get
@@ -263,7 +285,9 @@ namespace VinylStudio.model
         {
             get
             {
-                return Price.ToString();
+                CultureInfo userCulture = CultureInfo.CurrentCulture;
+                string formattedString = Price.ToString("N2", userCulture);
+                return formattedString;
             }
         }
 

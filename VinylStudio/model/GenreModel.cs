@@ -34,6 +34,8 @@ namespace VinylStudio.model
          */
         public GenreModel() : base ()
         {
-        }        
+        }
+
+        
     }
 }

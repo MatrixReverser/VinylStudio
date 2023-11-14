@@ -313,5 +313,26 @@ namespace VinylStudio.model
                 _genreList.Clear();
             }
         }
+
+        /**
+         * Checks if the given interpret has some more album. If not: true is returnd
+         */
+        public bool IsOrphan(InterpretModel? interpret)
+        {
+            if (interpret == null)
+            {
+                return false;
+            }
+
+            foreach (AlbumModel album in AlbumList)
+            {
+                if (interpret == album.Interpret)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }
