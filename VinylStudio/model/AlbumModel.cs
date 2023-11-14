@@ -39,30 +39,30 @@ namespace VinylStudio.model
     {
         public static string GetEnumDescription(AlbumTypeEnum albumType)
         {
-            switch (albumType)
+            return albumType switch
             {
-                case AlbumTypeEnum.LP: return "LP";
-                case AlbumTypeEnum.EP: return "EP";
-                case AlbumTypeEnum.MAXI: return "Maxi Single";
-                case AlbumTypeEnum.SINGLE: return "Single";
-                case AlbumTypeEnum.DOUBLE_LP: return "Double LP";
-                case AlbumTypeEnum.LIVE_ALBUM: return "Live Album";
-                default: return "<unknown>";
-            }
+                AlbumTypeEnum.LP => "LP",
+                AlbumTypeEnum.EP => "EP",
+                AlbumTypeEnum.MAXI => "Maxi Single",
+                AlbumTypeEnum.SINGLE => "Single",
+                AlbumTypeEnum.DOUBLE_LP => "Double LP",
+                AlbumTypeEnum.LIVE_ALBUM => "Live Album",
+                _ => "<unknown>",
+            };
         }
 
         public static AlbumTypeEnum GetEnumValue(string translation)
         {
-            switch (translation)
+            return translation switch
             {
-                case "LP": return AlbumTypeEnum.LP;
-                case "EP": return AlbumTypeEnum.EP;
-                case "Maxi Single": return AlbumTypeEnum.MAXI;
-                case "Single": return AlbumTypeEnum.SINGLE;
-                case "Double LP": return AlbumTypeEnum.DOUBLE_LP;
-                case "Live Album": return AlbumTypeEnum.LIVE_ALBUM;
-                default: return AlbumTypeEnum.LP;
-            }
+                "LP" => AlbumTypeEnum.LP,
+                "EP" => AlbumTypeEnum.EP,
+                "Maxi Single" => AlbumTypeEnum.MAXI,
+                "Single" => AlbumTypeEnum.SINGLE,
+                "Double LP" => AlbumTypeEnum.DOUBLE_LP,
+                "Live Album" => AlbumTypeEnum.LIVE_ALBUM,
+                _ => AlbumTypeEnum.LP,
+            };
         }
     }
 
@@ -70,30 +70,30 @@ namespace VinylStudio.model
     {
         public static string GetEnumDescription(AlbumRatingEnum albumRating)
         {
-            switch (albumRating)
+            return albumRating switch
             {
-                case AlbumRatingEnum.VERY_GOOD: return "Very Good";
-                case AlbumRatingEnum.GOOD: return "Good";
-                case AlbumRatingEnum.SATISFYING: return "Satisfying";
-                case AlbumRatingEnum.SUFFICIENT: return "Sufficient";
-                case AlbumRatingEnum.POOR: return "Poor";
-                case AlbumRatingEnum.INSUFFICIENT: return "Insufficient";
-                default: return "<unknown>";
-            }
+                AlbumRatingEnum.VERY_GOOD => "Very Good",
+                AlbumRatingEnum.GOOD => "Good",
+                AlbumRatingEnum.SATISFYING => "Satisfying",
+                AlbumRatingEnum.SUFFICIENT => "Sufficient",
+                AlbumRatingEnum.POOR => "Poor",
+                AlbumRatingEnum.INSUFFICIENT => "Insufficient",
+                _ => "<unknown>",
+            };
         }
 
         public static AlbumRatingEnum GetEnumValue(string translation)
         {
-            switch (translation)
+            return translation switch
             {
-                case "Very Good": return AlbumRatingEnum.VERY_GOOD;
-                case "Good": return AlbumRatingEnum.GOOD;
-                case "Satisfying": return AlbumRatingEnum.SATISFYING;
-                case "Sufficient": return AlbumRatingEnum.SUFFICIENT;
-                case "Poor": return AlbumRatingEnum.POOR;
-                case "Insufficient": return AlbumRatingEnum.INSUFFICIENT;
-                default: return AlbumRatingEnum.GOOD;
-            }
+                "Very Good" => AlbumRatingEnum.VERY_GOOD,
+                "Good" => AlbumRatingEnum.GOOD,
+                "Satisfying" => AlbumRatingEnum.SATISFYING,
+                "Sufficient" => AlbumRatingEnum.SUFFICIENT,
+                "Poor" => AlbumRatingEnum.POOR,
+                "Insufficient" => AlbumRatingEnum.INSUFFICIENT,
+                _ => AlbumRatingEnum.GOOD,
+            };
         }
     }
 

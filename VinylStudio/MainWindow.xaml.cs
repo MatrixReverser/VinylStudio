@@ -569,7 +569,7 @@ namespace VinylStudio
          */
         private int CountTracks(bool useViewInsteadOfModel)
         {
-            List<AlbumModel> albums = collectVisibleAlbums(useViewInsteadOfModel);
+            List<AlbumModel> albums = CollectVisibleAlbums(useViewInsteadOfModel);
             int trackCount = 0;
 
             // count tracks
@@ -587,7 +587,7 @@ namespace VinylStudio
          */
         private double CalcValue(bool useViewInsteadOfModel)
         {
-            List<AlbumModel> albums = collectVisibleAlbums(useViewInsteadOfModel);
+            List<AlbumModel> albums = CollectVisibleAlbums(useViewInsteadOfModel);
             double value = 0.0;
 
             // add prices
@@ -605,7 +605,7 @@ namespace VinylStudio
          */
         private int CalcLength(bool useViewInsteadOfModel)
         {
-            List<AlbumModel> albums = collectVisibleAlbums(useViewInsteadOfModel);
+            List<AlbumModel> albums = CollectVisibleAlbums(useViewInsteadOfModel);
             int length = 0;
 
             // add lengths
@@ -621,7 +621,7 @@ namespace VinylStudio
          * Returns a list with the albums of the datamodel or from the thumbnail
          * view (if useViewInsteadOfModel == true)
          */
-        private List<AlbumModel> collectVisibleAlbums(bool useViewInsteadOfModel)
+        private List<AlbumModel> CollectVisibleAlbums(bool useViewInsteadOfModel)
         {
             List<AlbumModel> albums = new();
 
