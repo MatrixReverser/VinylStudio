@@ -14,8 +14,8 @@ using VinylStudio.model.legacy;
 
 namespace VinylStudio
 {    
-    // TODO: Add Buttons (Vertical) aside of the song table: Lock (Toggle), Add, Remove, Clear, DiscoGS    
-    // TODO:   - Lock Button. Allow to set tabel into edit mode
+    // TODO: Add Buttons (Vertical) aside of the song table: Remove, Clear, DiscoGS    
+    // TODO:   Buttons for removing row and clear complete table (Security question)
 
     // TODO: Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
     // TODO: Export functions for excel
@@ -239,6 +239,7 @@ namespace VinylStudio
                 {
                     detailPanel.DataContext = album;
                     songTable.ItemsSource = album.Songs;
+                    EnableSongTableEditing(false);
 
                     // when double clicked, open the album in the editor
                     if (e.ClickCount == 2)
@@ -307,6 +308,7 @@ namespace VinylStudio
                 detailPanel.DataContext = null;
                 songTable.ItemsSource = null;
             }
+            EnableSongTableEditing(false);
         }
 
         private void OnKeyUpInFilterInterprets(object sender, KeyEventArgs e)
@@ -640,6 +642,36 @@ namespace VinylStudio
                 }
             }
             return albums;
+        }
+
+        /**
+         * Is called if the user wants to lock the song table
+         */
+        private void OnSongTableLocked(object? sender, RoutedEventArgs e)
+        {
+            EnableSongTableEditing(false);
+        }
+
+        /**
+         * Is called if the user wants to unlock the song table
+         */
+        private void OnSongTableUnLocked(object?sender, RoutedEventArgs e)
+        {
+            EnableSongTableEditing(true);
+        }
+
+        /**
+         * Enables / disables the editing of the song table
+         */
+        private void EnableSongTableEditing(bool enable) 
+        {
+            toggleButtonSongTable.IsChecked = enable;
+            songTable.IsReadOnly = !enable;
+
+            if (!enable)
+            {
+                // _dataModel.Save();
+            }
         }
     }
 }

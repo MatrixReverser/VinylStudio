@@ -216,22 +216,30 @@
             <!--#endregion-->
             
             <!--#region  Song table -->
-            <DataGrid Name="songTable"
-                              Grid.Row="2" 
-                              Grid.Column="0" 
-                              Height="Auto" 
-                              AutoGenerateColumns="False" 
-                              ScrollViewer.CanContentScroll="True" 
-                              ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                              IsReadOnly="True" Background="#202020">                
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Side" Binding="{Binding Side}" />
-                    <DataGridTextColumn Header="Track" Binding="{Binding Index}" />
-                    <DataGridTextColumn Header="Title" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="Length" Binding="{Binding LengthInMinutes}" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <DockPanel Grid.Column="0" Grid.Row="2">
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Margin="5">
+                    <ToggleButton
+                        Name="toggleButtonSongTable"
+                        Checked="OnSongTableUnLocked"
+                        Unchecked="OnSongTableLocked">
+                        <materialDesign:PackIcon Kind="Lock" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />                        
+                    </ToggleButton>
+                </StackPanel>
+                <DataGrid Name="songTable"
+                                  Height="Auto" 
+                                  AutoGenerateColumns="False" 
+                                  ScrollViewer.CanContentScroll="True" 
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                  IsReadOnly="True" Background="#202020">                
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Side" Binding="{Binding Side}" />
+                        <DataGridTextColumn Header="Track" Binding="{Binding Index}" />
+                        <DataGridTextColumn Header="Title" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Length" Binding="{Binding LengthInMinutes}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
             <!-- </ScrollViewer> -->
             <!--#endregion-->
         </Grid>

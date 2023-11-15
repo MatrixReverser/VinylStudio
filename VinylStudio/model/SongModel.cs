@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,21 @@ namespace VinylStudio.model
                 TimeSpan time = TimeSpan.FromSeconds(Length);
                 string length = time.ToString(@"m\:ss");                
                 return length;
+            }
+            set
+            {
+                try
+                {
+                    TimeSpan timeSpan = TimeSpan.ParseExact(value, "m':'ss", null);
+                    int seconds = (int)timeSpan.TotalSeconds;
+                    if (seconds != Length)
+                    {
+                        Length = seconds;
+                    }
+                } catch (FormatException)
+                {
+                    Debug.WriteLine("Uhh.");
+                }
             }
         }
 
