@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -15,7 +16,7 @@ using VinylStudio.model.legacy;
 namespace VinylStudio
 {    
     // TODO: Add Buttons (Vertical) aside of the song table: Remove, Clear, DiscoGS    
-    // TODO:   Buttons for removing row and clear complete table (Security question)
+    // TODO:   Buttons  clear complete table (Security question)
 
     // TODO: Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
     // TODO: Export functions for excel
@@ -237,9 +238,9 @@ namespace VinylStudio
             {
                 if (clickedThumbnail.DataContext is AlbumModel album)
                 {
+                    EnableSongTableEditing(false); 
                     detailPanel.DataContext = album;
-                    songTable.ItemsSource = album.Songs;
-                    EnableSongTableEditing(false);
+                    songTable.ItemsSource = album.Songs;                    
 
                     // when double clicked, open the album in the editor
                     if (e.ClickCount == 2)
@@ -297,6 +298,7 @@ namespace VinylStudio
             // if there is at least one album in the filtered list, we want to select the first album
             CollectionView thumbnailView = (CollectionView)CollectionViewSource.GetDefaultView(_dataModel.AlbumList);
 
+            EnableSongTableEditing(false);
             if (thumbnailView != null && thumbnailView.Count > 0)
             {
                 AlbumModel album = (AlbumModel)thumbnailView.GetItemAt(0);
@@ -307,8 +309,7 @@ namespace VinylStudio
             {
                 detailPanel.DataContext = null;
                 songTable.ItemsSource = null;
-            }
-            EnableSongTableEditing(false);
+            }            
         }
 
         private void OnKeyUpInFilterInterprets(object sender, KeyEventArgs e)
@@ -645,11 +646,44 @@ namespace VinylStudio
         }
 
         /**
+         * Deletes the selected tracks in the song grid
+         */
+        private void OnDeleteSelectedTracks(object? sender, EventArgs e)
+        {
+            if (songTable.SelectedItems.Count > 0)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    this,
+                    "Do you really want to delete the selected songs?",
+                    "Delete selected songs",
+                    MessageBoxButton.YesNo, 
+                    MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No) 
+                {
+                    return;
+                }
+
+                ObservableCollection<SongModel> songList = (ObservableCollection<SongModel>) songTable.ItemsSource;
+                List<SongModel> deletionList = new();
+                foreach (SongModel song in songTable.SelectedItems)
+                {
+                    deletionList.Add(song);
+                }
+
+                foreach(SongModel song in deletionList)
+                {
+                    songList.Remove(song);
+                }
+            }
+        }
+
+        /**
          * Is called if the user wants to lock the song table
          */
         private void OnSongTableLocked(object? sender, RoutedEventArgs e)
         {
             EnableSongTableEditing(false);
+            buttonSongDelete.IsEnabled = false;
         }
 
         /**
@@ -658,6 +692,7 @@ namespace VinylStudio
         private void OnSongTableUnLocked(object?sender, RoutedEventArgs e)
         {
             EnableSongTableEditing(true);
+            buttonSongDelete.IsEnabled = true;
         }
 
         /**
@@ -670,7 +705,7 @@ namespace VinylStudio
 
             if (!enable)
             {
-                // _dataModel.Save();
+                _dataModel.Save();
             }
         }
     }
