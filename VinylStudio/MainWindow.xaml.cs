@@ -16,7 +16,7 @@ using VinylStudio.model.legacy;
 namespace VinylStudio
 {    
     // TODO: Add Buttons (Vertical) aside of the song table: Remove, Clear, DiscoGS    
-    // TODO:   Buttons  clear complete table (Security question)
+    // TODO:   Button DiscoGS for importing songs
 
     // TODO: Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
     // TODO: Export functions for excel
@@ -121,17 +121,7 @@ namespace VinylStudio
         {
             if (_dataModel.IsModified)
             {
-                MessageBoxResult result = AskForSavingChanges();
-
-                switch (result)
-                {
-                    case MessageBoxResult.Yes:
-                        _dataModel.Save();
-                        break;
-                    case MessageBoxResult.Cancel:
-                        e.Cancel = true;
-                        break;
-                }
+                _dataModel.Save();
             }
         }
 
@@ -155,36 +145,13 @@ namespace VinylStudio
         {            
             if (_dataModel.IsModified)
             {
-                MessageBoxResult result = AskForSavingChanges();
-
-                switch (result)
-                {
-                    case MessageBoxResult.Yes:
-                        _dataModel.Save();
-                        break;
-                    case MessageBoxResult.Cancel:
-                        return;
-                }
+                _dataModel.Save();
             }
 
             // we don't want to ask the user again, when the window is closing
             // therefore we remove the event handler
             this.Closing -= OnWindowClosing; 
             Close();
-        }
-
-        /**
-         * Asks the user if changes should be saved
-         */
-        private MessageBoxResult AskForSavingChanges()
-        {
-            MessageBoxResult result = MessageBox.Show(
-                    this,
-                    "There are unsaved changes. Do you want to save it to the database?",
-                    "Unsaved Changes",
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Warning);
-            return result;
         }
 
         /**
@@ -387,7 +354,7 @@ namespace VinylStudio
             if (album != null)
             {
                 string message = "Do you really want to delete the album\n\"" + album.Name + "\" from \"" + album.Interpret?.Name + "?";
-                MessageBoxResult result = MessageBox.Show(this, message, "Delete album", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show(this, message, "Delete album", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -678,12 +645,33 @@ namespace VinylStudio
         }
 
         /**
+         * Is called when the user clicks the "delete all tracks" button
+         */
+        private void OnDeleteAllTracks(object? sender, EventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                this, 
+                "Do you really want to delete all songs of this album?",
+                "Delete all songs",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (result == MessageBoxResult.No) 
+            {
+                return;
+            }
+
+            ObservableCollection<SongModel> songList = (ObservableCollection<SongModel>)songTable.ItemsSource;
+            songList.Clear();
+        }
+
+        /**
          * Is called if the user wants to lock the song table
          */
         private void OnSongTableLocked(object? sender, RoutedEventArgs e)
         {
             EnableSongTableEditing(false);
             buttonSongDelete.IsEnabled = false;
+            buttonDeleteAllSongs.IsEnabled = false;
         }
 
         /**
@@ -693,6 +681,7 @@ namespace VinylStudio
         {
             EnableSongTableEditing(true);
             buttonSongDelete.IsEnabled = true;
+            buttonDeleteAllSongs.IsEnabled = true;
         }
 
         /**
