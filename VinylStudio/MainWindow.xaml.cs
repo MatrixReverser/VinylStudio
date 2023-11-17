@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,9 +15,9 @@ using VinylStudio.model;
 using VinylStudio.model.legacy;
 
 namespace VinylStudio
-{    
+{
     // TODO: Add Buttons (Vertical) aside of the song table: Remove, Clear, DiscoGS    
-    // TODO:   Button DiscoGS for importing songs
+    // TODO:   Button DiscoGS for importing covers (in AlbumEditDialog)
 
     // TODO: Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
     // TODO: Export functions for excel
@@ -665,6 +666,40 @@ namespace VinylStudio
         }
 
         /**
+         * Is called if the user clicks the "Import from LastFm" button
+         */
+        private void OnQueryDiscoGs(object? sender, EventArgs e)
+        {
+            if (detailPanel.DataContext != null)
+            {
+                string albumName = ((AlbumModel)detailPanel.DataContext).Name;
+                string? interpretName = ((AlbumModel)detailPanel.DataContext).Interpret?.Name;
+                if (interpretName != null)
+                {
+                    DiscogsSelectionDialog dlg = new(interpretName, albumName)
+                    {
+                        Owner = this,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    };
+                    List<SongModel>? retrievedSongs = dlg.OpenDialog();
+
+                    if (retrievedSongs != null && retrievedSongs.Count > 0)
+                    {
+                        AlbumModel album = ((AlbumModel)detailPanel.DataContext);
+                        album.Songs.Clear();
+                        
+                        foreach (SongModel song in retrievedSongs)
+                        {
+                            album.Songs.Add(song);
+                        }
+
+                        _dataModel.Save();
+                    }
+                }
+            }
+        }
+
+        /**
          * Is called if the user wants to lock the song table
          */
         private void OnSongTableLocked(object? sender, RoutedEventArgs e)
@@ -672,6 +707,7 @@ namespace VinylStudio
             EnableSongTableEditing(false);
             buttonSongDelete.IsEnabled = false;
             buttonDeleteAllSongs.IsEnabled = false;
+            buttonQueryDiscogs.IsEnabled = false;
         }
 
         /**
@@ -682,6 +718,7 @@ namespace VinylStudio
             EnableSongTableEditing(true);
             buttonSongDelete.IsEnabled = true;
             buttonDeleteAllSongs.IsEnabled = true;
+            buttonQueryDiscogs.IsEnabled = true;
         }
 
         /**
