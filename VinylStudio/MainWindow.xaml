@@ -225,7 +225,7 @@
                         Unchecked="OnSongTableLocked">
                         <materialDesign:PackIcon Kind="Lock" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />                        
                     </ToggleButton>
-                    <Button Name="buttonQueryDiscogs" IsEnabled="false" Click="OnQueryDiscoGs" ToolTip="Import track list from Last.FM" Margin="0 0 0 5">
+                    <Button Name="buttonQueryDiscogs" IsEnabled="false" Click="OnQueryDiscoGs" ToolTip="Import track list from Discogs" Margin="0 0 0 5">
                         <materialDesign:PackIcon Kind="DatabaseImportOutline" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Button>
                     <Button Name="buttonSongDelete" IsEnabled="False" Click="OnDeleteSelectedTracks" ToolTip="Delete selected songs" Margin="0 0 0 5">

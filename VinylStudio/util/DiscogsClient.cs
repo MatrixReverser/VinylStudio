@@ -9,14 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VinylStudio
+namespace VinylStudio.util
 {
     public class DiscogsClient
     {
-        private const string TOKEN = "hhyQnFcMGcTYmTGxzbPRzrbmpTDCCKuzYsJFufqW";
         private const int MAX_RELEASE_DOWNLOADS = 10;
 
         private ObservableCollection<Release> _releaseList = new();
+        private string _token;
 
         public ObservableCollection<Release> ReleaseList
         {
@@ -29,17 +29,18 @@ namespace VinylStudio
         /**
          * Constructor of the class
          */
-        public DiscogsClient(string interpret, string album)
+        public DiscogsClient(string token, string interpret, string album)
         {
-            GetAlbums(interpret, album);   
-        }        
+            _token = token;
+            GetAlbums(interpret, album);
+        }
 
         /**
          * gets all releases (limited to 10) and stores them in _releaseList
          */
         private async void GetAlbums(string interpret, string album)
         {
-            var discogsConnection = DiscogsAuthConnection.WithPersonalAccessToken(TOKEN);
+            var discogsConnection = DiscogsAuthConnection.WithPersonalAccessToken(_token);
             var databaseService = discogsConnection.CreateDatabaseService();
 
             var filter = new SearchFilter()
@@ -51,14 +52,14 @@ namespace VinylStudio
             var searchResult = await databaseService.SearchAsync(filter);
 
             // get the concrete releases up to 10 (we don't want reach the limit of discogs)
-            int maxItemsToDownload = (searchResult.Items.Count <= 10 ? searchResult.Items.Count : MAX_RELEASE_DOWNLOADS);
+            int maxItemsToDownload = searchResult.Items.Count <= 10 ? searchResult.Items.Count : MAX_RELEASE_DOWNLOADS;
 
-            for (int i=0; i<maxItemsToDownload; i++)
+            for (int i = 0; i < maxItemsToDownload; i++)
             {
                 if (searchResult.Items.ElementAt(i) is ReleaseSearchResult)
                 {
                     ReleaseSearchResult release = (ReleaseSearchResult)searchResult.Items.ElementAt(i);
-                    
+
                     var concreteRelease = await databaseService.GetReleaseAsync(release.Id);
                     if (concreteRelease != null)
                     {

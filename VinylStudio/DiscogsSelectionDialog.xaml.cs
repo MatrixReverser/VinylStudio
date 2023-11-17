@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VinylStudio.model;
+using VinylStudio.util;
 
 namespace VinylStudio
 {
@@ -25,11 +26,11 @@ namespace VinylStudio
         private DiscogsClient _discogsClient;
         private List<SongModel>? _retrievedSongs = null;
 
-        public DiscogsSelectionDialog(string interpret, string album) : base()
+        public DiscogsSelectionDialog(UserSettings userSettings, string interpret, string album) : base()
         {
             InitializeComponent();
 
-            _discogsClient = new DiscogsClient(interpret, album);
+            _discogsClient = new DiscogsClient(userSettings.DiscogsToken, interpret, album);
             releaseTable.ItemsSource = _discogsClient.ReleaseList;
         }
 
@@ -124,7 +125,7 @@ namespace VinylStudio
             if (release != null)
             {
                 _retrievedSongs = new();
-
+                
                 for (int i=0; i < release.TrackList.Count; i++)
                 {
                     Track track = release.TrackList[i];

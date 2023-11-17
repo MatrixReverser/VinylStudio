@@ -13,10 +13,12 @@ using System.Windows.Data;
 using System.Windows.Input;
 using VinylStudio.model;
 using VinylStudio.model.legacy;
+using VinylStudio.util;
 
 namespace VinylStudio
 {
-    // TODO: Add Buttons (Vertical) aside of the song table: Remove, Clear, DiscoGS    
+    // TODO: Add Buttons (Vertical) aside of the song table: Remove, Clear, DiscoGS
+    // TODO: Ask for private token when using discogs and store token for later use
     // TODO:   Button DiscoGS for importing covers (in AlbumEditDialog)
 
     // TODO: Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
@@ -60,6 +62,7 @@ namespace VinylStudio
     /// </summary>
     public partial class MainWindow : Window
     {
+        private UserSettings _userSettings;
         private DataModel _dataModel;
         private CollectionView? _thumbnailView;
         private CollectionView? _interpretView;
@@ -96,6 +99,8 @@ namespace VinylStudio
             comboSorting.SelectedIndex = 0;
 
             UpdateStatusLine();
+
+            _userSettings = new();
         }
 
         /**
@@ -122,8 +127,9 @@ namespace VinylStudio
         {
             if (_dataModel.IsModified)
             {
-                _dataModel.Save();
+                _dataModel.Save();                
             }
+            _userSettings.Save();
         }
 
         /**
@@ -148,6 +154,7 @@ namespace VinylStudio
             {
                 _dataModel.Save();
             }
+            _userSettings.Save();
 
             // we don't want to ask the user again, when the window is closing
             // therefore we remove the event handler
@@ -672,11 +679,20 @@ namespace VinylStudio
         {
             if (detailPanel.DataContext != null)
             {
+                if (_userSettings.DiscogsToken == null)
+                {
+                    _userSettings.DiscogsToken = AskForDiscogsToken();
+                    if (_userSettings.DiscogsToken == null)
+                    {
+                        return;
+                    }
+                }
+
                 string albumName = ((AlbumModel)detailPanel.DataContext).Name;
                 string? interpretName = ((AlbumModel)detailPanel.DataContext).Interpret?.Name;
                 if (interpretName != null)
                 {
-                    DiscogsSelectionDialog dlg = new(interpretName, albumName)
+                    DiscogsSelectionDialog dlg = new(_userSettings, interpretName, albumName)
                     {
                         Owner = this,
                         WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -697,6 +713,25 @@ namespace VinylStudio
                     }
                 }
             }
+        }
+
+        /**
+         * Asks the user for the Discogs token and returns it as a string. Null is returned if the
+         * user cancelled the dialog
+         */
+        private string? AskForDiscogsToken()
+        {
+            string? discogsToken = null;
+
+            DiscogsTokenDialog dlg = new()
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            discogsToken = dlg.OpenDialog();
+
+            return discogsToken;
         }
 
         /**
