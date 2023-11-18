@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using VinylStudio.model;
 using VinylStudio.model.legacy;
+using VinylStudio.ui;
 using VinylStudio.util;
 
 namespace VinylStudio
@@ -69,7 +70,7 @@ namespace VinylStudio
 
             ConnectDataModel();
             InitViews();
-
+            
             // if there is at least one album in the list, select this album
             if (_dataModel.AlbumList.Count > 0)
             {
@@ -781,6 +782,19 @@ namespace VinylStudio
             {
                 _dataModel.Save();
             }
+        }
+
+        /**
+         * Shows the about dialog
+         */
+        private void OnShowAbout(object? sender, RoutedEventArgs e)
+        {
+            AboutDialog dialog = new()
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            dialog.ShowDialog();
         }
     }
 }

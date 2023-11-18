@@ -8,6 +8,7 @@ statistics, and search functionality in order to quickly find your desired piece
 
 ## Installation
 
+
 ### Importing Data from Legacy System (VinylShelf)
 
 ## Navigation

@@ -22,9 +22,12 @@
         <Menu DockPanel.Dock="Top" Background="DimGray">
             <MenuItem Header="_File">
                 <MenuItem Header="_Migration">
-                    <MenuItem Header="Migrate from VinylShelf 0.2" Click="OnMenuFileMigrateFromShelf" />
+                    <MenuItem Header="Migrate from _VinylShelf 0.2" Click="OnMenuFileMigrateFromShelf" />
                 </MenuItem>
                 <MenuItem Header="E_xit" Click="OnMenuFileExit" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About VinylStudio" Click="OnShowAbout" />
             </MenuItem>
         </Menu>
         <!--#endregion-->
