@@ -27,7 +27,18 @@
         <!--#region Panel with cover image and replace button -->
         <StackPanel DockPanel.Dock="Left" Margin="10">
             <Image Name="coverImage" Width="300" Height="300" Margin="0 0 0 5" />
-            <Button Name="btnSetCover" Click="OnSetCoverImage">Set Cover Image</Button>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <Button Grid.Column="0" Grid.Row="0" Name="btnSetCover" Click="OnSetCoverImage" Margin="0 10 5 0">Load from disc</Button>
+                <Button Grid.Column="1" Grid.Row="0" Name="btnQueryCover" Click="OnQueryCover" Margin="5 10 0 0">Discogs query</Button>
+            </Grid>
         </StackPanel>
         <!--#endregion-->
 

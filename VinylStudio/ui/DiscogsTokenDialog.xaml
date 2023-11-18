@@ -41,7 +41,7 @@
                 user. Then navigate to your profile settings, choose "Developer", request a personal access token and enter it in this dialog.
             </TextBlock>
             <Label Grid.Column="0" Grid.Row="1" Margin="5">Personal Token: </Label>
-            <TextBox Name="textboxToken" Grid.Column="1" Grid.Row="1" Margin="5" />
+            <TextBox Name="textboxToken" Grid.Column="1" Grid.Row="1" Margin="5" BorderThickness="1" />
         </Grid>
     </DockPanel>
 </Window>

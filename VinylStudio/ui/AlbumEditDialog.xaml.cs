@@ -20,6 +20,9 @@ using System.Windows.Shapes;
 using VinylStudio.model;
 using VinylStudio.model.legacy;
 using System.IO;
+using VinylStudio.ui;
+using System.Net;
+using System.Net.Http;
 
 namespace VinylStudio
 {
@@ -28,16 +31,20 @@ namespace VinylStudio
     /// </summary>
     public partial class AlbumEditDialog : Window
     {
+        private const string TEMP_COVER_FILENAME = "temporaryCover.jpg";
+
         private DataModel _dataModel;
         private string? _imagePath = null;
         private AlbumModel? _albumModel = null;
+        private string _discogsToken;
 
         /**
          * Constructor of this class. Used when an album should be edited instead of being created
          */
-        internal AlbumEditDialog(DataModel dataModel, AlbumModel album) : this(dataModel)
+        internal AlbumEditDialog(string discogsToken, DataModel dataModel, AlbumModel album) : this(dataModel)
         {
             _albumModel = album;
+            _discogsToken = discogsToken;
 
             // set data into the form
             _imagePath = album.ImagePath;
@@ -361,6 +368,103 @@ namespace VinylStudio
                     scaledImage.Save(newName, ImageFormat.Jpeg);
                 }
             }
+        }
+
+        /**
+         * Is called if the user wants to query a cover image from discogs
+         */
+        private void OnQueryCover(object? sender, EventArgs e)
+        {
+            // Get interpret name and title of the album
+            InterpretModel? interpret = comboboxInterpret.SelectedItem as InterpretModel;
+            if (interpret == null)
+            {
+                return;
+            }
+
+            string title = textboxTitle.Text.Trim();
+            if (title == string.Empty)
+            {
+                return;
+            }
+
+            // open the dialog and check if the user has selected a cover image
+            CoverSelectionDialog dialog = new(_discogsToken, interpret.Name, title)
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            string? imageUrl = dialog.OpenDialog();
+
+            // when we have a new image url, download it and save it as temporary file
+            if (imageUrl != null)
+            {                
+                DownloadImage(imageUrl, TEMP_COVER_FILENAME);                
+            }
+        }
+
+        /**
+         * Downloads a cover image from the web ans stores it as the new cover
+         */
+        private async void DownloadImage(string url, string temporaryPath)
+        {            
+            _imagePath = Directory.GetCurrentDirectory() + "/" + temporaryPath;
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                try
+                {
+                    // Lade das Bild herunter
+                    byte[] data = await httpClient.GetByteArrayAsync(url);
+
+                    // Erstelle einen BitmapImage aus den heruntergeladenen Daten
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.StreamSource = new MemoryStream(data);
+                    bitmapImage.EndInit();
+
+                    // Speichere das Bild als Datei (optional)
+                    SaveImageToFile(bitmapImage, _imagePath);
+
+                    // show the new image in the dialog
+                    coverImage.Source = LoadBitmapImage(_imagePath); // new BitmapImage(new Uri(_imagePath));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error while retrieving cover image form Discogs: {ex.Message}");
+                }
+            }
+        }
+
+        /**
+         * Saves an image in memory to a file
+         */
+        private void SaveImageToFile(BitmapImage image, string filePath)
+        {
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                BitmapEncoder encoder = new JpegBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(image));
+                encoder.Save(fileStream);
+            }
+        }
+
+        /**
+         * Loads an image without blocking the file on the filesystem
+         */
+        private BitmapImage LoadBitmapImage(string path)
+        {
+            BitmapImage image = new BitmapImage();
+            var stream = File.OpenRead(path);
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.StreamSource = stream;
+            image.EndInit();
+            stream.Close();
+            stream.Dispose();
+
+            return image;
         }
     }
 }

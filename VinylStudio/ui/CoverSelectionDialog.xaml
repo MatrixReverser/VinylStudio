@@ -1,0 +1,55 @@
+﻿<Window x:Class="VinylStudio.ui.CoverSelectionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VinylStudio.ui"
+        mc:Ignorable="d"
+        Title="Select Discogs Cover" Height="280" Width="500"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}">
+    <DockPanel>
+        <!--#region panel with button -->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Name="btnSave" Margin="0 0 5 0" Click="OnSaveClicked" IsEnabled="false">Save</Button>
+            <Button IsDefault="True" Click="OnCancelClicked">Cancel</Button>
+        </StackPanel>
+        <Border DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="Gray" Height="1" />
+        <!--#endregion-->
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Margin="10 20 5 15" >Release: </Label>
+            <ComboBox Name="comboboxRelease" Grid.Column="1" Grid.Row="0" BorderThickness="1" Margin="5 20 10 15" SelectionChanged="OnReleaseChanged"/>
+            <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Horizontal">
+                <!-- The images -->
+                <Border Name="border1" BorderBrush="Gray" BorderThickness="1" Margin="10">
+                    <Image Name="image1" Width="100" Height="100" MouseDown="OnImageSelected" />
+                </Border>
+                <Border Name="border2" BorderBrush="Gray" BorderThickness="1" Margin="10">
+                    <Image Name="image2" Width="100" Height="100" MouseDown="OnImageSelected" />
+                </Border>
+                <Border Name="border3" BorderBrush="Gray" BorderThickness="1" Margin="10">
+                    <Image Name="image3" Width="100" Height="100" MouseDown="OnImageSelected" />
+                </Border>
+                <Border Name="border4" BorderBrush="Gray" BorderThickness="1" Margin="10">
+                    <Image Name="image4" Width="100" Height="100" MouseDown="OnImageSelected" />
+                </Border>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

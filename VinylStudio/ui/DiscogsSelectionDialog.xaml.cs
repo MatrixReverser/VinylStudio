@@ -86,8 +86,9 @@ namespace VinylStudio
             {
                 Track track = release.TrackList[i];
                 string duration = (track.Duration == string.Empty ? "[?:??]" : track.Duration);
-                
-                tooltip += $"{i,2}: ";
+
+                //tooltip += $"{i,2}: ";
+                tooltip += $"{track.Position}: ";
                 tooltip += $"{duration}: ";
                 tooltip += $"{track.Title}\n";
 

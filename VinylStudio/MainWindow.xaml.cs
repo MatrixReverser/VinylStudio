@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,12 +15,10 @@ using VinylStudio.util;
 
 namespace VinylStudio
 {
-    // TODO: Add Buttons (Vertical) aside of the song table: Remove, Clear, DiscoGS
-    // TODO: Ask for private token when using discogs and store token for later use
-    // TODO:   Button DiscoGS for importing covers (in AlbumEditDialog)
-
     // TODO: Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
     // TODO: Export functions for excel
+    // TODO: Menu: Search functionality (Search for a song - return list of songs / Filter dialog with extreme filter posibilities for all kind of things)
+    // TODO: add a slider for resizing images in the thumbnail panel
 
     public enum SortingEnum
     {
@@ -231,7 +227,16 @@ namespace VinylStudio
          */
         private void EditAlbum(AlbumModel album)
         {
-            AlbumEditDialog dlg = new(_dataModel, album)
+            if (_userSettings.DiscogsToken == null)
+            {
+                _userSettings.DiscogsToken = AskForDiscogsToken();
+                if (_userSettings.DiscogsToken == null)
+                {
+                    return;
+                }
+            }
+            
+            AlbumEditDialog dlg = new(_userSettings.DiscogsToken, _dataModel, album)
             {
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -673,7 +678,7 @@ namespace VinylStudio
         }
 
         /**
-         * Is called if the user clicks the "Import from LastFm" button
+         * Is called if the user clicks the "Import from Discogs" button
          */
         private void OnQueryDiscoGs(object? sender, EventArgs e)
         {

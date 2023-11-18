@@ -16,6 +16,7 @@ namespace VinylStudio.util
         private const int MAX_RELEASE_DOWNLOADS = 10;
 
         private ObservableCollection<Release> _releaseList = new();
+        private ObservableCollection<string> _releaseNameList = new();
         private string _token;
 
         public ObservableCollection<Release> ReleaseList
@@ -23,6 +24,14 @@ namespace VinylStudio.util
             get
             {
                 return _releaseList;
+            }
+        }
+
+        public ObservableCollection<string> ReleaseNameList
+        {
+            get
+            {
+                return _releaseNameList;
             }
         }
 
@@ -64,9 +73,22 @@ namespace VinylStudio.util
                     if (concreteRelease != null)
                     {
                         _releaseList.Add(concreteRelease);
+                        _releaseNameList.Add(extractReleaseName(concreteRelease));
                     }
                 }
             }
+        }
+
+        /**
+         * Extracts a human readable form of the given release
+         */
+        private string extractReleaseName(Release release)
+        {
+            string name = string.Empty;
+
+            name += $"{release.Title} ({release.Year}): {release.Country}";
+
+            return name;
         }
     }
 }
