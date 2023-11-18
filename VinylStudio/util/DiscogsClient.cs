@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Diagnostics;
 
 namespace VinylStudio.util
 {
@@ -68,12 +69,19 @@ namespace VinylStudio.util
                 if (searchResult.Items.ElementAt(i) is ReleaseSearchResult)
                 {
                     ReleaseSearchResult release = (ReleaseSearchResult)searchResult.Items.ElementAt(i);
-
-                    var concreteRelease = await databaseService.GetReleaseAsync(release.Id);
-                    if (concreteRelease != null)
+                                        
+                    try
                     {
-                        _releaseList.Add(concreteRelease);
-                        _releaseNameList.Add(extractReleaseName(concreteRelease));
+                        var concreteRelease = await databaseService.GetReleaseAsync(release.Id);
+
+                        if (concreteRelease != null)
+                        {
+                            _releaseList.Add(concreteRelease);
+                            _releaseNameList.Add(extractReleaseName(concreteRelease));
+                        }
+                    } catch (Exception ex)
+                    {
+                        Debug.WriteLine("Failed to retrieve discogs release by ID: " + release.Id + "\n" + ex.Message);
                     }
                 }
             }
