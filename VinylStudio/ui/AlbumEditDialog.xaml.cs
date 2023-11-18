@@ -23,6 +23,7 @@ using System.IO;
 using VinylStudio.ui;
 using System.Net;
 using System.Net.Http;
+using VinylStudio.util;
 
 namespace VinylStudio
 {
@@ -36,16 +37,15 @@ namespace VinylStudio
         private DataModel _dataModel;
         private string? _imagePath = null;
         private AlbumModel? _albumModel = null;
-        private string _discogsToken;
+        private UserSettings _userSettings;
 
         /**
          * Constructor of this class. Used when an album should be edited instead of being created
          */
-        internal AlbumEditDialog(string discogsToken, DataModel dataModel, AlbumModel album) : this(dataModel)
+        internal AlbumEditDialog(UserSettings settings, DataModel dataModel, AlbumModel album) : this(settings, dataModel)
         {
             _albumModel = album;
-            _discogsToken = discogsToken;
-
+            
             // set data into the form
             _imagePath = album.ImagePath;
             coverImage.Source = album.ImageSource;
@@ -63,11 +63,12 @@ namespace VinylStudio
         /**
          * Constructor of this class
          */
-        internal AlbumEditDialog(DataModel dataModel)
+        internal AlbumEditDialog(UserSettings settings, DataModel dataModel)
         {
             InitializeComponent();
 
             _dataModel = dataModel;
+            _userSettings = settings;
 
             // initialize combo boxes with enums
             comboboxType.ItemsSource = Enum.GetValues(typeof(AlbumTypeEnum))
@@ -371,10 +372,41 @@ namespace VinylStudio
         }
 
         /**
+         * Asks the user for the Discogs token and returns it as a string. Null is returned if the
+         * user cancelled the dialog
+         */
+        private string? AskForDiscogsToken()
+        {
+            string? discogsToken = null;
+
+            DiscogsTokenDialog dlg = new()
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            discogsToken = dlg.OpenDialog();
+
+            return discogsToken;
+        }
+
+        /**
          * Is called if the user wants to query a cover image from discogs
          */
         private void OnQueryCover(object? sender, EventArgs e)
         {
+            if (_userSettings.DiscogsToken == null || _userSettings.DiscogsToken == string.Empty)
+            {
+                _userSettings.DiscogsToken = AskForDiscogsToken();
+                if (_userSettings.DiscogsToken == null)
+                {
+                    _userSettings.DiscogsToken = string.Empty;
+                    MessageBox.Show(this, "You cannot browse for images without a Discogs Token", "Authentication needed", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    return;
+                }
+            }
+
             // Get interpret name and title of the album
             InterpretModel? interpret = comboboxInterpret.SelectedItem as InterpretModel;
             if (interpret == null)
@@ -389,7 +421,7 @@ namespace VinylStudio
             }
 
             // open the dialog and check if the user has selected a cover image
-            CoverSelectionDialog dialog = new(_discogsToken, interpret.Name, title)
+            CoverSelectionDialog dialog = new(_userSettings, interpret.Name, title)
             {
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner

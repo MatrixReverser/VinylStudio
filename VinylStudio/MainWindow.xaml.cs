@@ -15,11 +15,8 @@ using VinylStudio.util;
 
 namespace VinylStudio
 {
-    // TODO: Menu entries for organizing Interprets and Genres (shows table with orphan elements and possibility to add, remove interpret / genre with all albums)
     // TODO: Export functions for excel
-    // TODO: Menu: Search functionality (Search for a song - return list of songs / Filter dialog with extreme filter posibilities for all kind of things)
-    // TODO: add a slider for resizing images in the thumbnail panel
-
+    
     public enum SortingEnum
     {
         NONE,
@@ -96,7 +93,24 @@ namespace VinylStudio
 
             UpdateStatusLine();
 
-            _userSettings = new();
+            _userSettings = new();            
+        }
+
+        /**
+         * Is called if the main window has opened
+         */
+        private void OnMainWindowOpened(object sender, EventArgs e)
+        {
+            if (_userSettings.DiscogsToken == null)
+            {
+                _userSettings.DiscogsToken = AskForDiscogsToken();
+                if (_userSettings.DiscogsToken == null)
+                {
+                    _userSettings.DiscogsToken = string.Empty;
+                    return;
+                }
+            }
+            
         }
 
         /**
@@ -226,17 +240,8 @@ namespace VinylStudio
          * Starts editing the album in the AlbumEditDialog
          */
         private void EditAlbum(AlbumModel album)
-        {
-            if (_userSettings.DiscogsToken == null)
-            {
-                _userSettings.DiscogsToken = AskForDiscogsToken();
-                if (_userSettings.DiscogsToken == null)
-                {
-                    return;
-                }
-            }
-            
-            AlbumEditDialog dlg = new(_userSettings.DiscogsToken, _dataModel, album)
+        {   
+            AlbumEditDialog dlg = new(_userSettings, _dataModel, album)
             {
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -342,7 +347,7 @@ namespace VinylStudio
          */
         private void OnAddAlbum(object sender, EventArgs e)
         {
-            AlbumEditDialog dlg = new(_dataModel)
+            AlbumEditDialog dlg = new(_userSettings, _dataModel)
             {
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -684,11 +689,14 @@ namespace VinylStudio
         {
             if (detailPanel.DataContext != null)
             {
-                if (_userSettings.DiscogsToken == null)
+                if (_userSettings.DiscogsToken == null || _userSettings.DiscogsToken == string.Empty)
                 {
                     _userSettings.DiscogsToken = AskForDiscogsToken();
                     if (_userSettings.DiscogsToken == null)
                     {
+                        _userSettings.DiscogsToken = string.Empty;
+                        MessageBox.Show(this, "You cannot browse for track lists without a Discogs Token", "Authentication needed", MessageBoxButton.OK, MessageBoxImage.Error);
+
                         return;
                     }
                 }

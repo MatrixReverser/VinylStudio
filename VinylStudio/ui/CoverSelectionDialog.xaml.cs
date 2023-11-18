@@ -37,7 +37,7 @@ namespace VinylStudio.ui
         /**
          * Constructor of this class
          */
-        public CoverSelectionDialog(string token, string interpret, string album)
+        public CoverSelectionDialog(UserSettings settings, string interpret, string album)
         {
             InitializeComponent();
 
@@ -48,7 +48,7 @@ namespace VinylStudio.ui
             _imageRef.Add(image4);
 
             // Load release list from discogs
-            DiscogsClient client = new(token, interpret, album);
+            DiscogsClient client = new(settings.DiscogsToken, interpret, album);
             _releaseList = client.ReleaseList;
             _releaseNameList = client.ReleaseNameList;
 

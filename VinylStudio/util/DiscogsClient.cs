@@ -18,7 +18,7 @@ namespace VinylStudio.util
 
         private ObservableCollection<Release> _releaseList = new();
         private ObservableCollection<string> _releaseNameList = new();
-        private string _token;
+        private readonly string _token;
 
         public ObservableCollection<Release> ReleaseList
         {
@@ -52,7 +52,7 @@ namespace VinylStudio.util
         {
             var discogsConnection = DiscogsAuthConnection.WithPersonalAccessToken(_token);
             var databaseService = discogsConnection.CreateDatabaseService();
-
+            
             var filter = new SearchFilter()
             {
                 Artist = interpret,
