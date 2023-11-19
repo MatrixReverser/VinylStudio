@@ -64,7 +64,7 @@ namespace VinylStudio
 
         public MainWindow()
         {
-            InitializeComponent();    
+            InitializeComponent();
             _dataModel = new DataModel();
             _dataModel.Load();
 

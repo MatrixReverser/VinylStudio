@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Diagnostics;
+using VinylStudio.ui;
 
 namespace VinylStudio.util
 {
@@ -42,7 +43,7 @@ namespace VinylStudio.util
         public DiscogsClient(string token, string interpret, string album)
         {
             _token = token;
-            GetAlbums(interpret, album);
+            GetAlbums(interpret, album);           
         }
 
         /**
@@ -59,31 +60,34 @@ namespace VinylStudio.util
                 ReleaseTitle = album,
                 Format = "vinyl"
             };
-            var searchResult = await databaseService.SearchAsync(filter);
 
-            // get the concrete releases up to 10 (we don't want reach the limit of discogs)
-            int maxItemsToDownload = searchResult.Items.Count <= 10 ? searchResult.Items.Count : MAX_RELEASE_DOWNLOADS;
-
-            for (int i = 0; i < maxItemsToDownload; i++)
+            try
             {
-                if (searchResult.Items.ElementAt(i) is ReleaseSearchResult)
+                var searchResult = await databaseService.SearchAsync(filter);
+
+                // get the concrete releases up to 10 (we don't want reach the limit of discogs)
+                int maxItemsToDownload = searchResult.Items.Count <= 10 ? searchResult.Items.Count : MAX_RELEASE_DOWNLOADS;
+
+                for (int i = 0; i < maxItemsToDownload; i++)
                 {
-                    ReleaseSearchResult release = (ReleaseSearchResult)searchResult.Items.ElementAt(i);
-                                        
-                    try
+                    if (searchResult.Items.ElementAt(i) is ReleaseSearchResult)
                     {
+                        ReleaseSearchResult release = (ReleaseSearchResult)searchResult.Items.ElementAt(i);
+                        
                         var concreteRelease = await databaseService.GetReleaseAsync(release.Id);
 
                         if (concreteRelease != null)
                         {
                             _releaseList.Add(concreteRelease);
                             _releaseNameList.Add(extractReleaseName(concreteRelease));
-                        }
-                    } catch (Exception ex)
-                    {
-                        Debug.WriteLine("Failed to retrieve discogs release by ID: " + release.Id + "\n" + ex.Message);
+                        }                        
                     }
                 }
+            } catch (Exception ex)
+            {                
+                VinylException exception = new VinylException(VinylExceptionType.DISCOGS_EXCEPTION, "Failed to get search results from Discogs", ex);
+                ErrorDialog dialog = new ErrorDialog(exception);
+                dialog.ShowDialog();
             }
         }
 

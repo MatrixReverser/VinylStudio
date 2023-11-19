@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace VinylStudio.util
 {
-    internal enum VinylExceptionType
+    public enum VinylExceptionType
     {
-        DATABASE_EXCEPTION = 0
+        DATABASE_EXCEPTION = 0,
+        DISCOGS_EXCEPTION = 1
     }
 
     /**
      * An exception that occured inside the application and should be displayed to the user
      */
-    internal class VinylException : Exception
+    public class VinylException : Exception
     {
         private readonly string[] title = new string[] 
         {
-            "Database Error"
+            "Database Error",
+            "Discogs Error"
         };
 
         public VinylExceptionType Type { get; private set; }
