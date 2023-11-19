@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using VinylStudio.model.legacy;
 using VinylStudio.util;
 
 namespace VinylStudio.ui
@@ -33,6 +34,9 @@ namespace VinylStudio.ui
         private List<System.Windows.Controls.Image> _imageRef = new();
         private int _selectedImageIndex = -1;
         private string? _selectedImageUrl = null;
+        private UserSettings _userSettings;
+        private string _interpret;
+        private string _album;
 
         /**
          * Constructor of this class
@@ -47,13 +51,9 @@ namespace VinylStudio.ui
             _imageRef.Add(image3);
             _imageRef.Add(image4);
 
-            // Load release list from discogs
-            DiscogsClient client = new(settings.DiscogsToken, interpret, album);
-            _releaseList = client.ReleaseList;
-            _releaseNameList = client.ReleaseNameList;
-
-            // Fill Combobox with release Names
-            comboboxRelease.ItemsSource = _releaseNameList;
+            _userSettings = settings;
+            _interpret = interpret;
+            _album = album;
         }
 
         /**
@@ -62,9 +62,27 @@ namespace VinylStudio.ui
          */
         public string? OpenDialog()
         {
+            QueryDiscogs();
             ShowDialog();
 
             return _selectedImageUrl;
+        }
+
+        /**
+         * Send query to Discogs and stores the results
+         */
+        private void QueryDiscogs()
+        {
+            // Load release list from discogs
+            if (_userSettings.DiscogsToken != null)
+            {
+                DiscogsClient client = new(_userSettings.DiscogsToken, _interpret, _album);
+                _releaseList = client.ReleaseList;
+                _releaseNameList = client.ReleaseNameList;
+
+                // Fill Combobox with release Names
+                comboboxRelease.ItemsSource = _releaseNameList;
+            }            
         }
 
         /**
