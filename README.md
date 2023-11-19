@@ -8,6 +8,7 @@ statistics, and search functionality in order to quickly find your desired piece
 
 ## Table of Contents
 * [Installation](#installation)
+  * [Dependencies](#dependencies)
 * [First Start](#first-start)
   * [Importing Data from Legacy System (VinylShelf)](#importing-data-from-legacy-system-VinylShelf) 
 * [Navigation](#navigation)
@@ -30,7 +31,37 @@ statistics, and search functionality in order to quickly find your desired piece
   * [Retrieving Cover Images by Discogs](#retrieving-cover-images-by-discogs)
 
 ## Installation
-*to be done*
+Open the [VisualStudio project page](https://github.com/MatrixReverser/VinylStudio) in your web browser.
+
+On the right side you see a section called 
+[releases](https://github.com/MatrixReverser/VinylStudio/releases). 
+
+Download the latest release zip file named 
+
+    VinylStudio_vx.x.x_yyyymmdd.zip
+
+(not the source code - this is only for developers).
+
+Unpack the content of the zip file to a directory of your choice. Open this directory and
+start (double click) on
+
+    VinylStudio.exe
+
+### Dependencies
+VinylStudio uses third party software described in the table below. This software is part
+of the release and does **not** have to be installed by the user manually.
+
+| Name                         | Version | Author            | License |
+|------------------------------|---------|-------------------|---------|
+| discogsharp                  | 0.4.0   | mlnrdns           | MIT     |
+| MaterialDesignThemes         | 4.9.0   | James Willock     | MIT     |
+| Newtonsoft.Json              | 13.0.3  | James Newton-King | MIT     |
+| ShowMeTheXAML                | 2.0.0   | Kevin Bost        | MIT     |
+| System.Drawing.Common        | 7.0.0   | Microsoft         | MIT     |
+| MaterialDesignColors         | 2.1.4   | James Willock     | MIT     |
+| Microsoft.Win32.SystemEvents | 7.0.0   | Microsoft         | MIT     |
+| Microsoft.Xaml.Behaviors.Wpf | 1.1.39  | Microsoft         | MIT     |
+
 
 ## First Start
 When you start VinylStudio for the first time, it asks you for a Discogs token. Please refer

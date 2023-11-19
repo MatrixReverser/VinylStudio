@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VinylStudio.ui"
         mc:Ignorable="d"
-        Title="About" Height="300" Width="500"
+        Title="About" Height="340" Width="500"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -22,21 +22,36 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="0 50 0 0" FontSize="20" FontWeight="ExtraBold">
-            VinylStudio v0.9.1
+        <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Margin="0 20 0 0" FontSize="20" FontWeight="ExtraBold">
+            VinylStudio v0.9.2
         </Label>
 
-        <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0 20 0 0" FontWeight="Bold">            
-            Build Number: 202311181856
+        <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Margin="0 10 0 0" FontWeight="Bold">            
+            Author: Andreas Altwein
         </Label>
 
-        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Margin="0 50 0 0" FontStyle="Italic">            
+        <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Margin="0 0 0 20" FontWeight="Bold">
+            Contact: kontakt@andreas-altwein.de
+        </Label>
+
+        <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" Margin="0 10 0 0" FontWeight="Bold">
+            License: GPL 3.0
+        </Label>
+
+        <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" Margin="0 0 0 0" FontWeight="Bold">
+            Build Number: 202311191000
+        </Label>
+
+        <Label Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" Margin="0 30 0 0" FontStyle="Italic">            
             Manual is included in our project site:
         </Label>
 
-        <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" Margin="0 10 0 0">
+        <Label Grid.Column="0" Grid.Row="6" HorizontalAlignment="Center" Margin="0 10 0 0">
             <Hyperlink Name="projectLink" NavigateUri="https://github.com/MatrixReverser/VinylStudio">
                 https://github.com/MatrixReverser/VinylStudio
             </Hyperlink>
