@@ -31,7 +31,7 @@ statistics, and search functionality in order to quickly find your desired piece
   * [Retrieving Cover Images by Discogs](#retrieving-cover-images-by-discogs)
 
 ## Installation
-Open the [VisualStudio project page](https://github.com/MatrixReverser/VinylStudio) in your web browser.
+Open the [VinylStudio project page](https://github.com/MatrixReverser/VinylStudio) in your web browser.
 
 On the right side you see a section called 
 [releases](https://github.com/MatrixReverser/VinylStudio/releases). 
