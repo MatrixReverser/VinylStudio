@@ -28,6 +28,7 @@
     <Window.CommandBindings>
         <CommandBinding Command="util:CustomCommands.NewAlbum" CanExecute="NewAlbumCommand_CanExecute" Executed="NewAlbumCommand_Executed" />
         <CommandBinding Command="util:CustomCommands.DeleteAlbum" CanExecute="DeleteAlbumCommand_CanExecute" Executed="DeleteAlbumCommand_Executed" />
+        <CommandBinding Command="util:CustomCommands.ToggleTracklistLock" CanExecute="ToggleTracklistLockCommand_CanExecute" Executed="ToggleTracklistLockCommand_Executed" />
     </Window.CommandBindings>
     <!--#endregion-->
 
@@ -44,6 +45,9 @@
             <MenuItem Header="_Edit">
                 <MenuItem Command="util:CustomCommands.NewAlbum" />
                 <MenuItem Command="util:CustomCommands.DeleteAlbum" />
+                <Separator />
+                <MenuItem Command="util:CustomCommands.ToggleTracklistLock" />
+                <MenuItem Header="Huhu" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About VinylStudio" Click="OnShowAbout" />
@@ -192,7 +196,6 @@
             <DockPanel Grid.Column="0" Grid.Row="0" Margin="5">
                 
                 <!-- Panel with the toolbar actions -->                
-                <!-- <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 5"> -->
                 <Grid DockPanel.Dock="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -244,8 +247,7 @@
                     <ToggleButton
                         Margin="0 0 0 15"
                         Name="toggleButtonSongTable"
-                        Checked="OnSongTableUnLocked"
-                        Unchecked="OnSongTableLocked">
+                        Command="util:CustomCommands.ToggleTracklistLock">
                         <materialDesign:PackIcon Kind="Lock" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />                        
                     </ToggleButton>
                     <Button Name="buttonQueryDiscogs" IsEnabled="false" Click="OnQueryDiscoGs" ToolTip="Import track list from Discogs" Margin="0 0 0 5">

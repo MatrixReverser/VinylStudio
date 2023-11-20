@@ -14,7 +14,7 @@ namespace VinylStudio.util
          */
         public static readonly RoutedUICommand NewAlbum = new RoutedUICommand
             (
-                "Create New Album",
+                "Create New _Album",
                 "Create New Album",
                 typeof(CustomCommands),
                 new InputGestureCollection()
@@ -28,12 +28,26 @@ namespace VinylStudio.util
          */
         public static readonly RoutedUICommand DeleteAlbum = new RoutedUICommand
             (
-                "Delete Selected Album",
+                "_Delete Selected Album",
                 "Delete Selected Album",
                 typeof(CustomCommands),
                 new InputGestureCollection()
                 {
                     new KeyGesture(Key.D, ModifierKeys.Control)
+                }
+            );
+
+        /**
+         * Command for toggling the track list locking
+         */
+        public static readonly RoutedUICommand ToggleTracklistLock = new RoutedUICommand
+            (
+                "Lock/Unlock _Tracklist",
+                "Lock/Unlock Tracklist",
+                typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.T, ModifierKeys.Control)
                 }
             );
     }
