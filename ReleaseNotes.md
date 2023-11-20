@@ -7,3 +7,13 @@
 shows an error dialog
 * **bugfix:** Filter textboxes accept now ENTER for setting the filter
 * **bugfix:** Status line is now updated correctly when changes have been made
+* **feature:** An appropriate icon is now displayed for the application (exe) and for all windows of the app
+* **feature:** Some menu elements with Hotkeys for keyboard navigation added:
+  * Create New Album: CTRL-N
+  * Delete Selected Album: CTRL-D
+  * Toggle track list locking: CTRL-T
+  * Jump to Thumbnail Filter: CTRL+ALT-T
+  * Jump to Interpret Filter: CTRL+ALT-I
+  * Clear All Filters: CTRL+ALT-C
+
+ 

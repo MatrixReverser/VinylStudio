@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Xps;
 using VinylStudio.model;
 using VinylStudio.model.legacy;
 using VinylStudio.ui;
@@ -16,8 +18,6 @@ using VinylStudio.util;
 
 namespace VinylStudio
 {
-    // TODO: Export functions for excel
-    
     public enum SortingEnum
     {
         NONE,
@@ -61,6 +61,7 @@ namespace VinylStudio
         private CollectionView? _thumbnailView;
         private CollectionView? _interpretView;
         private CollectionView? _genreView;
+        private bool _tracklistLocked = true;
 
         public MainWindow()
         {
@@ -96,10 +97,6 @@ namespace VinylStudio
             }
 
             this.Closing += OnWindowClosing;
-            detailPanel.DataContextChanged += (sender, e) =>
-            {
-                buttonDeleteAlbum.IsEnabled = (detailPanel.DataContext != null);
-            };
 
             // set values for the sorting enum
             comboSorting.ItemsSource = Enum.GetValues(typeof(SortingEnum))
@@ -237,7 +234,7 @@ namespace VinylStudio
             {
                 if (clickedThumbnail.DataContext is AlbumModel album)
                 {
-                    EnableSongTableEditing(false); 
+                    ToggleTracklistLock(false); 
                     detailPanel.DataContext = album;
                     songTable.ItemsSource = album.Songs;                    
 
@@ -298,7 +295,7 @@ namespace VinylStudio
             // if there is at least one album in the filtered list, we want to select the first album
             CollectionView thumbnailView = (CollectionView)CollectionViewSource.GetDefaultView(_dataModel.AlbumList);
 
-            EnableSongTableEditing(false);
+            ToggleTracklistLock(false);
             if (thumbnailView != null && thumbnailView.Count > 0)
             {
                 AlbumModel album = (AlbumModel)thumbnailView.GetItemAt(0);
@@ -364,9 +361,9 @@ namespace VinylStudio
         }
 
         /**
-         * Is called if the user clicks on the AddAlbum button
+         * Creates a new album and adds it to the data model
          */
-        private void OnAddAlbum(object sender, EventArgs e)
+        private void AddNewAlbum()
         {
             AlbumEditDialog dlg = new(_userSettings, _dataModel)
             {
@@ -374,8 +371,8 @@ namespace VinylStudio
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             AlbumModel? album = dlg.OpenDialog();
-            
-            if (album != null) 
+
+            if (album != null)
             {
                 detailPanel.DataContext = album;
                 songTable.ItemsSource = album.Songs;
@@ -385,9 +382,9 @@ namespace VinylStudio
         }
 
         /**
-         * Is called if the user wants to delete the current album
+         * Deletes the current album
          */
-        private void OnDeleteAlbum(object sender, EventArgs e)
+        private void DeleteCurrentAlbum()
         {
             AlbumModel? album = detailPanel.DataContext as AlbumModel;
 
@@ -780,43 +777,7 @@ namespace VinylStudio
 
             return discogsToken;
         }
-
-        /**
-         * Is called if the user wants to lock the song table
-         */
-        private void OnSongTableLocked(object? sender, RoutedEventArgs e)
-        {
-            EnableSongTableEditing(false);
-            buttonSongDelete.IsEnabled = false;
-            buttonDeleteAllSongs.IsEnabled = false;
-            buttonQueryDiscogs.IsEnabled = false;
-        }
-
-        /**
-         * Is called if the user wants to unlock the song table
-         */
-        private void OnSongTableUnLocked(object?sender, RoutedEventArgs e)
-        {
-            EnableSongTableEditing(true);
-            buttonSongDelete.IsEnabled = true;
-            buttonDeleteAllSongs.IsEnabled = true;
-            buttonQueryDiscogs.IsEnabled = true;
-        }
-
-        /**
-         * Enables / disables the editing of the song table
-         */
-        private void EnableSongTableEditing(bool enable) 
-        {
-            toggleButtonSongTable.IsChecked = enable;
-            songTable.IsReadOnly = !enable;
-
-            if (!enable)
-            {
-                SaveDataModel();
-            }
-        }
-
+                
         /**
          * Shows the about dialog
          */
@@ -838,7 +799,7 @@ namespace VinylStudio
             _dataModel.Save();
             UpdateStatusLine();
         }
-        
+
         /**
          * Updates the user settings with position and size of the main window and
          * saves settings into JSO file
@@ -851,6 +812,144 @@ namespace VinylStudio
             _userSettings.YPosition = (int)this.Top;
 
             _userSettings.Save();
+        }
+
+        /**
+         * Checks if ClearAllFilters command can be executed
+         */
+        private void ClearAllFiltersCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /**
+         * Executes the ClearAllFilters command
+         */
+        private void ClearAllFiltersCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            UIElement? focusedElement = FocusManager.GetFocusedElement(this) as UIElement;
+            if (focusedElement == null)
+            {
+                focusedElement = interpretFilter;
+            }
+
+            interpretFilter.Focus();
+            interpretFilter.Text = string.Empty;
+            textboxAlbumFilter.Focus();
+            textboxAlbumFilter.Text = string.Empty;
+
+            focusedElement.Focus();
+        }
+
+        /**
+         * Checks if FilterInterprets command can be executed
+         */
+        private void FilterInterpretsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /**
+         * Executes the FilterInterprets command
+         */
+        private void FilterInterpretsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            interpretFilter.Focus();
+        }
+
+        /**
+         * Checks if FilterThumbnails command can be executed
+         */
+        private void FilterThumbnailsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /**
+         * Executes the FilterThumbnails command
+         */
+        private void FilterThumbnailsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            textboxAlbumFilter.Focus();  
+        }
+
+        /**
+         * Checks if NewAlbum command can be executed
+         */
+        private void NewAlbumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /**
+         * Executes the NewAlbum command
+         */
+        private void NewAlbumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            AddNewAlbum();
+        }
+
+        /**
+         * Checks if DeleteAlbum command can be executed
+         */
+        private void DeleteAlbumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (detailPanel != null && detailPanel.DataContext != null);
+        }
+
+        /**
+         * Executes the DeleteAlbum command
+         */
+        private void DeleteAlbumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            DeleteCurrentAlbum();
+        }
+
+        /**
+         * Checks if the ToggleTracklistLock command can be executed
+         */
+        private void ToggleTracklistLockCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (detailPanel != null && detailPanel.DataContext != null);
+        }
+
+        /**
+         * Executes the ToggleTracklistLock command
+         */
+        private void ToggleTracklistLockCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ToggleTracklistLock();
+        }
+
+        /**
+         * Toggles the tracklist lock
+         */
+        private void ToggleTracklistLock(bool? hardModeEnable=null) 
+        {
+            bool enable = false;
+
+            if (hardModeEnable == null)
+            {
+                _tracklistLocked = !_tracklistLocked;
+                enable = !_tracklistLocked;
+            } else
+            {
+                _tracklistLocked = !((bool)hardModeEnable);
+                enable = (bool)hardModeEnable;
+            }
+
+            toggleButtonSongTable.IsChecked = enable;
+
+            buttonSongDelete.IsEnabled = enable;
+            buttonDeleteAllSongs.IsEnabled = enable;
+            buttonQueryDiscogs.IsEnabled = enable;
+            songTable.IsReadOnly = !enable;
+
+            // set focus to the track table if it has been enabled
+            if (enable)
+            {
+                songTable.Focus();
+            }
         }
     }
 }
