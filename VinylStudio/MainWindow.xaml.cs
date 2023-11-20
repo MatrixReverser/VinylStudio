@@ -138,7 +138,7 @@ namespace VinylStudio
         {
             if (_dataModel.IsModified)
             {
-                _dataModel.Save();                
+                SaveDataModel();               
             }
             _userSettings.Save();
         }
@@ -163,7 +163,7 @@ namespace VinylStudio
         {            
             if (_dataModel.IsModified)
             {
-                _dataModel.Save();
+                SaveDataModel();
             }
             _userSettings.Save();
 
@@ -248,7 +248,8 @@ namespace VinylStudio
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             dlg.OpenDialog();
-            _dataModel.Save();
+
+            SaveDataModel();
         }
 
         /**
@@ -365,8 +366,9 @@ namespace VinylStudio
             {
                 detailPanel.DataContext = album;
                 songTable.ItemsSource = album.Songs;
+                UpdateStatusLine();
             }
-            _dataModel.Save();
+            SaveDataModel();
         }
 
         /**
@@ -393,8 +395,8 @@ namespace VinylStudio
 
                     // we really have to save the data. Because if the user does not save, the next start will cause
                     // an exception because the album references an image that already has been deleted.
-                    _dataModel.Save();
-
+                    SaveDataModel();
+                    
                     // Select next album from the thumbnail panel to display in the detail panel
                     AlbumModel? nextAlbum = null;                    
                     if (_thumbnailView?.Count > 0)
@@ -414,7 +416,7 @@ namespace VinylStudio
                         if (result == MessageBoxResult.Yes && interpret != null)
                         {
                             _dataModel.InterpretList.Remove(interpret);
-                            _dataModel.Save();
+                            SaveDataModel();
                         }
                     }                    
                 }
@@ -741,7 +743,7 @@ namespace VinylStudio
                             album.Songs.Add(song);
                         }
 
-                        _dataModel.Save();
+                        SaveDataModel();
                     }
                 }
             }
@@ -798,7 +800,7 @@ namespace VinylStudio
 
             if (!enable)
             {
-                _dataModel.Save();
+                SaveDataModel();
             }
         }
 
@@ -813,6 +815,15 @@ namespace VinylStudio
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             dialog.ShowDialog();
+        }
+
+        /**
+         * Saves the data model and updates the status line
+         */
+        private void SaveDataModel()
+        {
+            _dataModel.Save();
+            UpdateStatusLine();
         }
     }
 }
