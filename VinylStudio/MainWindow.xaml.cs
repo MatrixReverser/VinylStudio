@@ -68,6 +68,22 @@ namespace VinylStudio
             _dataModel = new DataModel();
             _dataModel.Load();
 
+            // set window size and position
+            _userSettings = new();
+
+            this.Width = (double)_userSettings.AppWidth;
+            this.Height = (double)_userSettings.AppHeight;
+
+            if (_userSettings.XPosition >= 0)
+            {
+                this.Left = (double)_userSettings.XPosition;
+            }
+            if (_userSettings.YPosition >= 0)
+            {
+                this.Top = (double)_userSettings.YPosition;
+            }
+
+            // prepare data
             ConnectDataModel();
             InitViews();
             
@@ -93,8 +109,6 @@ namespace VinylStudio
             comboSorting.SelectedIndex = 0;
 
             UpdateStatusLine();
-
-            _userSettings = new();            
         }
 
         /**
@@ -111,7 +125,6 @@ namespace VinylStudio
                     return;
                 }
             }
-            
         }
 
         /**
@@ -140,7 +153,7 @@ namespace VinylStudio
             {
                 SaveDataModel();               
             }
-            _userSettings.Save();
+            SaveUserSettings();
         }
 
         /**
@@ -165,7 +178,7 @@ namespace VinylStudio
             {
                 SaveDataModel();
             }
-            _userSettings.Save();
+            SaveUserSettings();
 
             // we don't want to ask the user again, when the window is closing
             // therefore we remove the event handler
@@ -824,6 +837,20 @@ namespace VinylStudio
         {
             _dataModel.Save();
             UpdateStatusLine();
+        }
+        
+        /**
+         * Updates the user settings with position and size of the main window and
+         * saves settings into JSO file
+         */
+        private void SaveUserSettings()
+        {
+            _userSettings.AppWidth = (int)this.Width;
+            _userSettings.AppHeight = (int)this.Height;
+            _userSettings.XPosition = (int)this.Left;
+            _userSettings.YPosition = (int)this.Top;
+
+            _userSettings.Save();
         }
     }
 }

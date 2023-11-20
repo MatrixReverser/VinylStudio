@@ -15,6 +15,8 @@ namespace VinylStudio.util
         public string? DiscogsToken;
         public int AppWidth = 1280;
         public int AppHeight = 800;
+        public int XPosition = -1;
+        public int YPosition = -1;
 
         /**
          * Constructor of this class
