@@ -7,6 +7,7 @@
         xmlns:models="clr-namespace:VinylStudio.model"
         mc:Ignorable="d"
         Title="Vinyl Studio" Height="800" Width="1280"
+        
         Loaded="OnMainWindowOpened"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -15,7 +16,12 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}">
-    
+
+    <Window.Icon>
+        <BitmapImage UriSource = "/VinylStudio;component/icons/vinyl.png" />
+        <!--"/IhrProjektname;component/Assets/IhrIcon.ico"/> -->
+    </Window.Icon>
+
     <DockPanel>
         
         <!--#region Main Menu-->
