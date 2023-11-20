@@ -815,6 +815,22 @@ namespace VinylStudio
         }
 
         /**
+         * Checks if FilterInterprets command can be executed
+         */
+        private void FilterInterpretsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /**
+         * Executes the FilterInterprets command
+         */
+        private void FilterInterpretsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            interpretFilter.Focus();
+        }
+
+        /**
          * Checks if FilterThumbnails command can be executed
          */
         private void FilterThumbnailsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)

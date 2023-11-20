@@ -57,11 +57,25 @@ namespace VinylStudio.util
         public static readonly RoutedUICommand FilterThumbnails = new RoutedUICommand
             (
                 "Filter Thumb_nails",
-                "Lock/Unlock Tracklist",
+                "Filter Thumbnails",
                 typeof(CustomCommands),
                 new InputGestureCollection()
                 {
                     new KeyGesture(Key.T, ModifierKeys.Control | ModifierKeys.Alt)
+                }
+            );
+
+        /**
+         * Command for setting the focus on the interprets filter
+         */
+        public static readonly RoutedUICommand FilterInterprets = new RoutedUICommand
+            (
+                "Filter _Interprets",
+                "Filter Interprets",
+                typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.I, ModifierKeys.Control | ModifierKeys.Alt)
                 }
             );
     }

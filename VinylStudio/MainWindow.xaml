@@ -30,6 +30,7 @@
         <CommandBinding Command="util:CustomCommands.DeleteAlbum" CanExecute="DeleteAlbumCommand_CanExecute" Executed="DeleteAlbumCommand_Executed" />
         <CommandBinding Command="util:CustomCommands.ToggleTracklistLock" CanExecute="ToggleTracklistLockCommand_CanExecute" Executed="ToggleTracklistLockCommand_Executed" />
         <CommandBinding Command="util:CustomCommands.FilterThumbnails" CanExecute="FilterThumbnailsCommand_CanExecute" Executed="FilterThumbnailsCommand_Executed" />
+        <CommandBinding Command="util:CustomCommands.FilterInterprets" CanExecute="FilterInterpretsCommand_CanExecute" Executed="FilterInterpretsCommand_Executed" />
     </Window.CommandBindings>
     <!--#endregion-->
 
@@ -50,6 +51,7 @@
                 <MenuItem Command="util:CustomCommands.ToggleTracklistLock" />
                 <Separator />
                 <MenuItem Command="util:CustomCommands.FilterThumbnails" />
+                <MenuItem Command="util:CustomCommands.FilterInterprets" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About VinylStudio" Click="OnShowAbout" />
