@@ -298,14 +298,16 @@ namespace VinylStudio
             }            
         }
 
+        /**
+         * Forced the interpret filter to be set when the user pressed enter by
+         * setting the focus to the label before
+         */
         private void OnKeyUpInFilterInterprets(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                if (Keyboard.FocusedElement is UIElement nextControl)
-                {
-                    nextControl.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
-                }
+                OnFilterInterprets(sender, e);
+                e.Handled = true;
             }
         }
         
@@ -341,6 +343,10 @@ namespace VinylStudio
                 _thumbnailView.Filter = null;
                 UpdateStatusLine();
             }
+
+            // when interprets are filtered, all selection in the interpret list must be reset
+            // We want to show initially all albums of the interprets that has been filtered
+            interpretList.SelectedItem = null;
         }
 
         /**
@@ -454,6 +460,18 @@ namespace VinylStudio
             }
 
             _thumbnailView?.SortDescriptions.Add(description);
+        }
+
+        /**
+         * Forces the thumbnail filter to be set when the user clicked enter
+         */
+        private void OnKeyUpInFilterThumbnails(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                FilterThumbnails();
+                e.Handled = true;
+            }
         }
 
         /**
