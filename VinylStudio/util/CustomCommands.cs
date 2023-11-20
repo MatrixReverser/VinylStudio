@@ -50,5 +50,19 @@ namespace VinylStudio.util
                     new KeyGesture(Key.T, ModifierKeys.Control)
                 }
             );
+
+        /**
+         * Command for setting the focus on the thumbnail filter
+         */
+        public static readonly RoutedUICommand FilterThumbnails = new RoutedUICommand
+            (
+                "Filter Thumb_nails",
+                "Lock/Unlock Tracklist",
+                typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.T, ModifierKeys.Control | ModifierKeys.Alt)
+                }
+            );
     }
 }

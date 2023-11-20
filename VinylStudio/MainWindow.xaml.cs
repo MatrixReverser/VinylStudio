@@ -815,6 +815,22 @@ namespace VinylStudio
         }
 
         /**
+         * Checks if FilterThumbnails command can be executed
+         */
+        private void FilterThumbnailsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /**
+         * Executes the FilterThumbnails command
+         */
+        private void FilterThumbnailsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            textboxAlbumFilter.Focus();  
+        }
+
+        /**
          * Checks if NewAlbum command can be executed
          */
         private void NewAlbumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
