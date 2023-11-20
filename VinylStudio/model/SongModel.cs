@@ -71,9 +71,10 @@ namespace VinylStudio.model
                     {
                         Length = seconds;
                     }
-                } catch (FormatException)
+                }
+                catch (Exception ex) 
                 {
-                    Debug.WriteLine("Uhh.");
+                    Debug.WriteLine("Failed to format time of a track (" + value + ")\n" + ex.Message);
                 }
             }
         }
