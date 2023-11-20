@@ -78,5 +78,19 @@ namespace VinylStudio.util
                     new KeyGesture(Key.I, ModifierKeys.Control | ModifierKeys.Alt)
                 }
             );
+
+        /**
+         * Command for resetting all filters (interprets and thumbnails)
+         */
+        public static readonly RoutedUICommand ClearAllFilters = new RoutedUICommand
+            (
+                "_Clear All Filters",
+                "Clear All Filters",
+                typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.C, ModifierKeys.Control | ModifierKeys.Alt)
+                }
+            );
     }
 }

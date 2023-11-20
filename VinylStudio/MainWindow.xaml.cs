@@ -815,6 +815,33 @@ namespace VinylStudio
         }
 
         /**
+         * Checks if ClearAllFilters command can be executed
+         */
+        private void ClearAllFiltersCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /**
+         * Executes the ClearAllFilters command
+         */
+        private void ClearAllFiltersCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            UIElement? focusedElement = FocusManager.GetFocusedElement(this) as UIElement;
+            if (focusedElement == null)
+            {
+                focusedElement = interpretFilter;
+            }
+
+            interpretFilter.Focus();
+            interpretFilter.Text = string.Empty;
+            textboxAlbumFilter.Focus();
+            textboxAlbumFilter.Text = string.Empty;
+
+            focusedElement.Focus();
+        }
+
+        /**
          * Checks if FilterInterprets command can be executed
          */
         private void FilterInterpretsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
