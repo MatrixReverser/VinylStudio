@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VinylStudio"
-        xmlns:models="clr-namespace:VinylStudio.model"
+        xmlns:util="clr-namespace:VinylStudio.util"
         mc:Ignorable="d"
         Title="Vinyl Studio" Height="800" Width="1280"
         
@@ -17,10 +17,18 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}">
 
+    <!--#region Setting Windows Icon-->
     <Window.Icon>
         <BitmapImage UriSource = "/VinylStudio;component/icons/vinyl.png" />
         <!--"/IhrProjektname;component/Assets/IhrIcon.ico"/> -->
     </Window.Icon>
+    <!--#endregion-->
+
+    <!--#region Command Bindings -->
+    <Window.CommandBindings>
+        <CommandBinding Command="util:CustomCommands.NewAlbum" CanExecute="NewAlbumCommand_CanExecute" Executed="NewAlbumCommand_Executed" />
+    </Window.CommandBindings>
+    <!--#endregion-->
 
     <DockPanel>
         
@@ -31,6 +39,9 @@
                     <MenuItem Header="Migrate from _VinylShelf 0.2" Click="OnMenuFileMigrateFromShelf" />
                 </MenuItem>
                 <MenuItem Header="E_xit" Click="OnMenuFileExit" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Command="util:CustomCommands.NewAlbum" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About VinylStudio" Click="OnShowAbout" />
@@ -192,7 +203,7 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Grid.Row="0" ToolTip="Add new Album" Click="OnAddAlbum">
+                    <Button Grid.Column="0" Grid.Row="0" ToolTip="Add new Album" Command="util:CustomCommands.NewAlbum">
                         <materialDesign:PackIcon Kind="ImagePlus" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Button>
                     <Label Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="20 0 0 0">Sorting: </Label>

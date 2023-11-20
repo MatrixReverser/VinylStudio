@@ -7,3 +7,5 @@
 shows an error dialog
 * **bugfix:** Filter textboxes accept now ENTER for setting the filter
 * **bugfix:** Status line is now updated correctly when changes have been made
+* **feature:** An appropriate icon is now displayed for the application (exe) and for all windows of the app
+ 

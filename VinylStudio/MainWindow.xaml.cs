@@ -364,9 +364,9 @@ namespace VinylStudio
         }
 
         /**
-         * Is called if the user clicks on the AddAlbum button
+         * Creates a new album and adds it to the data model
          */
-        private void OnAddAlbum(object sender, EventArgs e)
+        private void AddNewAlbum()
         {
             AlbumEditDialog dlg = new(_userSettings, _dataModel)
             {
@@ -374,8 +374,8 @@ namespace VinylStudio
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
             AlbumModel? album = dlg.OpenDialog();
-            
-            if (album != null) 
+
+            if (album != null)
             {
                 detailPanel.DataContext = album;
                 songTable.ItemsSource = album.Songs;
@@ -838,7 +838,7 @@ namespace VinylStudio
             _dataModel.Save();
             UpdateStatusLine();
         }
-        
+
         /**
          * Updates the user settings with position and size of the main window and
          * saves settings into JSO file
@@ -851,6 +851,16 @@ namespace VinylStudio
             _userSettings.YPosition = (int)this.Top;
 
             _userSettings.Save();
+        }
+
+        private void NewAlbumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void NewAlbumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            AddNewAlbum();
         }
     }
 }
