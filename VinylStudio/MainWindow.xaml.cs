@@ -96,10 +96,14 @@ namespace VinylStudio
             }
 
             this.Closing += OnWindowClosing;
+
+            // TODO: Remove, done by command now
+            /*
             detailPanel.DataContextChanged += (sender, e) =>
             {
                 buttonDeleteAlbum.IsEnabled = (detailPanel.DataContext != null);
             };
+            */
 
             // set values for the sorting enum
             comboSorting.ItemsSource = Enum.GetValues(typeof(SortingEnum))
@@ -385,9 +389,9 @@ namespace VinylStudio
         }
 
         /**
-         * Is called if the user wants to delete the current album
+         * Deletes the current album
          */
-        private void OnDeleteAlbum(object sender, EventArgs e)
+        private void DeleteCurrentAlbum()
         {
             AlbumModel? album = detailPanel.DataContext as AlbumModel;
 
@@ -853,14 +857,36 @@ namespace VinylStudio
             _userSettings.Save();
         }
 
+        /**
+         * Checks if NewAlbum command can be executed
+         */
         private void NewAlbumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+        /**
+         * Executes the NewAlbum command
+         */
         private void NewAlbumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             AddNewAlbum();
+        }
+
+        /**
+         * Checks if DeleteAlbum command can be executed
+         */
+        private void DeleteAlbumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (detailPanel != null && detailPanel.DataContext != null);
+        }
+
+        /**
+         * Executes the DeleteAlbum command
+         */
+        private void DeleteAlbumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            DeleteCurrentAlbum();
         }
     }
 }

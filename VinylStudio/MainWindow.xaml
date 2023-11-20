@@ -27,6 +27,7 @@
     <!--#region Command Bindings -->
     <Window.CommandBindings>
         <CommandBinding Command="util:CustomCommands.NewAlbum" CanExecute="NewAlbumCommand_CanExecute" Executed="NewAlbumCommand_Executed" />
+        <CommandBinding Command="util:CustomCommands.DeleteAlbum" CanExecute="DeleteAlbumCommand_CanExecute" Executed="DeleteAlbumCommand_Executed" />
     </Window.CommandBindings>
     <!--#endregion-->
 
@@ -42,6 +43,7 @@
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Command="util:CustomCommands.NewAlbum" />
+                <MenuItem Command="util:CustomCommands.DeleteAlbum" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About VinylStudio" Click="OnShowAbout" />
@@ -73,7 +75,7 @@
 
             <!-- Panel with the toolbar actions -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 5">
-                <Button Name="buttonDeleteAlbum" ToolTip="Delete selected Album" Click="OnDeleteAlbum">
+                <Button Name="buttonDeleteAlbum" ToolTip="Delete selected Album" Command="util:CustomCommands.DeleteAlbum">
                     <materialDesign:PackIcon Kind="Delete" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Button>
             </StackPanel>

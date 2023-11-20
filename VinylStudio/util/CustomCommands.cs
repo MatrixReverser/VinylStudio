@@ -14,8 +14,8 @@ namespace VinylStudio.util
          */
         public static readonly RoutedUICommand NewAlbum = new RoutedUICommand
             (
-                "New Album",
-                "New Album",
+                "Create New Album",
+                "Create New Album",
                 typeof(CustomCommands),
                 new InputGestureCollection()
                 {
@@ -23,5 +23,18 @@ namespace VinylStudio.util
                 }
             );
 
+        /**
+         * Command for deleting the currently selected album
+         */
+        public static readonly RoutedUICommand DeleteAlbum = new RoutedUICommand
+            (
+                "Delete Selected Album",
+                "Delete Selected Album",
+                typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.D, ModifierKeys.Control)
+                }
+            );
     }
 }
