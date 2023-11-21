@@ -16,5 +16,5 @@ shows an error dialog
   * Jump to Interpret Filter: CTRL+ALT-I
   * Clear All Filters: CTRL+ALT-C
 * **feature:** Weight between thumbnail panel and track list panel is saved when app exits and restored when the application starts again
-
+* **feature:** Prices in status line and detail panel are now displayed with the user locale
  
