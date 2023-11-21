@@ -15,5 +15,6 @@ shows an error dialog
   * Jump to Thumbnail Filter: CTRL+ALT-T
   * Jump to Interpret Filter: CTRL+ALT-I
   * Clear All Filters: CTRL+ALT-C
+* **feature:** Weight between thumbnail panel and track list panel is saved when app exits and restored when the application starts again
 
  

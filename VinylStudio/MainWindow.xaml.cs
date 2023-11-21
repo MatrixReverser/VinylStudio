@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Xps;
@@ -87,7 +88,7 @@ namespace VinylStudio
             // prepare data
             ConnectDataModel();
             InitViews();
-            
+
             // if there is at least one album in the list, select this album
             if (_dataModel.AlbumList.Count > 0)
             {
@@ -106,6 +107,25 @@ namespace VinylStudio
             comboSorting.SelectedIndex = 0;
 
             UpdateStatusLine();
+            MemorizeGridSplitterPosition();
+        }
+
+        /**
+         * Set the restored GridSplitter position.
+         * Recognize any actions on the gridsplitter between thumbnail panel and track list pane
+         */
+        private void MemorizeGridSplitterPosition() 
+        {
+            mainGrid.RowDefinitions[0].Height = new GridLength(_userSettings.ThumbnailContainerHeight);
+
+            gridSplitter.DragCompleted += (sender, e) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    mainGrid.UpdateLayout();
+                    _userSettings.ThumbnailContainerHeight = mainGrid.RowDefinitions[0].ActualHeight;
+                });
+            };
         }
 
         /**
