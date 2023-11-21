@@ -594,7 +594,7 @@ namespace VinylStudio
             }
 
             CultureInfo userCulture = CultureInfo.CurrentCulture;
-            string formattedValue = "$" + collectionValue.ToString("N2", userCulture);
+            string formattedValue = collectionValue.ToString("C", userCulture);
             statusValue.Content = formattedValue;
 
             TimeSpan timeSpan = TimeSpan.FromSeconds(totalLength);
