@@ -186,7 +186,7 @@
         </DockPanel>
         <!--#endregion-->
 
-        <Grid Background="#202020">
+        <Grid Name="mainGrid" Background="#202020">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -196,7 +196,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <GridSplitter Grid.Column="0" Grid.Row="1" ShowsPreview="True" HorizontalAlignment="Stretch" Height="3" Background="DimGray" />
+            <GridSplitter Name="gridSplitter" Grid.Column="0" Grid.Row="1" ShowsPreview="True" HorizontalAlignment="Stretch" Height="3" Background="DimGray" />
 
             <!--#region Thumbnail Grid and action bar for thumbnail grid-->
             <DockPanel Grid.Column="0" Grid.Row="0" Margin="5">
