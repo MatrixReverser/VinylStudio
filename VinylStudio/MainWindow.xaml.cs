@@ -286,9 +286,9 @@ namespace VinylStudio
         }
 
         /**
-         * is called if the user has clicked on an interpret in the interpret list
+         * is called if the user has clicked on an interpret in the interpret list (for selection or deselection)
          */
-        private void OnInterpretSelected(object sender, SelectionChangedEventArgs e)
+        private void OnInterpretSelectionChanged(object sender, SelectionChangedEventArgs e)
         {            
             FilterThumbnails();            
         }
@@ -304,6 +304,7 @@ namespace VinylStudio
             {
                 filter = null;
             }
+           
             SetInterpretFilter(filter);
 
             SelectFirstAlbumInThumbnailList();
@@ -380,7 +381,7 @@ namespace VinylStudio
 
             // when interprets are filtered, all selection in the interpret list must be reset
             // We want to show initially all albums of the interprets that has been filtered
-            interpretList.SelectedItem = null;
+            interpretList.SelectedItems.Clear();
         }
 
         /**
@@ -555,7 +556,7 @@ namespace VinylStudio
                     }
 
                     // check interpret(s) accepted
-                    if (interpretList.SelectedItem == null)
+                    if (interpretList.SelectedItems == null || interpretList.SelectedItems.Count == 0)
                     {
                         // In this case, no interpret is selected, so we filter for
                         // all interprets currently in the interpretView
@@ -570,10 +571,13 @@ namespace VinylStudio
                         }
                     } else
                     {
-                        InterpretModel interpret = (InterpretModel)interpretList.SelectedItem;
-                        if (album.Interpret == interpret)
+                        foreach (InterpretModel interpret in interpretList.SelectedItems)
                         {
-                            acceptInterpret = true;
+                            if (album.Interpret == interpret)
+                            {
+                                acceptInterpret = true;
+                                break;
+                            }
                         }
                     }
 
@@ -594,8 +598,12 @@ namespace VinylStudio
             int totalLength = 0;
 
             statusInterprets.Content = _interpretView?.Count;
+            if (interpretList.SelectedItems != null && interpretList.SelectedItems.Count > 0)
+            {
+                statusInterprets.Content = interpretList.SelectedItems.Count.ToString();
+            }
 
-            if (interpretFilter.Text.Trim() == string.Empty && interpretList.SelectedItem == null)
+            if (interpretFilter.Text.Trim() == string.Empty && (interpretList.SelectedItems == null || interpretList.SelectedItems.Count == 0))
             {
                 statusAlbums.Content = _dataModel.AlbumList.Count;
                 statusTracks.Content = CountTracks(false);
