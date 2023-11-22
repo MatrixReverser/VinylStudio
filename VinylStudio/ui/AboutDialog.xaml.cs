@@ -40,7 +40,13 @@ namespace VinylStudio.ui
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error while opening the web browser: {ex.Message}");
+                VinylMessageBox msgBox = new(
+                    this,
+                    "Error Opening Web Browser",
+                    $"Error while opening the web browser: {ex.Message}",
+                    VinylMessageBoxType.ERROR,
+                    VinylMessageBoxButtons.OK);
+                msgBox.OpenDialog();
             }
 
             e.Handled = true;
