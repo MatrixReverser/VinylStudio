@@ -347,7 +347,13 @@ namespace VinylStudio
          */
         private void ShowInvalidAlbumDataMsgBox(string message)
         {
-            MessageBox.Show(this, message, "Invalid album data", MessageBoxButton.OK, MessageBoxImage.Error);
+            VinylMessageBox msgBox = new(
+                this,
+                "Invalid Album Data",
+                message,
+                VinylMessageBoxType.ERROR,
+                VinylMessageBoxButtons.OK);
+            msgBox.OpenDialog();
         }
 
         /**
@@ -401,7 +407,14 @@ namespace VinylStudio
                 if (_userSettings.DiscogsToken == null)
                 {
                     _userSettings.DiscogsToken = string.Empty;
-                    MessageBox.Show(this, "You cannot browse for images without a Discogs Token", "Authentication needed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    
+                    VinylMessageBox msgBox = new(
+                        this,
+                        "Authentication Needed",
+                        "You cannot browse for images without a Discogs Token",
+                        VinylMessageBoxType.ERROR,
+                        VinylMessageBoxButtons.OK);
+                    msgBox.OpenDialog();
 
                     return;
                 }
@@ -463,8 +476,14 @@ namespace VinylStudio
                     coverImage.Source = LoadBitmapImage(_imagePath); // new BitmapImage(new Uri(_imagePath));
                 }
                 catch (Exception ex)
-                {
-                    MessageBox.Show($"Error while retrieving cover image form Discogs: {ex.Message}");
+                {                    
+                    VinylMessageBox msgBox = new(
+                        this,
+                        "Error Retrieving Cover Image",
+                        $"Error while retrieving cover image form Discogs: {ex.Message}",
+                        VinylMessageBoxType.ERROR,
+                        VinylMessageBoxButtons.OK);
+                    msgBox.OpenDialog();
                 }
             }
         }

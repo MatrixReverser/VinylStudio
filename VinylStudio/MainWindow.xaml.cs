@@ -107,7 +107,7 @@ namespace VinylStudio
             comboSorting.SelectedIndex = 0;
 
             UpdateStatusLine();
-            MemorizeGridSplitterPosition();
+            MemorizeGridSplitterPosition();           
         }
 
         /**
@@ -208,14 +208,15 @@ namespace VinylStudio
          */
         private void OnMenuFileMigrateFromShelf(object sender, EventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Warning!!! Migrating from the legacy system will erase\nyour current database. This proccess is irreversible!!!\nDo you really want to do this?",
+            VinylMessageBox msgbox = new(
+                this,
                 "All data will be erased",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning,
-                MessageBoxResult.No);
-
-            if (result == MessageBoxResult.No) 
+                "Warning!!! Migrating from the legacy system will erase your current database. This proccess is irreversible!!!\n\nDo you really want to do this?",
+                VinylMessageBoxType.QUESTION,
+                VinylMessageBoxButtons.YES_NO);
+            VinylMessageBoxResult result = msgbox.OpenDialog();
+            
+            if (result == VinylMessageBoxResult.NO) 
             {
                 return;
             }
@@ -231,11 +232,13 @@ namespace VinylStudio
 
                     if (model == null)
                     {
-                        MessageBox.Show(
-                            "Something went wrong. Since migration is a highly risky\n action, I'm not sure what happened. I'm sorry",
+                        VinylMessageBox msgBox = new(
+                            this,
                             "Migration failed",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
+                            "Something went wrong. Since migration is a highly risky\n action, I'm not sure what happened. I'm sorry",
+                            VinylMessageBoxType.ERROR,
+                            VinylMessageBoxButtons.OK);
+                        msgBox.OpenDialog();
                         return;
                     }
                     
@@ -411,9 +414,16 @@ namespace VinylStudio
             if (album != null)
             {
                 string message = "Do you really want to delete the album\n\"" + album.Name + "\" from \"" + album.Interpret?.Name + "?";
-                MessageBoxResult result = MessageBox.Show(this, message, "Delete album", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-                if (result == MessageBoxResult.Yes)
+                VinylMessageBox msgBox = new(
+                    this,
+                    "Delete Album",
+                    message,
+                    VinylMessageBoxType.QUESTION,
+                    VinylMessageBoxButtons.YES_NO);
+                VinylMessageBoxResult result = msgBox.OpenDialog();
+
+                if (result == VinylMessageBoxResult.YES)
                 {
                     // delete album and thumbnail image
                     _dataModel.AlbumList.Remove(album);
@@ -441,9 +451,16 @@ namespace VinylStudio
                     if (_dataModel.IsOrphan(interpret))
                     {
                         message = "There are no more albums by interpret \"" + interpret + "\".\nDelete interpret?";
-                        result = MessageBox.Show(this, message, "Delete album", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        
+                        msgBox = new(
+                            this,
+                            "Delete Interpret",
+                            message,
+                            VinylMessageBoxType.QUESTION,
+                            VinylMessageBoxButtons.YES_NO);
+                        result = msgBox.OpenDialog();
 
-                        if (result == MessageBoxResult.Yes && interpret != null)
+                        if (result == VinylMessageBoxResult.YES && interpret != null)
                         {
                             _dataModel.InterpretList.Remove(interpret);
                             SaveDataModel();
@@ -688,13 +705,15 @@ namespace VinylStudio
         {
             if (songTable.SelectedItems.Count > 0)
             {
-                MessageBoxResult result = MessageBox.Show(
+                VinylMessageBox msgBox = new(
                     this,
-                    "Do you really want to delete the selected songs?",
-                    "Delete selected songs",
-                    MessageBoxButton.YesNo, 
-                    MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No) 
+                    "Delete Selected Songs",
+                    "Do you really want to delete the selcted songs?",
+                    VinylMessageBoxType.QUESTION,
+                    VinylMessageBoxButtons.YES_NO);
+                VinylMessageBoxResult result = msgBox.OpenDialog();
+
+                if (result == VinylMessageBoxResult.NO) 
                 {
                     return;
                 }
@@ -718,13 +737,15 @@ namespace VinylStudio
          */
         private void OnDeleteAllTracks(object? sender, EventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                this, 
-                "Do you really want to delete all songs of this album?",
-                "Delete all songs",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-            if (result == MessageBoxResult.No) 
+            VinylMessageBox msgBox = new(
+                this,
+                "Delete All Songs",
+                "Do you really want to delete all songs from this album?",
+                VinylMessageBoxType.QUESTION,
+                VinylMessageBoxButtons.YES_NO);
+            VinylMessageBoxResult result = msgBox.OpenDialog();
+
+            if (result == VinylMessageBoxResult.NO) 
             {
                 return;
             }
@@ -746,7 +767,14 @@ namespace VinylStudio
                     if (_userSettings.DiscogsToken == null)
                     {
                         _userSettings.DiscogsToken = string.Empty;
-                        MessageBox.Show(this, "You cannot browse for track lists without a Discogs Token", "Authentication needed", MessageBoxButton.OK, MessageBoxImage.Error);
+                        
+                        VinylMessageBox msgBox = new(
+                            this,
+                            "Authentication Needed",
+                            "You cannot browse for track lists without a Discogs Token",
+                            VinylMessageBoxType.ERROR,
+                            VinylMessageBoxButtons.OK);
+                        msgBox.OpenDialog();
 
                         return;
                     }

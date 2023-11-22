@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VinylStudio.ui;
 
 namespace VinylStudio
 {
@@ -45,8 +46,14 @@ namespace VinylStudio
                 });
             }
             catch (Exception ex)
-            {                
-                MessageBox.Show($"Error while opening the web browser: {ex.Message}");
+            {            
+                VinylMessageBox msgBox = new(
+                    this,
+                    "Error Opening Web Browser",
+                    $"Error while opening the web browser: {ex.Message}",
+                    VinylMessageBoxType.ERROR,
+                    VinylMessageBoxButtons.OK);
+                msgBox.OpenDialog();
             }
 
             e.Handled = true;
