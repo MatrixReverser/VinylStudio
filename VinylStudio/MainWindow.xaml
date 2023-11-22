@@ -182,7 +182,8 @@
                     ScrollViewer.VerticalScrollBarVisibility="Auto" 
                     ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                     Margin="5"
-                    SelectionChanged="OnInterpretSelected" />
+                    SelectionMode="Multiple"
+                    SelectionChanged="OnInterpretSelectionChanged" />
         </DockPanel>
         <!--#endregion-->
 
