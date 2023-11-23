@@ -8,8 +8,6 @@
         mc:Ignorable="d"
         Title="Vinyl Studio" Height="800" Width="1280"
         
-        Loaded="OnMainWindowOpened"
-        
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"

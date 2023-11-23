@@ -19,8 +19,7 @@ namespace VinylStudio.util
 
         private ObservableCollection<Release> _releaseList = new();
         private ObservableCollection<string> _releaseNameList = new();
-        private readonly string _token;
-
+        
         public ObservableCollection<Release> ReleaseList
         {
             get
@@ -40,9 +39,8 @@ namespace VinylStudio.util
         /**
          * Constructor of the class
          */
-        public DiscogsClient(string token, string interpret, string album)
+        public DiscogsClient(string interpret, string album)
         {
-            _token = token;
             GetAlbums(interpret, album);           
         }
 
@@ -50,8 +48,8 @@ namespace VinylStudio.util
          * gets all releases (limited to 10) and stores them in _releaseList
          */
         private async void GetAlbums(string interpret, string album)
-        {
-            var discogsConnection = DiscogsAuthConnection.WithPersonalAccessToken(_token);
+        {            
+            var discogsConnection = DiscogsAuthConnection.WithKeyAndSecret("reMUOurkuXuOGqFmjQZm", "ELYWvyvshMaejqdsXQpAuDaPpopGMFPm");
             var databaseService = discogsConnection.CreateDatabaseService();
             
             var filter = new SearchFilter()

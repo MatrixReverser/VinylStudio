@@ -116,6 +116,11 @@ namespace VinylStudio
          */
         private void MemorizeGridSplitterPosition() 
         {
+            if (_userSettings.ThumbnailContainerHeight < 0)
+            {
+                return;
+            }
+
             mainGrid.RowDefinitions[0].Height = new GridLength(_userSettings.ThumbnailContainerHeight);
 
             gridSplitter.DragCompleted += (sender, e) =>
@@ -126,22 +131,6 @@ namespace VinylStudio
                     _userSettings.ThumbnailContainerHeight = mainGrid.RowDefinitions[0].ActualHeight;
                 });
             };
-        }
-
-        /**
-         * Is called if the main window has opened
-         */
-        private void OnMainWindowOpened(object sender, EventArgs e)
-        {
-            if (_userSettings.DiscogsToken == null)
-            {
-                _userSettings.DiscogsToken = AskForDiscogsToken();
-                if (_userSettings.DiscogsToken == null)
-                {
-                    _userSettings.DiscogsToken = string.Empty;
-                    return;
-                }
-            }
         }
 
         /**
@@ -769,25 +758,6 @@ namespace VinylStudio
         {
             if (detailPanel.DataContext != null)
             {
-                if (_userSettings.DiscogsToken == null || _userSettings.DiscogsToken == string.Empty)
-                {
-                    _userSettings.DiscogsToken = AskForDiscogsToken();
-                    if (_userSettings.DiscogsToken == null)
-                    {
-                        _userSettings.DiscogsToken = string.Empty;
-                        
-                        VinylMessageBox msgBox = new(
-                            this,
-                            "Authentication Needed",
-                            "You cannot browse for track lists without a Discogs Token",
-                            VinylMessageBoxType.ERROR,
-                            VinylMessageBoxButtons.OK);
-                        msgBox.OpenDialog();
-
-                        return;
-                    }
-                }
-
                 string albumName = ((AlbumModel)detailPanel.DataContext).Name;
                 string? interpretName = ((AlbumModel)detailPanel.DataContext).Interpret?.Name;
                 if (interpretName != null)
@@ -815,25 +785,6 @@ namespace VinylStudio
             }
         }
 
-        /**
-         * Asks the user for the Discogs token and returns it as a string. Null is returned if the
-         * user cancelled the dialog
-         */
-        private string? AskForDiscogsToken()
-        {
-            string? discogsToken = null;
-
-            DiscogsTokenDialog dlg = new()
-            {
-                Owner = this,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-
-            discogsToken = dlg.OpenDialog();
-
-            return discogsToken;
-        }
-                
         /**
          * Shows the about dialog
          */

@@ -73,16 +73,13 @@ namespace VinylStudio.ui
          */
         private void QueryDiscogs()
         {
-            // Load release list from discogs
-            if (_userSettings.DiscogsToken != null)
-            {
-                DiscogsClient client = new(_userSettings.DiscogsToken, _interpret, _album);
-                _releaseList = client.ReleaseList;
-                _releaseNameList = client.ReleaseNameList;
+            // Load release list from discogs            
+            DiscogsClient client = new(_interpret, _album);
+            _releaseList = client.ReleaseList;
+            _releaseNameList = client.ReleaseNameList;
 
-                // Fill Combobox with release Names
-                comboboxRelease.ItemsSource = _releaseNameList;
-            }            
+            // Fill Combobox with release Names
+            comboboxRelease.ItemsSource = _releaseNameList;                        
         }
 
         /**
