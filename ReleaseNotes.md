@@ -17,4 +17,6 @@ shows an error dialog
   * Clear All Filters: CTRL+ALT-C
 * **feature:** Weight between thumbnail panel and track list panel is saved when app exits and restored when the application starts again
 * **feature:** Prices in status line and detail panel are now displayed with the user locale
+* **feature:** Currencies are now shown in the context of the user locale
+* **feature:** Authentication for Discogs now with OAuth access so that no personal user token of the user is required
  
