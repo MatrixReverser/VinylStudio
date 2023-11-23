@@ -378,48 +378,10 @@ namespace VinylStudio
         }
 
         /**
-         * Asks the user for the Discogs token and returns it as a string. Null is returned if the
-         * user cancelled the dialog
-         */
-        private string? AskForDiscogsToken()
-        {
-            string? discogsToken = null;
-
-            DiscogsTokenDialog dlg = new()
-            {
-                Owner = this,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-
-            discogsToken = dlg.OpenDialog();
-
-            return discogsToken;
-        }
-
-        /**
          * Is called if the user wants to query a cover image from discogs
          */
         private void OnQueryCover(object? sender, EventArgs e)
         {
-            if (_userSettings.DiscogsToken == null || _userSettings.DiscogsToken == string.Empty)
-            {
-                _userSettings.DiscogsToken = AskForDiscogsToken();
-                if (_userSettings.DiscogsToken == null)
-                {
-                    _userSettings.DiscogsToken = string.Empty;
-                    
-                    VinylMessageBox msgBox = new(
-                        this,
-                        "Authentication Needed",
-                        "You cannot browse for images without a Discogs Token",
-                        VinylMessageBoxType.ERROR,
-                        VinylMessageBoxButtons.OK);
-                    msgBox.OpenDialog();
-
-                    return;
-                }
-            }
-
             // Get interpret name and title of the album
             InterpretModel? interpret = comboboxInterpret.SelectedItem as InterpretModel;
             if (interpret == null)

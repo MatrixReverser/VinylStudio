@@ -30,7 +30,7 @@ namespace VinylStudio
         {
             InitializeComponent();
 
-            _discogsClient = new DiscogsClient(userSettings.DiscogsToken, interpret, album);
+            _discogsClient = new DiscogsClient(interpret, album);
             releaseTable.ItemsSource = _discogsClient.ReleaseList;
         }
 

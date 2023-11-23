@@ -12,7 +12,6 @@ namespace VinylStudio.util
     {
         private const string FILENAME = "userSettings.json";
 
-        public string? DiscogsToken;
         public int AppWidth = 1280;
         public int AppHeight = 800;
         public int XPosition = -1;
