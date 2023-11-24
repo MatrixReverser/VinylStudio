@@ -334,5 +334,39 @@ namespace VinylStudio.model
 
             return true;
         }
+
+        /**
+         * Checks if the genre is used by any interpret or album
+         */
+        public bool IsGenreUsed(GenreModel genre)
+        {
+            bool isUsed = false;
+
+            foreach (AlbumModel album in _albumList)
+            {
+                if (album.Genre == genre)
+                {
+                    isUsed = true;
+                    break;
+                }
+            }
+
+            if (!isUsed)
+            {
+                foreach (InterpretModel interpret in _interpretList)
+                {
+                    foreach (GenreModel cmp in interpret.GenreModels)
+                    {
+                        if (cmp == genre)
+                        {
+                            isUsed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return isUsed;
+        }
     }
 }

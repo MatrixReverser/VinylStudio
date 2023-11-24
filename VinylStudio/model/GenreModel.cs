@@ -9,7 +9,7 @@ namespace VinylStudio.model
     /**
      * Represents a genre
      */
-    internal class GenreModel : AbstractObjectModel
+    public class GenreModel : AbstractObjectModel
     {
         private string _description = string.Empty;
 

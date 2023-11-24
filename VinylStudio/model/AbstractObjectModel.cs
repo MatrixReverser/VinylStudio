@@ -12,7 +12,7 @@ namespace VinylStudio.model
      * An abstract class which acts as a base class for all model classes (except DataModel.cs).
      * Provides a name and an ID for each object and a static counter to generate unique IDs.
      */
-    internal abstract class AbstractObjectModel : INotifyPropertyChanged
+    public abstract class AbstractObjectModel : INotifyPropertyChanged
     {
         public delegate void ModelModifiedEventHandler();
         public event ModelModifiedEventHandler? ModelModified;

@@ -958,5 +958,18 @@ namespace VinylStudio
                 songTable.Focus();
             }
         }
+
+        /**
+         * Is called if the user selected the Edit Genres menut item
+         */
+        private void OnEditGenres(object sender, EventArgs e)
+        {
+            GenreManagementDialog dialog = new(_dataModel)
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            dialog.ShowDialog();
+        }
     }
 }
