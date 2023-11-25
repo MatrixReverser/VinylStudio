@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace VinylStudio.ui
     public partial class InterpretManagementDialog : Window
     {
         private ObservableCollection<UIInterpretModel> _data = new();
+        private CollectionView _interpretView;
         private DataModel _mainModel;
 
         /**
@@ -77,6 +79,11 @@ namespace VinylStudio.ui
                 };
                 _data.Add(record);
             }
+
+            // we want the interprets to be sorted by name
+            _interpretView = (CollectionView)CollectionViewSource.GetDefaultView(_data);
+            _interpretView.SortDescriptions.Add(new SortDescription("Model.Name", ListSortDirection.Ascending));
+
 
             interpretTable.ItemsSource = _data;
         }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using VinylStudio.model;
 
 namespace VinylStudio.ui
@@ -21,6 +23,7 @@ namespace VinylStudio.ui
     public partial class GenreManagementDialog : Window
     {
         private ObservableCollection<UIGenreModel> _data = new();
+        private CollectionView _genreView;
         private DataModel _mainModel;
 
         /**
@@ -67,6 +70,10 @@ namespace VinylStudio.ui
                 };
                 _data.Add(record);
             }
+
+            // we want the genres to be sorted by name
+            _genreView = (CollectionView)CollectionViewSource.GetDefaultView(_data);
+            _genreView.SortDescriptions.Add(new SortDescription("Model.Name", ListSortDirection.Ascending));
 
             genreTable.ItemsSource = _data;
         }
