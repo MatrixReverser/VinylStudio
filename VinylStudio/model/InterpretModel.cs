@@ -12,7 +12,7 @@ namespace VinylStudio.model
     /**
      * Represents an interpret
      */
-    internal class InterpretModel : AbstractObjectModel
+    public class InterpretModel : AbstractObjectModel
     {
         private string _country = "<country>";
         [JsonProperty("genre_ids")]

@@ -19,4 +19,6 @@ shows an error dialog
 * **feature:** Prices in status line and detail panel are now displayed with the user locale
 * **feature:** Currencies are now shown in the context of the user locale
 * **feature:** Authentication for Discogs now with OAuth access so that no personal user token of the user is required
+* **feature:** Genrers can be managed now in a dialog: change names, create new genres and delete unused genres
+* **feature:** Interprets can be managed now in a dialog: change names, create new interprets and delete unused interprets
  

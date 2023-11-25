@@ -100,7 +100,7 @@ namespace VinylStudio.model
     /**
      * Represents an album
      */
-    internal class AlbumModel : AbstractObjectModel
+    public class AlbumModel : AbstractObjectModel
     {
         [JsonProperty("interpret_id")]
         private int? _interpretId = null;

@@ -21,7 +21,7 @@ namespace VinylStudio.model
      * This class is the root of the data model. It contains a list of all interprets,
      * genres and all albums contained in the database.
      */
-    internal class DataModel
+    public class DataModel
     {
         public static readonly string DIR_DATABASE = "database";
         public static readonly string DIR_THUMBNAIL = "database/thumbnails";
@@ -363,6 +363,25 @@ namespace VinylStudio.model
                             break;
                         }
                     }
+                }
+            }
+
+            return isUsed;
+        }
+
+        /**
+         * Checks if the interpret is used by any album
+         */
+        public bool IsInterpretUsed(InterpretModel interpret)
+        {
+            bool isUsed = false;
+
+            foreach (AlbumModel album in _albumList)
+            {
+                if (album.Interpret == interpret)
+                {
+                    isUsed = true;
+                    break;
                 }
             }
 
