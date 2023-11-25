@@ -264,14 +264,6 @@ namespace VinylStudio.model
          * Initializes all references in the objects after loading from json
          */
         private void InitReferences() { 
-            if (_interpretList != null)
-            {
-                foreach (InterpretModel interpretModel in _interpretList)
-                {
-                    interpretModel.initReferences(_genreList);
-                }
-            }
-
             if (_albumList != null)
             {
                 foreach (AlbumModel albumModel in _albumList)
@@ -348,21 +340,6 @@ namespace VinylStudio.model
                 {
                     isUsed = true;
                     break;
-                }
-            }
-
-            if (!isUsed)
-            {
-                foreach (InterpretModel interpret in _interpretList)
-                {
-                    foreach (GenreModel cmp in interpret.GenreModels)
-                    {
-                        if (cmp == genre)
-                        {
-                            isUsed = true;
-                            break;
-                        }
-                    }
                 }
             }
 

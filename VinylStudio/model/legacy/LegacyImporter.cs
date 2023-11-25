@@ -146,15 +146,6 @@ namespace VinylStudio.model.legacy
                 album.Interpret = FindInterpret(legacyAlbum.interpret);
                 album.Genre = FindGenre(legacyAlbum.genre);
 
-                // now its the right time to update the genre list of the interpret
-                if (album.Genre != null && album.Interpret != null)
-                {
-                    if (!album.Interpret.GenreModels.Contains(album.Genre))
-                    {
-                        album.Interpret.GenreModels.Add(album.Genre);
-                    }
-                }
-
                 album.AlbumType = DecodeAlbumType(legacyAlbum.type);
                 album.AlbumRating = DecodeAlbumRating(legacyAlbum.rating);
                 album.ReleaseYear = legacyAlbum.year;
