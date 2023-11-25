@@ -960,7 +960,7 @@ namespace VinylStudio
         }
 
         /**
-         * Is called if the user selected the Edit Genres menut item
+         * Is called if the user selected the Edit Genres menu item
          */
         private void OnEditGenres(object sender, EventArgs e)
         {
@@ -968,6 +968,19 @@ namespace VinylStudio
             {
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            dialog.ShowDialog();
+        }
+
+        /**
+         * Is called if the user selected the Edit Interprets menu item
+         */
+        private void OnEditInterprets(object sender, EventArgs e)
+        {
+            InterpretManagementDialog dialog = new(_dataModel) 
+            { 
+                Owner = this, 
+                WindowStartupLocation = WindowStartupLocation.CenterOwner 
             };
             dialog.ShowDialog();
         }

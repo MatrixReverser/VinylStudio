@@ -15,7 +15,7 @@ namespace VinylStudio.model
     /**
      * Represents a song of an album. 
      */
-    internal class SongModel : AbstractObjectModel
+    public class SongModel : AbstractObjectModel
     {
         private AlbumSideEnum _side = AlbumSideEnum.A;
         private int _length = 0;

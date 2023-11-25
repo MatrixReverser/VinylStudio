@@ -18,15 +18,15 @@ namespace VinylStudio.ui
         }
     }
 
-    /// <summary>
-    /// Interaktionslogik für GenreManagementDialog.xaml
-    /// </summary>
     public partial class GenreManagementDialog : Window
     {
         private ObservableCollection<UIGenreModel> _data = new();
         private DataModel _mainModel;
 
-        internal GenreManagementDialog(DataModel mainModel)
+        /**
+         * Constructor of this class
+         */
+        public GenreManagementDialog(DataModel mainModel)
         {
             InitializeComponent();
 
@@ -137,7 +137,7 @@ namespace VinylStudio.ui
         }
 
         /**
-         * Is called if the user wants to delete the selected album
+         * Is called if the user wants to delete the selected genres
          */
         private void OnDeleteSelected(object sender, EventArgs e) 
         {

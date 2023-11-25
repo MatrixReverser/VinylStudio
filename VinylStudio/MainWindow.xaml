@@ -48,6 +48,7 @@
                 <MenuItem Command="util:CustomCommands.DeleteAlbum" />
                 <Separator />
                 <MenuItem Header="Edit _Genres" Click="OnEditGenres" />
+                <MenuItem Header="Edit Inter_prets" Click="OnEditInterprets" />
                 <Separator />
                 <MenuItem Command="util:CustomCommands.ToggleTracklistLock" />
                 <Separator />
