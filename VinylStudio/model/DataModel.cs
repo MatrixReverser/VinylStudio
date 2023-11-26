@@ -162,7 +162,7 @@ namespace VinylStudio.model
         /**
          * Loads all data from the JSON files into the lists of this class
          */
-        public void Load()
+        public void Load(int thumbnailSize)
         {
             string genreFileName = DIR_DATABASE + "/" + FILE_GENRE_LIST;
             string interpretFileName = DIR_DATABASE + "/" + FILE_INTERPRET_LIST;
@@ -219,6 +219,8 @@ namespace VinylStudio.model
 
             InitReferences();
             InitListeners();
+
+            PropagateThumbnailSize(thumbnailSize);
         }
                 
         /**
@@ -363,6 +365,17 @@ namespace VinylStudio.model
             }
 
             return isUsed;
+        }
+
+        /**
+         * Sets the thumbnail size for all cover images
+         */
+        public void PropagateThumbnailSize(int thumbnailSize)
+        {
+            foreach (AlbumModel album in AlbumList)
+            {
+                album.ThumbnailSize = thumbnailSize;
+            }
         }
     }
 }

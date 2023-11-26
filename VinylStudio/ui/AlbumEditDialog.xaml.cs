@@ -38,13 +38,15 @@ namespace VinylStudio
         private string? _imagePath = null;
         private AlbumModel? _albumModel = null;
         private UserSettings _userSettings;
+        private int _thumbnailSize = 150;
 
         /**
          * Constructor of this class. Used when an album should be edited instead of being created
          */
-        internal AlbumEditDialog(UserSettings settings, DataModel dataModel, AlbumModel album) : this(settings, dataModel)
+        internal AlbumEditDialog(UserSettings settings, DataModel dataModel, AlbumModel album, int thumbnailSize) : this(settings, dataModel)
         {
             _albumModel = album;
+            _thumbnailSize = thumbnailSize;
             
             // set data into the form
             _imagePath = album.ImagePath;
@@ -296,6 +298,7 @@ namespace VinylStudio
             if (!isInEditMode)
             {
                 _albumModel = new();
+                _albumModel.ThumbnailSize = _thumbnailSize;
             }
 
             if (_albumModel != null)

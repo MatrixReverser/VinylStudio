@@ -117,7 +117,22 @@ namespace VinylStudio.model
         [JsonProperty("song_list")]
         private ObservableCollection<SongModel> _songs = new();
         private BitmapImage? _image;
-        
+        public int _thumbnailSize = 150;
+
+        [JsonIgnore]        
+        public int ThumbnailSize 
+        {
+            get 
+            {
+                return _thumbnailSize;
+            } 
+            set
+            {
+                _thumbnailSize = value;
+                OnPropertyChanged(nameof(ThumbnailSize), true);
+            } 
+        }
+
         [JsonIgnore]
         public InterpretModel? Interpret 
         { 
@@ -361,6 +376,9 @@ namespace VinylStudio.model
         public AlbumModel() : base()
         {
             _songs.CollectionChanged += OnSongListChanged;
+            
+            // Setting default thumbnail size
+            ThumbnailSize = 150; 
         }
 
         /**

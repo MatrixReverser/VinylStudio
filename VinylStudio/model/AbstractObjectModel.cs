@@ -61,10 +61,15 @@ namespace VinylStudio.model
 
         /**
          * Is called if any property of this object has changed (except of the ID)
+         * If dismissModelModifiedEvent is true, then NO ModelModifiedEvent is fired but
+         * only the PropertyChange event is genereated
          */
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName, bool dismissModelModifiedEvent = false)
         {
-            ModelModified?.Invoke();
+            if (!dismissModelModifiedEvent)
+            {
+                ModelModified?.Invoke();
+            }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
