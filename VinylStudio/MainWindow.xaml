@@ -215,6 +215,8 @@
                         <ColumnDefinition Width="130" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="0" Grid.Row="0" ToolTip="Add new Album" Command="util:CustomCommands.NewAlbum">
                         <materialDesign:PackIcon Kind="ImagePlus" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -223,6 +225,8 @@
                     <ComboBox Grid.Column="2" Grid.Row="0" Name="comboSorting" SelectedIndex="0" Width="130" SelectionChanged="OnSortingChanged" />
                     <Label Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Margin="20 0 0 0">Filter: </Label>
                     <TextBox Grid.Column="4" Grid.Row="0" Name="textboxAlbumFilter" HorizontalAlignment="Stretch" VerticalAlignment="Center" Cursor="" LostFocus="OnAlbumFilterSet" KeyUp="OnKeyUpInFilterThumbnails" />
+                    <Label Grid.Column="5" Grid.Row="0" VerticalAlignment="Center">Size: </Label>
+                    <Slider Grid.Column="6" Grid.Row="0" Name="sizeSlider" Width="120" Minimum="50" Maximum="400" Value="150" VerticalAlignment="Center" ValueChanged="OnThumbnailSizeChanged"/>
                 </Grid>
                 <!-- </StackPanel> -->
                 
@@ -236,7 +240,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Viewbox Name="thumbnailViewbox" Width="150" Height="150">
+                                <Viewbox Name="thumbnailViewbox" Width="{Binding ThumbnailSize}" Height="{Binding ThumbnailSize}">
                                     <Image Source="{Binding ImageSource}" 
                                            Stretch="Uniform" 
                                            Margin="5" 

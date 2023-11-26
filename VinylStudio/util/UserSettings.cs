@@ -17,6 +17,7 @@ namespace VinylStudio.util
         public int XPosition = -1;
         public int YPosition = -1;
         public double ThumbnailContainerHeight = -1;
+        public int ThumbnailSize = 150;
 
         /**
          * Constructor of this class

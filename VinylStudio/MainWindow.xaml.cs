@@ -68,7 +68,7 @@ namespace VinylStudio
         {
             InitializeComponent();
             _dataModel = new DataModel();
-            _dataModel.Load();
+            _dataModel.Load((int)sizeSlider.Value);
 
             // set window size and position
             _userSettings = new();
@@ -84,6 +84,9 @@ namespace VinylStudio
             {
                 this.Top = (double)_userSettings.YPosition;
             }
+
+            sizeSlider.Value = (double)_userSettings.ThumbnailSize;
+            _dataModel.PropagateThumbnailSize(_userSettings.ThumbnailSize);
 
             // prepare data
             ConnectDataModel();
@@ -216,7 +219,7 @@ namespace VinylStudio
                 string filename = fileDialog.FileName;
                 if (filename != null)
                 {
-                    LegacyImporter importer = new(filename);
+                    LegacyImporter importer = new(filename, _userSettings.ThumbnailSize);
                     DataModel? model = importer.Import();
 
                     if (model == null)
@@ -264,7 +267,7 @@ namespace VinylStudio
          */
         private void EditAlbum(AlbumModel album)
         {   
-            AlbumEditDialog dlg = new(_userSettings, _dataModel, album)
+            AlbumEditDialog dlg = new(_userSettings, _dataModel, album, _userSettings.ThumbnailSize)
             {
                 Owner = this,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -983,6 +986,20 @@ namespace VinylStudio
                 WindowStartupLocation = WindowStartupLocation.CenterOwner 
             };
             dialog.ShowDialog();
+        }
+
+        /**
+         * Is called if the user has changed the thumbnail size with the slider control
+         */
+        private void OnThumbnailSizeChanged(object sender, EventArgs e)
+        {
+            if (_userSettings != null)
+            {
+                int size = (int)sizeSlider.Value;
+                _userSettings.ThumbnailSize = size;
+                _dataModel.PropagateThumbnailSize(size);
+                thumbnailsContainer.UpdateLayout();
+            }
         }
     }
 }

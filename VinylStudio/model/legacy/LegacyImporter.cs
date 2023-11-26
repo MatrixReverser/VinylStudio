@@ -22,13 +22,15 @@ namespace VinylStudio.model.legacy
         private Dictionary<string, int> _genreDict = new();
         private Dictionary<string, int> _interpretDict = new();
         private Dictionary<string, int> _albumDict = new();
+        private int _thumbnailSize = 150;
 
         /**
          * Constructor of this class
          */
-        public LegacyImporter(string originFileName)
+        public LegacyImporter(string originFileName, int thumbnailSize)
         {
             _originFileName = originFileName;
+            _thumbnailSize = thumbnailSize;
         }   
 
         /**
@@ -142,6 +144,7 @@ namespace VinylStudio.model.legacy
             foreach (Album legacyAlbum in legacyModel.album_list)
             {
                 AlbumModel album = new();
+                album.ThumbnailSize = _thumbnailSize;
                 album.Name = legacyAlbum.title;
                 album.Interpret = FindInterpret(legacyAlbum.interpret);
                 album.Genre = FindGenre(legacyAlbum.genre);
