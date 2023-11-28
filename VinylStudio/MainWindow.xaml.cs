@@ -63,6 +63,7 @@ namespace VinylStudio
         private CollectionView? _interpretView;
         private CollectionView? _genreView;
         private bool _tracklistLocked = true;
+        private AdvancedSearchFilter _advancedSearchFilter = new();
 
         public MainWindow()
         {
@@ -594,22 +595,12 @@ namespace VinylStudio
             {
                 statusInterprets.Content = interpretList.SelectedItems.Count.ToString();
             }
-
-            if (interpretFilter.Text.Trim() == string.Empty && (interpretList.SelectedItems == null || interpretList.SelectedItems.Count == 0))
-            {
-                statusAlbums.Content = _dataModel.AlbumList.Count;
-                statusTracks.Content = CountTracks(false);
-                collectionValue = CalcValue(false);
-                totalLength = CalcLength(false);
-
-            } else
-            {
-                statusAlbums.Content = _thumbnailView?.Count;
-                statusTracks.Content = CountTracks(true);
-                collectionValue = CalcValue(true);
-                totalLength = CalcLength(true);
-            }
-
+                       
+            statusAlbums.Content = _thumbnailView?.Count;
+            statusTracks.Content = CountTracks(true);
+            collectionValue = CalcValue(true);
+            totalLength = CalcLength(true);
+            
             CultureInfo userCulture = CultureInfo.CurrentCulture;
             string formattedValue = collectionValue.ToString("C", userCulture);
             statusValue.Content = formattedValue;
@@ -837,6 +828,19 @@ namespace VinylStudio
          */
         private void ClearAllFiltersCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            ClearAllFilters();
+        }
+
+        /**
+         * Clears all filters
+         */
+        private void ClearAllFilters() 
+        {
+            if (_thumbnailView != null)
+            {
+                _thumbnailView.Filter = null;
+            }
+
             UIElement? focusedElement = FocusManager.GetFocusedElement(this) as UIElement;
             if (focusedElement == null)
             {
@@ -914,6 +918,39 @@ namespace VinylStudio
         {
             DeleteCurrentAlbum();
         }
+
+        /**
+         * Checks if SearchAlbum command can be executed
+         */
+        private void SearchAlbumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /**
+         * Executes the SearchAlbum command
+         */
+        private void SearchAlbumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SearchAlbumDialog dialog = new SearchAlbumDialog(_advancedSearchFilter, _dataModel.GenreList)
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            dialog.ShowDialog();
+            
+            // Clear all filters (interpret and simple thumbnail filter) and set the advanced filter
+            ClearAllFilters();
+
+            if (_advancedSearchFilter.isFilterActive() && _thumbnailView != null)
+            {
+                _advancedSearchFilter.FilterThumbnails(_thumbnailView);
+            }
+
+            SelectFirstAlbumInThumbnailList();
+            UpdateStatusLine();
+        }
+
 
         /**
          * Checks if the ToggleTracklistLock command can be executed

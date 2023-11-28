@@ -72,5 +72,13 @@ namespace VinylStudio.model
             }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /**
+         * Returns the name as the string representation of all objects derived from this class
+         */
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
