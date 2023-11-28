@@ -30,6 +30,7 @@
         <CommandBinding Command="util:CustomCommands.FilterThumbnails" CanExecute="FilterThumbnailsCommand_CanExecute" Executed="FilterThumbnailsCommand_Executed" />
         <CommandBinding Command="util:CustomCommands.FilterInterprets" CanExecute="FilterInterpretsCommand_CanExecute" Executed="FilterInterpretsCommand_Executed" />
         <CommandBinding Command="util:CustomCommands.ClearAllFilters" CanExecute="ClearAllFiltersCommand_CanExecute" Executed="ClearAllFiltersCommand_Executed" />
+        <CommandBinding Command="util:CustomCommands.SearchAlbum" CanExecute="SearchAlbumCommand_CanExecute" Executed="SearchAlbumCommand_Executed" />
     </Window.CommandBindings>
     <!--#endregion-->
 
@@ -55,6 +56,7 @@
                 <MenuItem Command="util:CustomCommands.FilterThumbnails" />
                 <MenuItem Command="util:CustomCommands.FilterInterprets" />
                 <MenuItem Command="util:CustomCommands.ClearAllFilters" />
+                <MenuItem Command="util:CustomCommands.SearchAlbum" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About VinylStudio" Click="OnShowAbout" />
@@ -204,12 +206,13 @@
             <DockPanel Grid.Column="0" Grid.Row="0" Margin="5">
                 
                 <!-- Panel with the toolbar actions -->                
-                <Grid DockPanel.Dock="Top">
+                <Grid DockPanel.Dock="Top" Margin="0 0 0 5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="130" />
@@ -221,12 +224,21 @@
                     <Button Grid.Column="0" Grid.Row="0" ToolTip="Add new Album" Command="util:CustomCommands.NewAlbum">
                         <materialDesign:PackIcon Kind="ImagePlus" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Button>
-                    <Label Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="20 0 0 0">Sorting: </Label>
-                    <ComboBox Grid.Column="2" Grid.Row="0" Name="comboSorting" SelectedIndex="0" Width="130" SelectionChanged="OnSortingChanged" />
-                    <Label Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Margin="20 0 0 0">Filter: </Label>
-                    <TextBox Grid.Column="4" Grid.Row="0" Name="textboxAlbumFilter" HorizontalAlignment="Stretch" VerticalAlignment="Center" Cursor="" LostFocus="OnAlbumFilterSet" KeyUp="OnKeyUpInFilterThumbnails" />
-                    <Label Grid.Column="5" Grid.Row="0" VerticalAlignment="Center">Size: </Label>
-                    <Slider Grid.Column="6" Grid.Row="0" Name="sizeSlider" Width="120" Minimum="50" Maximum="400" Value="150" VerticalAlignment="Center" ValueChanged="OnThumbnailSizeChanged"/>
+                    <Button
+                            Margin="5 0 0 0"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Name="buttonSearch"
+                            ToolTip="Search for albums"
+                            Command="util:CustomCommands.SearchAlbum">
+                        <materialDesign:PackIcon Kind="Magnify" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Button>
+                    <Label Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Margin="20 0 0 0">Sorting: </Label>
+                    <ComboBox Grid.Column="3" Grid.Row="0" Name="comboSorting" SelectedIndex="0" Width="130" SelectionChanged="OnSortingChanged" />
+                    <Label Grid.Column="4" Grid.Row="0" VerticalAlignment="Center" Margin="20 0 0 0">Quick Filter: </Label>
+                    <TextBox Grid.Column="5" Grid.Row="0" Name="textboxAlbumFilter" HorizontalAlignment="Stretch" VerticalAlignment="Center" Cursor="" LostFocus="OnAlbumFilterSet" KeyUp="OnKeyUpInFilterThumbnails" />
+                    <Label Grid.Column="6" Grid.Row="0" VerticalAlignment="Center">Size: </Label>
+                    <Slider Grid.Column="7" Grid.Row="0" Name="sizeSlider" Width="100" Minimum="50" Maximum="400" Value="150" VerticalAlignment="Center" ValueChanged="OnThumbnailSizeChanged"/>
                 </Grid>
                 <!-- </StackPanel> -->
                 

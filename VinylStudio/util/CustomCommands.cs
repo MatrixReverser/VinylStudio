@@ -10,6 +10,20 @@ namespace VinylStudio.util
     public static class CustomCommands
     {
         /**
+         * Command for advanced search
+         */
+        public static readonly RoutedUICommand SearchAlbum = new RoutedUICommand
+            (
+                "Search Album",
+                "Search Album",
+                typeof(CustomCommands),
+                new InputGestureCollection()
+                {
+                    new KeyGesture(Key.F, ModifierKeys.Control)
+                }
+            );
+
+        /**
          * Command for adding a new album
          */
         public static readonly RoutedUICommand NewAlbum = new RoutedUICommand
