@@ -55,12 +55,14 @@ of the release and does **not** have to be installed by the user manually.
 |------------------------------|---------|-------------------|---------|
 | discogsharp                  | 0.4.0   | mlnrdns           | MIT     |
 | MaterialDesignThemes         | 4.9.0   | James Willock     | MIT     |
+| MaterialDesignExtensions     | 3.3.0   | Philipp Spiegel   | MIT     |
 | Newtonsoft.Json              | 13.0.3  | James Newton-King | MIT     |
 | ShowMeTheXAML                | 2.0.0   | Kevin Bost        | MIT     |
 | System.Drawing.Common        | 7.0.0   | Microsoft         | MIT     |
 | MaterialDesignColors         | 2.1.4   | James Willock     | MIT     |
 | Microsoft.Win32.SystemEvents | 7.0.0   | Microsoft         | MIT     |
 | Microsoft.Xaml.Behaviors.Wpf | 1.1.39  | Microsoft         | MIT     |
+| ClosedXML                    | 0.102.1 |                   | MIT     |
 
 
 ## First Start

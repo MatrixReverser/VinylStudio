@@ -1038,5 +1038,17 @@ namespace VinylStudio
                 thumbnailsContainer.UpdateLayout();
             }
         }
+
+        /**
+         * Is called if the user wants to export the data to excel
+         */
+        private void OnExcelExport(object sender, EventArgs e)
+        {
+            if (_thumbnailView != null)
+            {
+                ExportDialog dialog = new(_thumbnailView) { Owner = this, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+                dialog.ShowDialog();
+            }
+        }
     }
 }

@@ -42,6 +42,8 @@
                 <MenuItem Header="_Migration">
                     <MenuItem Header="Migrate from _VinylShelf 0.2" Click="OnMenuFileMigrateFromShelf" />
                 </MenuItem>
+                <MenuItem Header="_Export to Excel" Click="OnExcelExport" />
+                <Separator />
                 <MenuItem Header="E_xit" Click="OnMenuFileExit" />
             </MenuItem>
             <MenuItem Header="_Edit">

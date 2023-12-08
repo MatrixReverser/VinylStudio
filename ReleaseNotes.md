@@ -23,5 +23,6 @@ shows an error dialog
 * **feature:** Interprets can be managed now in a dialog: change names, create new interprets and delete unused interprets
 * **feature:** Size of thumbnails can now be sized with a slider at the top of the thumbnail panel. The size is saved and restored at the next start of the app.
 * **feature:** Advanced search dialog for albums (via menu, button over thumbnail panel or hot key CTRL-F) 
+* **feature:** The albums which are currently shown in the thumbnail view can now be exported to Excel
  
  
